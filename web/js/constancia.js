@@ -193,8 +193,9 @@
     etiqueta("Participante", M + 6, top + 8);
     escribir([lineas(p.nombre, 12, "bold", wIzq - 12)[0]], M + 6, top + 14, 12, "bold", C.texto);
     escribir([lineas(p.correo, 9.5, "normal", wIzq - 12)[0]], M + 6, top + 19.5, 9.5, "normal", C.texto);
-    etiqueta("Práctica terminada", M + 6, top + 27.5);
-    escribir([limpiar(fechaBonita(fecha))], M + 6, top + 32.5, 9.5, "normal", C.texto);
+    var perfil = opciones.perfil || null;
+    etiqueta(perfil ? "Perfil y área" : "Práctica terminada", M + 6, top + 27.5);
+    escribir([lineas(perfil ? perfil.nombre + " · " + perfil.area : fechaBonita(fecha), 9.5, "normal", wIzq - 12)[0]], M + 6, top + 32.5, 9.5, "normal", C.texto);
 
     relleno(tono.claro); doc.roundedRect(xDer, top, wDer, hTarjeta, 3, 3, "F");
     // Etiqueta de resultado tipo "píldora"
@@ -232,8 +233,47 @@
     escribir(lsPasos, M + 7, y + 13, 9.5, "normal", C.texto);
     y += hPaso + 9;
 
+    /* ---------- Evaluación general: resultado por tema y resumen del curso ---------- */
+
+    if (modulo.evaluacion) {
+      var porTema = {};
+      var orden = [];
+      b.historial.forEach(function (h) {
+        if (!porTema[h.tema]) { porTema[h.tema] = { intentos: 0, ok: false }; orden.push(h.tema); }
+        porTema[h.tema].intentos++;
+        if (h.acierto) porTema[h.tema].ok = true;
+      });
+      tituloSeccion("Resultado por tema", "Una pregunta de cada tema del curso. Las falladas volvían al final hasta resolverlas.");
+      orden.forEach(function (tema) {
+        var t = porTema[tema];
+        var estado = !t.ok ? "Sin resolver" : (t.intentos === 1 ? "Al primer intento" : "Resuelta en " + t.intentos + " intentos");
+        var ls = lineas(tema, 9.5, "normal", W - 60);
+        asegurar(alto(ls.length, 9.5) + 3);
+        marca(M + 3, y - 1.2, t.ok && t.intentos === 1);
+        escribir(ls, M + 9, y, 9.5, "normal", C.texto);
+        fuente(9, "bold"); tinta(t.ok ? (t.intentos === 1 ? C.verde : C.ambar) : C.rojo);
+        doc.text(limpiar(estado), ANCHO - M, y, { align: "right" });
+        y += alto(ls.length, 9.5) + 2.2;
+      });
+      y += 5;
+
+      tituloSeccion("Resumen general de las lecciones", "Lo esencial de cada tema del curso.");
+      (opciones.modulos || []).forEach(function (m, i) {
+        var clave = (opciones.claves || {})[m.id];
+        if (!clave) return;
+        var lsT = lineas((i + 1) + ". " + m.tema, 10, "bold", W - 4);
+        var lsC = lineas(clave, 9.2, "normal", W - 8);
+        asegurar(alto(lsT.length, 10) + alto(lsC.length, 9.2) + 4);
+        var yy = escribir(lsT, M, y, 10, "bold", C.marco);
+        y = escribir(lsC, M + 4, yy + 0.5, 9.2, "normal", C.texto) + 3.5;
+      });
+      y += 4;
+    }
+
     /* ---------- 4. Para repasar ---------- */
 
+    var resueltasLuego = {};
+    b.historial.forEach(function (h) { if (h.acierto) resueltasLuego[h.id] = true; });
     var malas = b.historial.filter(function (h) { return !h.acierto; });
     var buenas = b.historial.filter(function (h) { return h.acierto; });
     var wTexto = W - 16;
@@ -248,7 +288,7 @@
       tituloSeccion("Para repasar (" + malas.length + ")", "Las preguntas que fallaste, con la respuesta correcta y la explicación.");
       malas.forEach(function (h, i) {
         var bloques = [
-          { et: null, ls: lineas((i + 1) + ". " + h.concepto, 10.5, "bold", wTexto), tam: 10.5, est: "bold", col: C.texto },
+          { et: null, ls: lineas((i + 1) + ". " + h.concepto + (resueltasLuego[h.id] ? " (luego la respondiste bien)" : ""), 10.5, "bold", wTexto), tam: 10.5, est: "bold", col: C.texto },
           { et: "Pregunta", ls: lineas(h.pregunta, 9.5, "normal", wTexto), tam: 9.5, est: "normal", col: C.texto },
           { et: "Tu respuesta", ls: lineas(h.elegida, 9.5, "normal", wTexto), tam: 9.5, est: "normal", col: C.rojo },
           { et: "Respuesta correcta", ls: lineas(h.correcta, 9.5, "bold", wTexto), tam: 9.5, est: "bold", col: C.verde },

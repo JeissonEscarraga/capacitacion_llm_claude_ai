@@ -2,33 +2,67 @@
  * Lex Boss — lógica del juego (sin interfaz).
  *
  * Inspirado en la mecánica de Logic Boss Game (As-Yung/Logic-Boss-Game, MIT):
- * respondes bien y atacas al jefe; respondes mal y el jefe te ataca; con una
- * racha de aciertos haces golpe crítico. Aquí cada jefe es un tema de la
- * capacitación y cada respuesta queda registrada como aprendida o por repasar.
+ * respondes bien y atacas al jefe; respondes mal y el jefe te ataca.
+ *
+ * Regla de la práctica: el jefe tiene tantos puntos de resistencia como
+ * preguntas tenga el módulo, y cada pregunta respondida bien por primera vez
+ * en la batalla le quita uno. Las que se fallan vuelven al final de la fila.
+ * Así, vencer al jefe significa haber respondido bien TODAS las preguntas del
+ * módulo (100 % aprendido). La racha de aciertos da un golpe crítico, que
+ * devuelve un punto de credibilidad y da experiencia extra.
  */
 (function (global) {
   "use strict";
 
+  // area: agrupa los personajes para adaptar los ejemplos de la conceptualización.
+  var AREAS = {
+    juridico: "Jurídica",
+    tecnologia: "Tecnología y datos",
+    administrativo: "Administrativa",
+    multidisciplinar: "Multidisciplinar (validación de patentes)",
+    finanzas: "Finanzas"
+  };
+
   var PERFILES = {
     socio: {
-      id: "socio", nombre: "Socio(a) estratega", color: "azul",
-      corazones: 4, racha: 3, comodines: 1, escudo: false,
+      id: "socio", nombre: "Socio(a) estratega", area: "juridico",
+      corazones: 4, racha: 3, comodines: 1,
       ventaja: "Un punto de credibilidad extra en cada jefe."
     },
     asociado: {
-      id: "asociado", nombre: "Asociado(a) ágil", color: "verde",
-      corazones: 3, racha: 2, comodines: 1, escudo: false,
+      id: "asociado", nombre: "Asociado(a) ágil", area: "juridico",
+      corazones: 3, racha: 2, comodines: 1,
       ventaja: "Golpe crítico con solo 2 aciertos seguidos."
     },
-    analista: {
-      id: "analista", nombre: "Analista de datos", color: "naranja",
-      corazones: 3, racha: 3, comodines: 2, escudo: false,
-      ventaja: "Dos consultas al expediente (descartan dos opciones) por jefe."
-    },
     paralegal: {
-      id: "paralegal", nombre: "Paralegal meticuloso(a)", color: "morada",
+      id: "paralegal", nombre: "Paralegal meticuloso(a)", area: "juridico",
       corazones: 3, racha: 3, comodines: 1, escudo: true,
       ventaja: "Su primer error ante cada jefe no le quita credibilidad."
+    },
+    analista: {
+      id: "analista", nombre: "Analista de datos", area: "tecnologia",
+      corazones: 3, racha: 3, comodines: 2,
+      ventaja: "Dos consultas al expediente (descartan dos opciones) por jefe."
+    },
+    it: {
+      id: "it", nombre: "IT & Big Data", area: "tecnologia",
+      corazones: 2, racha: 3, comodines: 3,
+      ventaja: "Tres consultas al expediente por jefe, pero solo 2 de credibilidad."
+    },
+    administrativo: {
+      id: "administrativo", nombre: "Administrativo(a) organizado(a)", area: "administrativo",
+      corazones: 3, racha: 3, comodines: 1, comodinPorCritico: true,
+      ventaja: "Cada golpe crítico le devuelve una consulta al expediente."
+    },
+    multidisciplinar: {
+      id: "multidisciplinar", nombre: "Experto(a) multidisciplinar", area: "multidisciplinar",
+      corazones: 2, racha: 2, comodines: 1, escudo: true,
+      ventaja: "Crítico con 2 aciertos y escudo para el primer error, pero solo 2 de credibilidad."
+    },
+    finanzas: {
+      id: "finanzas", nombre: "Analista de finanzas", area: "finanzas",
+      corazones: 3, racha: 3, comodines: 1, bonoXP: 1.5,
+      ventaja: "Rentabilidad: gana 50 % más de experiencia."
     }
   };
 
@@ -39,13 +73,13 @@
   var XP_POR_NIVEL = 120;
 
   var TITULOS = [
-    "Practicante digital",
-    "Abogado(a) junior en IA",
-    "Asociado(a) en IA",
-    "Asociado(a) senior en IA",
-    "Socio(a) en IA",
-    "Socio(a) director(a) en IA",
-    "Leyenda de la IA legal"
+    "Aprendiz digital",
+    "Explorador(a) de IA",
+    "Practicante en IA",
+    "Usuario(a) avanzado(a) de IA",
+    "Referente de IA",
+    "Mentor(a) de IA",
+    "Leyenda de la IA"
   ];
 
   function nivelDe(xp) {
@@ -61,7 +95,7 @@
   /* ---------------- Progreso ---------------- */
 
   function progresoVacio() {
-    return { version: 1, perfil: null, xp: 0, preguntas: {}, modulos: {}, partidas: 0 };
+    return { version: 2, perfil: null, xp: 0, preguntas: {}, modulos: {}, conceptos: {}, partidas: 0 };
   }
 
   function normalizarProgreso(p) {
@@ -71,6 +105,7 @@
     base.xp = Number(p.xp) > 0 ? Math.floor(Number(p.xp)) : 0;
     base.preguntas = p.preguntas && typeof p.preguntas === "object" ? p.preguntas : {};
     base.modulos = p.modulos && typeof p.modulos === "object" ? p.modulos : {};
+    base.conceptos = p.conceptos && typeof p.conceptos === "object" ? p.conceptos : {};
     base.partidas = Number(p.partidas) > 0 ? Math.floor(Number(p.partidas)) : 0;
     return base;
   }
@@ -100,11 +135,12 @@
       else if (e === "repasar") res.repasar++;
       else res.noVistas++;
     });
-    res.porcentaje = Math.round((100 * res.aprendidas) / res.total);
+    res.porcentaje = res.total ? Math.round((100 * res.aprendidas) / res.total) : 0;
     var m = prog.modulos[modulo.id] || {};
     res.superado = !!m.superado;
     res.victorias = m.victorias || 0;
     res.derrotas = m.derrotas || 0;
+    res.concepto = !!(prog.conceptos && prog.conceptos[modulo.id]);
     return res;
   }
 
@@ -147,6 +183,15 @@
     return copia;
   }
 
+  // Una pregunta al azar de cada módulo: la evaluación general.
+  function preguntasEvaluacion(modulos, rnd) {
+    rnd = rnd || Math.random;
+    return modulos.map(function (m) {
+      var q = m.preguntas[Math.floor(rnd() * m.preguntas.length)];
+      return Object.assign({}, q, { modulo: m.id, tema: m.tema });
+    });
+  }
+
   /* ---------------- Batalla ---------------- */
 
   // opciones: { modulo, perfil, progreso, rnd, repaso }
@@ -157,13 +202,12 @@
     this.rnd = opciones.rnd || Math.random;
     this.repaso = !!opciones.repaso;
 
-    var n = this.modulo.preguntas.length;
-    this.vidaJefeMax = this.modulo.final ? 6 : Math.max(1, Math.min(n - 1, 8));
+    this.vidaJefeMax = this.modulo.preguntas.length;
     this.vidaJefe = this.vidaJefeMax;
-    this.corazonesMax = this.perfil.corazones;
+    this.corazonesMax = this.perfil.corazones + (this.modulo.corazonesExtra || 0);
     this.corazones = this.corazonesMax;
     this.comodines = this.perfil.comodines;
-    this.escudo = this.perfil.escudo;
+    this.escudo = !!this.perfil.escudo;
     this.racha = 0;
     this.mejorRacha = 0;
     this.aciertos = 0;
@@ -172,8 +216,8 @@
     this.fin = false;
     this.gano = false;
     this.actual = null;
-    this.falladasAqui = [];
-    this.historial = []; // cada respuesta de esta batalla, para la constancia en PDF
+    this.resueltas = {};  // id -> true cuando ya se respondió bien en esta batalla
+    this.historial = [];  // cada respuesta de esta batalla, para la constancia en PDF
     this.inicio = new Date().toISOString();
     this.cola = this._ordenar(this.modulo.preguntas);
   }
@@ -188,13 +232,17 @@
       .concat(barajar(this.rnd, grupos.aprendida));
   };
 
+  Batalla.prototype.pendientes = function () {
+    return this.vidaJefe;
+  };
+
   Batalla.prototype.siguiente = function () {
     if (this.fin) return null;
+    var self = this;
+    // Saltar las que ya se resolvieron (por si quedaron duplicadas en la fila).
+    while (this.cola.length && this.resueltas[this.cola[0].id]) this.cola.shift();
     if (!this.cola.length) {
-      // Se acabaron: vuelven primero las falladas en esta batalla.
-      var base = this.falladasAqui.length ? this.falladasAqui : this.modulo.preguntas;
-      this.cola = barajar(this.rnd, base);
-      this.falladasAqui = [];
+      this.cola = barajar(this.rnd, this.modulo.preguntas.filter(function (q) { return !self.resueltas[q.id]; }));
     }
     var q = this.cola.shift();
     var opciones = barajar(this.rnd, [q.ok].concat(q.no));
@@ -204,7 +252,7 @@
       correcta: opciones.indexOf(q.ok),
       ocultas: []
     };
-    return { id: q.id, concepto: q.concepto, texto: q.p, opciones: opciones.slice() };
+    return { id: q.id, concepto: q.concepto, texto: q.p, opciones: opciones.slice(), tema: q.tema || null };
   };
 
   // Descarta dos opciones incorrectas de la pregunta actual.
@@ -221,41 +269,55 @@
   Batalla.prototype.responder = function (indice, fecha) {
     if (this.fin || !this.actual) return null;
     var a = this.actual;
+    var q = a.pregunta;
     var acierto = indice === a.correcta;
+    var bono = this.perfil.bonoXP || 1;
     var ev = {
       acierto: acierto,
       correcta: a.correcta,
-      explicacion: a.pregunta.e,
-      concepto: a.pregunta.concepto,
+      explicacion: q.e,
+      concepto: q.concepto,
       critico: false,
       danio: 0,
+      curacion: 0,
+      comodinGanado: false,
       escudoUsado: false,
       xp: 0
     };
-    registrarRespuesta(this.progreso, a.pregunta.id, acierto, fecha);
+    registrarRespuesta(this.progreso, q.id, acierto, fecha);
     this.historial.push({
-      id: a.pregunta.id,
-      concepto: a.pregunta.concepto,
-      pregunta: a.pregunta.p,
+      id: q.id,
+      concepto: q.concepto,
+      pregunta: q.p,
       elegida: a.opciones[indice] !== undefined ? a.opciones[indice] : "",
-      correcta: a.pregunta.ok,
+      correcta: q.ok,
       acierto: acierto,
-      explicacion: a.pregunta.e
+      explicacion: q.e,
+      modulo: q.modulo || this.modulo.id,
+      tema: q.tema || this.modulo.tema
     });
 
     if (acierto) {
       this.aciertos++;
       this.racha++;
       this.mejorRacha = Math.max(this.mejorRacha, this.racha);
+      if (!this.resueltas[q.id]) {
+        this.resueltas[q.id] = true;
+        ev.danio = 1;
+        this.vidaJefe = Math.max(0, this.vidaJefe - 1);
+      }
       ev.critico = this.racha >= this.perfil.racha;
-      ev.danio = ev.critico ? 2 : 1;
-      if (ev.critico) this.racha = 0;
-      this.vidaJefe = Math.max(0, this.vidaJefe - ev.danio);
-      ev.xp = XP_ACIERTO + (ev.critico ? XP_CRITICO : 0);
+      ev.xp = XP_ACIERTO;
+      if (ev.critico) {
+        this.racha = 0;
+        ev.xp += XP_CRITICO;
+        if (this.corazones < this.corazonesMax) { this.corazones++; ev.curacion = 1; }
+        if (this.perfil.comodinPorCritico) { this.comodines++; ev.comodinGanado = true; }
+      }
     } else {
       this.errores++;
       this.racha = 0;
-      this.falladasAqui.push(a.pregunta);
+      this.cola.push(q); // vuelve al final de la fila
       if (this.escudo) {
         this.escudo = false;
         ev.escudoUsado = true;
@@ -267,12 +329,13 @@
     if (this.vidaJefe <= 0) {
       this.fin = true;
       this.gano = true;
-      ev.xp += this.modulo.final ? XP_VICTORIA_FINAL : XP_VICTORIA;
+      ev.xp += this.modulo.final || this.modulo.evaluacion ? XP_VICTORIA_FINAL : XP_VICTORIA;
     } else if (this.corazones <= 0) {
       this.fin = true;
       this.gano = false;
     }
 
+    ev.xp = Math.round(ev.xp * bono);
     this.xpGanada += ev.xp;
     this.progreso.xp = (this.progreso.xp || 0) + ev.xp;
     if (this.fin) this._cerrar(fecha);
@@ -290,6 +353,7 @@
     if (this.fin) return;
     this.fin = true;
     this.gano = false;
+    this.retirado = true;
     this._cerrar(fecha);
   };
 
@@ -310,6 +374,7 @@
   };
 
   var api = {
+    AREAS: AREAS,
     PERFILES: PERFILES,
     TITULOS: TITULOS,
     XP_POR_NIVEL: XP_POR_NIVEL,
@@ -322,6 +387,7 @@
     resumenGeneral: resumenGeneral,
     finalDesbloqueado: finalDesbloqueado,
     preguntasPorRepasar: preguntasPorRepasar,
+    preguntasEvaluacion: preguntasEvaluacion,
     barajar: barajar,
     Batalla: Batalla
   };
