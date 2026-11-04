@@ -1,5 +1,5 @@
 /*
- * Lex Boss — contenido de la capacitación.
+ * AI BOSS — contenido de la capacitación.
  *
  * Cada módulo es un jefe. Cada pregunta tiene:
  *   id        identificador estable (no cambiarlo: el progreso guardado lo usa)
@@ -203,6 +203,100 @@
             "Lo copio completo y lo pego en el chat"
           ],
           e: "Los documentos no se suben a claude.ai. Claude Code los lee desde tu carpeta; el texto que lee se procesa bajo el contrato de la firma, por eso igual conviene trabajar con copias seudonimizadas cuando sea posible."
+        }
+      ]
+    },
+    {
+      id: "aplicativos",
+      tema: "Aplicativos corporativos, aplicativos personales y archivos sueltos",
+      jefe: "El Arquitecto Improvisado",
+      forma: "arquitecto",
+      color: "amarilla",
+      frase: "¿Aplicativo? Sube el archivo, pregunta y listo...",
+      leccion: [
+        "Un aplicativo corporativo es una herramienta de la firma: aprobada por TI, con inicio de sesión corporativo, permisos, registro de uso, datos en la infraestructura de la firma, un responsable y mantenimiento.",
+        "Un aplicativo personal es algo que una persona hace para sí (un script, una hoja automatizada, un prototipo con Claude Code): sirve para explorar, pero no tiene revisión ni soporte; no se usa con datos de clientes sin aprobación ni se presenta como oficial.",
+        "Subir uno o varios archivos y preguntar es una consulta puntual: rápida, pero cada respuesta depende del pedido, no es repetible ni deja registro. En la firma, con documentos de clientes se hace con Claude Code en local, no en el chat.",
+        "La revisión de un experto es obligatoria: el experto del área valida el resultado; TI, la seguridad; protección de datos, el cumplimiento.",
+        "Tiempos orientativos: una consulta toma minutos; un aplicativo personal, de horas a pocos días; un aplicativo corporativo, de semanas a meses, incluidas las revisiones."
+      ],
+      preguntas: [
+        {
+          id: "apl-1", concepto: "Qué hace corporativo a un aplicativo",
+          p: "¿Qué hace que un aplicativo sea corporativo?",
+          ok: "Que esté aprobado por TI y tenga inicio de sesión de la firma, permisos, registro de uso, un responsable y mantenimiento",
+          no: [
+            "Que lo haya hecho alguien de la firma en su computador",
+            "Que use inteligencia artificial",
+            "Que tenga el logo de la firma"
+          ],
+          e: "Lo corporativo no lo da quién lo hizo ni la tecnología, sino los controles: aprobación, identidad corporativa, permisos, auditoría, datos en la infraestructura de la firma y alguien que responde por él."
+        },
+        {
+          id: "apl-2", concepto: "Qué es un aplicativo personal",
+          p: "Hiciste con Claude Code un pequeño programa que ordena tus propios archivos. ¿Qué es?",
+          ok: "Un aplicativo personal: útil para ti, pero sin revisión ni soporte de la firma",
+          no: [
+            "Un aplicativo corporativo, porque lo hiciste en horario laboral",
+            "Un servicio oficial que todo el equipo puede usar",
+            "Una Skill aprobada por la firma"
+          ],
+          e: "Los aplicativos personales son valiosos para explorar y ahorrar tiempo propio. Para que otros lo usen, y más con datos de clientes, debe pasar por la aprobación de la firma."
+        },
+        {
+          id: "apl-3", concepto: "Del aplicativo personal al corporativo",
+          p: "Un compañero quiere que todo el equipo use tu aplicativo personal con datos de clientes. ¿Qué corresponde?",
+          ok: "Llevarlo al proceso de aprobación: revisión de TI, de protección de datos y del área antes de usarlo con clientes",
+          no: [
+            "Enviarle el archivo por correo y listo",
+            "Publicarlo en un repositorio público para que lo descarguen",
+            "Usarlo sin avisar mientras funcione"
+          ],
+          e: "Un prototipo puede ser un gran punto de partida. La revisión es la que lo convierte en una herramienta segura para la firma."
+        },
+        {
+          id: "apl-4", concepto: "Consulta sobre archivos vs. aplicativo",
+          p: "¿Cuál es la diferencia principal entre preguntarle a Claude sobre unos archivos y usar un aplicativo corporativo?",
+          ok: "La consulta es puntual y su resultado depende de cada pedido; el aplicativo repite el mismo proceso, con controles, registro y responsables",
+          no: [
+            "Ninguna: siempre dan exactamente el mismo resultado",
+            "La consulta es más segura porque es más corta",
+            "El aplicativo no necesita revisión de nadie"
+          ],
+          e: "Dos personas que preguntan distinto obtienen respuestas distintas. Si algo se hace muchas veces y para muchos, conviene un proceso repetible y controlado."
+        },
+        {
+          id: "apl-5", concepto: "Revisión del experto",
+          p: "Un aplicativo con IA funcionó perfecto en las pruebas. ¿Por qué igual debe revisarlo un experto del área?",
+          ok: "Porque la IA puede equivocarse con seguridad en casos reales y solo quien conoce el tema detecta errores de fondo; además, alguien debe responder por el resultado",
+          no: [
+            "No hace falta si el aplicativo es corporativo",
+            "Solo para cumplir un trámite",
+            "Porque la IA no entiende el español"
+          ],
+          e: "Las pruebas cubren algunos casos; la realidad trae otros. La revisión experta al inicio y periódica mantiene la calidad."
+        },
+        {
+          id: "apl-6", concepto: "Tiempos de un aplicativo corporativo",
+          p: "En promedio, ¿cuánto es razonable esperar para tener listo un aplicativo corporativo?",
+          ok: "De semanas a meses, porque incluye diseño, construcción, pruebas y las revisiones de seguridad, datos y del área",
+          no: [
+            "Unos minutos: basta pedírselo a Claude",
+            "Una tarde, sin revisiones",
+            "Nunca se puede estimar"
+          ],
+          e: "Orientativamente: un piloto toma de 2 a 6 semanas y la puesta en producción de 1 a 3 meses. La IA acelera la construcción, pero no elimina las revisiones."
+        },
+        {
+          id: "apl-7", concepto: "Elegir entre consulta y aplicativo",
+          p: "Necesitas hoy una respuesta sobre un único contrato de un cliente. ¿Qué es lo más adecuado?",
+          ok: "Una consulta con Claude Code sobre el archivo en la carpeta del caso, revisando tú el resultado",
+          no: [
+            "Encargar un aplicativo corporativo que tardará semanas",
+            "Subir el contrato a un chat de Claude",
+            "No usar IA para nada"
+          ],
+          e: "Para algo puntual y urgente basta una consulta bien hecha y revisada. El aplicativo tiene sentido cuando la tarea se repite y la usarán muchas personas."
         }
       ]
     },
@@ -1183,6 +1277,7 @@
     "agentes": "Un agente planifica y usa herramientas en ciclos; si los pasos son fijos, mejor un flujo. Persona en el ciclo y registro de lo que hizo.",
     "claude-code": "Claude Code trabaja sobre tus carpetas sin subir archivos; CLAUDE.md fija reglas, el modo plan y los permisos te dan control, y git permite deshacer.",
     "api": "La API integra a Claude en los sistemas; la clave va en un gestor de secretos, se paga por tokens y la caché y los lotes reducen costos.",
+    "aplicativos": "Un aplicativo corporativo tiene aprobación, inicio de sesión de la firma, permisos, registro y responsable; uno personal sirve para explorar; preguntar sobre archivos es puntual. Siempre revisa un experto, y los tiempos van de minutos a meses.",
     "final": "Elige la herramienta según la necesidad y aplica dos chequeos: antes de darle información a la IA y antes de usar lo que produjo."
   };
 

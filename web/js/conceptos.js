@@ -1,5 +1,5 @@
 /*
- * Lex Boss — conceptualización de cada módulo.
+ * AI BOSS — conceptualización de cada módulo.
  *
  * Antes de cada batalla, la persona recorre estos pasos. Están escritos para
  * alguien sin conocimientos previos: lenguaje sencillo, un esquema visual,
@@ -238,6 +238,133 @@
             { t: "Usa siempre el formato de concepto de la firma", c: 0 },
             { t: "¿Qué dice la cláusula séptima?", c: 1 },
             { t: "Termina cada respuesta con una sección de riesgos", c: 0 }
+          ]
+        }
+      ]
+    },
+
+    /* ------------------------------------------------------------------ */
+    aplicativos: {
+      intro: "Antes de construir o pedir una herramienta con IA, conviene distinguir tres cosas: un aplicativo corporativo, un aplicativo personal y una consulta puntual sobre archivos. Cada una tiene usos, controles y tiempos distintos.",
+      pasos: [
+        {
+          tipo: "concepto",
+          titulo: "Tres formas de usar la IA con documentos",
+          texto: [
+            "Cuando quieres que la IA te ayude con documentos o datos, hay tres caminos. Se diferencian en para quién son, cuánto se controlan y cuánto tardan.",
+            "No hay uno mejor que otro: cada uno sirve para algo distinto."
+          ],
+          visual: { tipo: "tarjetas", items: [
+            { i: "💬", t: "Consulta puntual", d: "Preguntas sobre uno o varios archivos. Para ti, para hoy. Toma minutos." },
+            { i: "🧪", t: "Aplicativo personal", d: "Una herramienta que haces para ti (script, hoja, prototipo). Toma horas o días." },
+            { i: "🏢", t: "Aplicativo corporativo", d: "Una herramienta de la firma para muchas personas, con controles. Toma semanas o meses." }
+          ] },
+          simple: "Es la diferencia entre preguntarle algo a un colega, armar tu propia plantilla en Excel o implementar un sistema para toda la firma.",
+          ejemplo: "Preguntar qué dice la cláusula séptima de un contrato es una consulta; un programa tuyo que renombra tus PDF es personal; el tablero de vencimientos que usa toda el área es corporativo."
+        },
+        {
+          tipo: "concepto",
+          titulo: "¿Qué hace corporativo a un aplicativo?",
+          texto: [
+            "Un aplicativo es corporativo por sus controles, no por quién lo hizo ni por la tecnología que usa.",
+            "Tiene aprobación de TI, inicio de sesión con la cuenta de la firma, permisos por rol, registro de quién hizo qué, datos guardados en la infraestructura de la firma, un responsable, soporte y documentación."
+          ],
+          visual: { tipo: "tarjetas", items: [
+            { i: "✅", t: "Aprobado", d: "TI, protección de datos y el área lo revisaron." },
+            { i: "🔐", t: "Identidad y permisos", d: "Se entra con la cuenta de la firma; cada rol ve lo suyo." },
+            { i: "🗄️", t: "Datos en la firma", d: "La información queda en la infraestructura de la firma." },
+            { i: "📜", t: "Registro de uso", d: "Queda constancia de quién consultó o cambió qué." },
+            { i: "👤", t: "Responsable", d: "Alguien lo mantiene, lo actualiza y responde por él." },
+            { i: "📘", t: "Manual", d: "Dice qué hace, cómo se usa y qué hacer si falla." }
+          ] },
+          simple: "Un aplicativo corporativo es como un vehículo de la empresa: tiene papeles, seguro, mantenimiento y alguien que responde por él.",
+          ejemplo: "Una herramienta de prospección de la firma con inicio de sesión corporativo, roles y auditoría es un aplicativo corporativo."
+        },
+        {
+          tipo: "concepto",
+          titulo: "El aplicativo personal: útil, pero con límites",
+          texto: [
+            "Con Claude Code cualquier persona puede construir pequeñas herramientas para sí misma. Eso es muy valioso para explorar ideas y ahorrar tiempo.",
+            "Pero un aplicativo personal no pasó por revisión de seguridad ni de datos, depende de tu equipo y nadie más lo mantiene. Por eso no se usa con datos de clientes sin aprobación ni se comparte como si fuera oficial."
+          ],
+          visual: { tipo: "comparar",
+            izq: { titulo: "✅ Sirve para", items: ["Explorar una idea", "Automatizar tareas propias", "Hacer un prototipo para mostrar"] },
+            der: { titulo: "⚠️ Límites", items: ["Sin revisión de seguridad ni de datos", "Depende de tu equipo y de ti", "Nadie más lo mantiene", "No con datos de clientes sin aprobación"] }
+          },
+          simple: "Es como un atajo que te inventaste para llegar más rápido: te sirve a ti, pero no lo pones en el mapa oficial de la ciudad.",
+          ejemplo: "Un prototipo hecho con Claude Code puede ser el punto de partida de un aplicativo corporativo, si pasa por la aprobación de la firma."
+        },
+        {
+          tipo: "concepto",
+          titulo: "Subir archivos y preguntar vs. un aplicativo",
+          texto: [
+            "Subir uno o varios archivos a un chat de Claude y hacerle preguntas es la forma más rápida de obtener una respuesta. Pero cada respuesta depende del pedido de ese momento: si otra persona pregunta distinto, obtiene otra respuesta. Tampoco queda un proceso repetible ni un registro de quién consultó qué.",
+            "Además, en la firma los documentos de clientes no se suben al chat: la consulta se hace con Claude Code, leyendo los archivos desde la carpeta.",
+            "Un aplicativo, en cambio, repite siempre el mismo proceso, con los mismos criterios, permisos y responsables."
+          ],
+          visual: { tipo: "comparar",
+            izq: { titulo: "💬 Archivos + preguntas", items: ["Rápido: minutos", "El resultado cambia con cada pedido", "Sin registro ni permisos", "Una persona, un momento", "En la firma: con Claude Code en local"] },
+            der: { titulo: "🏢 Aplicativo corporativo", items: ["El mismo proceso cada vez", "Registro de uso y permisos", "Para muchas personas", "Revisado por expertos", "Toma semanas en construirse"] }
+          },
+          simple: "Preguntar sobre un archivo es como pedir una opinión al vuelo; un aplicativo es como un procedimiento escrito que todos siguen igual.",
+          ejemplo: "Revisar hoy un contrato: consulta con Claude Code en la carpeta del caso. Revisar todos los contratos de proveedores cada mes con el mismo criterio: aplicativo."
+        },
+        {
+          tipo: "concepto",
+          titulo: "La revisión del experto no es opcional",
+          texto: [
+            "Un aplicativo puede funcionar perfecto en las pruebas y aun así equivocarse con casos reales. La IA presenta sus errores con la misma seguridad que sus aciertos: solo quien conoce el tema los detecta.",
+            "En un aplicativo corporativo la revisión es doble: el experto del área valida los resultados, y TI, protección de datos y el área jurídica validan el aplicativo. La revisión no es solo al inicio: se repite cada cierto tiempo."
+          ],
+          visual: { tipo: "flujo", pasos: [
+            { i: "🤖", t: "La IA produce el resultado" },
+            { i: "🧑‍⚖️", t: "El experto del área valida el contenido" },
+            { i: "🛡️", t: "TI valida la seguridad" },
+            { i: "🔏", t: "Protección de datos valida el cumplimiento" },
+            { i: "✅", t: "Se usa y se revisa periódicamente" }
+          ] },
+          simple: "El piloto automático no reemplaza al piloto: lo deja descansar, pero él sigue vigilando.",
+          ejemplo: "Antes de usar con clientes un aplicativo que clasifica marcas por riesgo, un abogado de marcas revisa una muestra de resultados, y lo vuelve a hacer cada cierto tiempo."
+        },
+        {
+          tipo: "concepto",
+          titulo: "¿Cuánto tiempo toma cada uno?",
+          texto: [
+            "Estos son tiempos orientativos de referencia. Dependen de la complejidad, de los datos y de la disponibilidad de los expertos.",
+            "La IA acelera la construcción, pero no elimina las revisiones: en un aplicativo corporativo, buena parte del tiempo es probar y revisar."
+          ],
+          visual: { tipo: "tarjetas", items: [
+            { i: "💬", t: "Consulta puntual", d: "5 a 30 minutos, incluida tu revisión del resultado." },
+            { i: "🧪", t: "Aplicativo personal", d: "De 2 horas a 3 días, según la tarea." },
+            { i: "🏗️", t: "Aplicativo corporativo: piloto", d: "2 a 6 semanas: diseño, construcción y pruebas con usuarios." },
+            { i: "🚀", t: "Aplicativo corporativo: en producción", d: "1 a 3 meses en total, con revisiones de seguridad, datos y del área." },
+            { i: "🧑‍⚖️", t: "Revisión del experto", d: "15 minutos a 1 hora por documento en una consulta; varias sesiones en un aplicativo, y luego revisiones periódicas." }
+          ] },
+          simple: "Hacer un café, cocinar para la familia o montar un restaurante: los tres son cocinar, pero no toman lo mismo.",
+          ejemplo: "Si lo necesitas para mañana, es una consulta. Si lo usará toda el área durante años, planea un aplicativo corporativo con tiempo para las revisiones."
+        },
+        {
+          tipo: "clasifica",
+          titulo: "Practica: ¿personal o corporativo?",
+          instruccion: "Clasifica cada herramienta.",
+          categorias: ["Aplicativo personal", "Aplicativo corporativo"],
+          items: [
+            { t: "Un programa tuyo que renombra tus propios PDF", c: 0 },
+            { t: "Una herramienta con inicio de sesión de la firma y permisos por rol", c: 1 },
+            { t: "Un prototipo que hiciste para probar una idea", c: 0 },
+            { t: "El tablero de vencimientos que usa toda el área, mantenido por TI", c: 1 },
+            { t: "Una hoja automatizada en tu escritorio", c: 0 },
+            { t: "Un sistema con registro de uso y un responsable asignado", c: 1 }
+          ]
+        },
+        {
+          tipo: "elige",
+          titulo: "Practica: el prototipo exitoso",
+          situacion: "Tu prototipo personal funciona muy bien y tu jefe quiere que todo el equipo lo use con datos de clientes desde mañana. ¿Qué haces?",
+          opciones: [
+            { t: "Lo comparto hoy mismo por correo con todo el equipo.", ok: false, r: "Se usaría con datos de clientes sin ninguna revisión." },
+            { t: "Propongo un piloto: revisión de TI, de protección de datos y del área, y luego lo despliego como aplicativo corporativo.", ok: true, r: "Así el prototipo se convierte en una herramienta segura, con responsable y controles." },
+            { t: "Lo publico en internet para que cada uno lo descargue.", ok: false, r: "Expone la herramienta, y posiblemente datos, fuera de la firma." }
           ]
         }
       ]
@@ -1368,11 +1495,11 @@
           tipo: "concepto",
           titulo: "El mapa del curso",
           texto: [
-            "Recorriste 13 temas. Juntos responden tres preguntas: ¿cómo funciona Claude?, ¿cómo se usa en la firma? y ¿cómo se protege la información?"
+            "Recorriste 14 temas. Juntos responden tres preguntas: ¿cómo funciona Claude?, ¿cómo se usa en la firma? y ¿cómo se protege la información?"
           ],
           visual: { tipo: "tarjetas", items: [
             { i: "🧠", t: "Cómo funciona", d: "Fundamentos: predice texto, puede inventar, tokens y modelos." },
-            { i: "🏢", t: "Cómo se usa", d: "Cuenta corporativa, Proyectos para reglas, Claude Code para documentos, buenos pedidos." },
+            { i: "🏢", t: "Cómo se usa", d: "Cuenta corporativa, Proyectos para reglas, Claude Code para documentos, aplicativos corporativos vs. personales, buenos pedidos." },
             { i: "🛡️", t: "Cómo se protege", d: "Datos personales, propiedad intelectual, confidencialidad y seguridad." },
             { i: "🧰", t: "Herramientas avanzadas", d: "RAG, Skills, MCP y conectores, agentes, Claude Code y API." }
           ] },

@@ -1,5 +1,5 @@
 /*
- * Lex Boss — lógica del juego (sin interfaz).
+ * AI BOSS — lógica del juego (sin interfaz).
  *
  * Inspirado en la mecánica de Logic Boss Game (As-Yung/Logic-Boss-Game, MIT):
  * respondes bien y atacas al jefe; respondes mal y el jefe te ataca.
@@ -395,6 +395,6 @@
   if (typeof module !== "undefined" && module.exports) {
     module.exports = api;
   } else {
-    global.LexBoss = api;
+    global.AIBoss = api;
   }
 })(typeof window !== "undefined" ? window : globalThis);

@@ -36,5 +36,5 @@ http.createServer((req, res) => {
     res.end(datos);
   });
 }).listen(PUERTO, () => {
-  console.log("Lex Boss en http://localhost:" + PUERTO);
+  console.log("AI BOSS en http://localhost:" + PUERTO);
 });

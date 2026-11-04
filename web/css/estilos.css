@@ -1,4 +1,4 @@
-/* Lex Boss — pizarra de aula: arriba el usuario, en el centro los jefes dibujados en tiza y abajo la pregunta. */
+/* AI BOSS — pizarra de aula: arriba el usuario, en el centro los jefes dibujados en tiza y abajo la pregunta. */
 :root {
   --pizarra: #1d2a25;
   --pizarra-honda: #141d19;
@@ -566,3 +566,4 @@ details.modulo-avance > summary::before { content: none; }
 .paso-chip.hecho { border-color: var(--tiza-verde); color: var(--tiza-verde); }
 .casilla-evaluacion .casilla-boton { border-color: var(--tiza-azul); }
 .nota-area { color: var(--tiza-azul); }
+.enlace { font: inherit; color: var(--tiza-azul); background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; }

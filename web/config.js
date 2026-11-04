@@ -1,5 +1,5 @@
 /*
- * Configuración de Lex Boss.
+ * Configuración de AI BOSS.
  *
  * correoTI: buzón de TI que recibe las constancias en PDF para el control de
  * la capacitación. Aparece en el PDF y en el botón «Enviar a TI», que abre el
@@ -8,6 +8,6 @@
  * Este archivo se publica en GitHub Pages: NO pongas aquí claves, tokens ni
  * contraseñas.
  */
-window.LEXBOSS_CONFIG = {
+window.AIBOSS_CONFIG = {
   correoTI: "admon_sistemas@cavelier.com"
 };
