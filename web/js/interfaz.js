@@ -117,6 +117,7 @@
       var s = el("div", "sprite");
       s.innerHTML = D.personaje(id, pf.nombre);
       b.appendChild(s);
+      b.appendChild(el("p", "etiqueta", "Área: " + L.AREAS[pf.area]));
       b.appendChild(el("p", "personaje-nombre", pf.nombre));
       b.appendChild(el("p", "nota", pf.ventaja));
       b.appendChild(el("p", "cifras", pf.corazones + " de credibilidad · " + pf.comodines + " consulta(s)"));
@@ -147,6 +148,33 @@
       leccion: ["Aquí vuelven las preguntas que respondiste mal en esta sesión. Acertarlas las marca como aprendidas."],
       preguntas: L.preguntasPorRepasar(usuario.progreso, C.TODOS)
     };
+  }
+
+  function moduloEvaluacion() {
+    return C.EVALUACION;
+  }
+
+  // Área del personaje elegido y contenido adaptado a esa área (si existe).
+  var ICONO_AREA = { juridico: "⚖️", tecnologia: "🖥️", administrativo: "🗂️", multidisciplinar: "🔬", finanzas: "💰" };
+  function areaActual() {
+    var pf = L.PERFILES[usuario.progreso.perfil];
+    return pf ? pf.area : "juridico";
+  }
+  function adaptado(moduloId) {
+    var a = areaActual();
+    var A = window.EjemplosArea || {};
+    return a !== "juridico" && A[a] && A[a][moduloId] ? A[a][moduloId] : null;
+  }
+
+  function pasosModulo(m, prog) {
+    var hecho = { concepto: !!(prog.conceptos && prog.conceptos[m.id]),
+      practica: !!(prog.modulos[m.id] && (prog.modulos[m.id].superado || prog.modulos[m.id].derrotas)),
+      pdf: !!(prog.constancias && prog.constancias[m.id]) };
+    var cont = el("p", "casilla-pasos");
+    [["📘", "Aprende", hecho.concepto], ["⚔️", "Practica", hecho.practica], ["📄", "PDF", hecho.pdf]].forEach(function (x) {
+      cont.appendChild(el("span", "paso-chip" + (x[2] ? " hecho" : ""), x[0] + " " + x[1] + (x[2] ? " ✓" : "")));
+    });
+    return cont;
   }
 
   function pintarMapa() {
@@ -191,11 +219,30 @@
       relleno.style.width = res.porcentaje + "%";
       barra.appendChild(relleno);
       b.appendChild(barra);
+      b.appendChild(pasosModulo(m, prog));
       b.setAttribute("aria-label", m.jefe + ". " + m.tema + ". " + estado.textContent);
       b.addEventListener("click", function () { abrirLeccion(m, false); });
       li.appendChild(b);
       mapa.appendChild(li);
     });
+
+    // Lección de cierre: resumen general y evaluación.
+    var ev = moduloEvaluacion();
+    var mEv = prog.modulos[ev.id] || {};
+    var liEv = el("li", "casilla casilla-final casilla-evaluacion" + (mEv.superado ? " superado" : ""));
+    var bEv = el("button", "casilla-boton");
+    bEv.type = "button";
+    var sEv = el("div", "sprite sprite-mapa");
+    sEv.innerHTML = D.jefe(ev);
+    bEv.appendChild(sEv);
+    bEv.appendChild(el("p", "etiqueta", "Lección final · Evaluación"));
+    bEv.appendChild(el("p", "casilla-tema", ev.tema));
+    bEv.appendChild(el("p", "casilla-jefe", ev.jefe));
+    bEv.appendChild(el("p", "casilla-estado", mEv.superado ? "Aprobada" : (mEv.derrotas ? "Intentada · vuelve a intentarlo" : "Una pregunta de cada tema")));
+    bEv.appendChild(pasosModulo(ev, prog));
+    bEv.addEventListener("click", function () { abrirLeccion(ev, false); });
+    liEv.appendChild(bEv);
+    mapa.appendChild(liEv);
 
     var rep = moduloRepaso();
     if (rep.preguntas.length) {
@@ -232,7 +279,9 @@
     if (repaso) return [resumen];
     var c = window.Conceptos.CONCEPTOS[modulo.id];
     var lista = c ? c.pasos.slice() : [];
-    if (c && c.intro) lista.unshift({ tipo: "intro", titulo: "Antes de empezar", texto: c.intro, modulo: modulo });
+    var ad = adaptado(modulo.id);
+    var intro = (ad && ad.intro) || (c && c.intro);
+    if (intro) lista.unshift({ tipo: "intro", titulo: "Antes de empezar", texto: intro, modulo: modulo });
     return lista.concat([resumen]);
   }
 
@@ -248,7 +297,7 @@
     pasoResuelto = pasos.map(function (p) { return completo || (p.tipo !== "elige" && p.tipo !== "clasifica"); });
     pasoActual = 0;
     $("leccion-sprite").innerHTML = D.jefe(modulo);
-    $("leccion-etiqueta").textContent = repaso ? "Repaso" : (modulo.final ? "Jefe final · Conceptualización" : "Conceptualización");
+    $("leccion-etiqueta").textContent = repaso ? "Repaso" : (modulo.evaluacion ? "Lección final · Conceptualización" : (modulo.final ? "Jefe final · Conceptualización" : "Conceptualización"));
     $("leccion-titulo").textContent = modulo.tema;
     $("leccion-jefe").textContent = repaso
       ? "Vuelven las preguntas que fallaste en esta sesión."
@@ -307,6 +356,8 @@
     txt.appendChild(el("p", "bocadillo", "«" + p.modulo.frase + "»"));
     txt.appendChild(el("h3", "concepto-titulo", p.titulo));
     txt.appendChild(el("p", "concepto-parrafo", p.texto));
+    var pf = L.PERFILES[usuario.progreso.perfil];
+    if (pf) txt.appendChild(el("p", "nota nota-area", ICONO_AREA[pf.area] + " Los ejemplos están pensados para tu área: " + L.AREAS[pf.area] + ". Si cambias de personaje, cambian los ejemplos."));
     txt.appendChild(el("p", "nota", "Avanza con «Siguiente». En los pasos marcados como práctica tendrás que resolver un ejercicio para continuar. No se califican: son para aprender."));
     caja.appendChild(txt);
     art.appendChild(caja);
@@ -361,10 +412,15 @@
       s.appendChild(el("p", null, p.simple));
       notas.appendChild(s);
     }
-    if (p.ejemplo) {
+    var ad = adaptado(moduloActual.id);
+    var ejemplo = (ad && ad.ejemplos && ad.ejemplos[p.titulo]) || p.ejemplo;
+    if (ejemplo) {
+      var area = areaActual();
       var e = el("div", "nota-caja nota-ejemplo");
-      e.appendChild(el("p", "nota-caja-titulo", "⚖️ En la firma"));
-      e.appendChild(el("p", null, p.ejemplo));
+      e.appendChild(el("p", "nota-caja-titulo", area === "juridico" || !(ad && ad.ejemplos && ad.ejemplos[p.titulo])
+        ? "⚖️ En la firma"
+        : ICONO_AREA[area] + " En tu área: " + L.AREAS[area]));
+      e.appendChild(el("p", null, ejemplo));
       notas.appendChild(e);
     }
     art.appendChild(notas);
@@ -500,8 +556,12 @@
   /* ---------------- Batalla ---------------- */
 
   function iniciarBatalla() {
+    // La evaluación toma una pregunta al azar de cada módulo en cada intento.
+    var moduloBatalla = moduloActual.evaluacion
+      ? Object.assign({}, moduloActual, { preguntas: L.preguntasEvaluacion(C.TODOS) })
+      : moduloActual;
     batalla = new L.Batalla({
-      modulo: moduloActual,
+      modulo: moduloBatalla,
       perfil: usuario.progreso.perfil,
       progreso: usuario.progreso,
       repaso: repasoActual
@@ -529,7 +589,7 @@
     barra.querySelector("span").style.width = (100 * b.vidaJefe / b.vidaJefeMax) + "%";
     barra.setAttribute("aria-valuemax", b.vidaJefeMax);
     barra.setAttribute("aria-valuenow", b.vidaJefe);
-    $("vida-jefe").textContent = "Resistencia " + b.vidaJefe + " / " + b.vidaJefeMax;
+    $("vida-jefe").textContent = "Preguntas por resolver: " + b.vidaJefe + " de " + b.vidaJefeMax;
     var falta = b.perfil.racha - b.racha;
     $("racha").textContent = b.racha > 0 ? "Racha " + b.racha + " · crítico en " + falta : "";
     var comodin = $("boton-comodin");
@@ -543,6 +603,7 @@
     esperandoSiguiente = false;
     $("retro").hidden = true;
     $("texto-pregunta").textContent = q.texto;
+    $("tema-pregunta").textContent = q.tema || moduloActual.tema;
     var cont = $("opciones");
     cont.innerHTML = "";
     q.opciones.forEach(function (texto, i) {
@@ -580,13 +641,16 @@
     var anuncio;
     if (ev.acierto) {
       sacudir("sprite-jefe");
-      anuncio = ev.critico ? "¡Golpe crítico! −2" : "¡Correcto! −1";
-      $("retro-titulo").textContent = ev.critico ? "¡Golpe crítico!" : "¡Correcto!";
+      anuncio = ev.danio ? "¡Correcto! −1" : "¡Correcto!";
+      if (ev.critico) anuncio = "¡Golpe crítico!" + (ev.curacion ? " +1 credibilidad" : "") + (ev.comodinGanado ? " +1 consulta" : "");
+      $("retro-titulo").textContent = ev.critico
+        ? "¡Golpe crítico!" + (ev.curacion ? " Recuperas 1 de credibilidad." : "") + (ev.comodinGanado ? " Ganas una consulta al expediente." : "")
+        : "¡Correcto!";
       $("retro").className = "retro acierto";
     } else {
       sacudir("sprite-jugador");
       anuncio = ev.escudoUsado ? "Tu escudo absorbió el error" : "El jefe te golpea: −1 credibilidad";
-      $("retro-titulo").textContent = ev.escudoUsado ? "Incorrecto, pero tu escudo te protegió" : "Incorrecto";
+      $("retro-titulo").textContent = (ev.escudoUsado ? "Incorrecto, pero tu escudo te protegió" : "Incorrecto") + ". Esta pregunta volverá más adelante.";
       $("retro").className = "retro error";
     }
     $("anuncio").textContent = anuncio;
@@ -627,6 +691,9 @@
   function datosConstancia() {
     return {
       participante: { nombre: usuario.nombre, correo: usuario.correo },
+      perfil: (function () { var pf = L.PERFILES[usuario.progreso.perfil] || L.PERFILES.socio; return { nombre: pf.nombre, area: L.AREAS[pf.area] }; })(),
+      claves: C.CLAVES,
+      modulos: C.TODOS,
       modulo: moduloActual,
       batalla: batalla,
       correoTI: CORREO_TI,
@@ -647,6 +714,8 @@
       var c = K.generar(datosConstancia());
       c.doc.save(c.nombre);
       ultimaConstancia = c;
+      usuario.progreso.constancias = usuario.progreso.constancias || {};
+      usuario.progreso.constancias[moduloActual.id] = new Date().toISOString();
       $("texto-constancia").textContent = "Se descargó «" + c.nombre + "». Revisa tu carpeta de descargas.";
       avisar("Constancia descargada.");
     } catch (e) {
@@ -659,8 +728,10 @@
     var m = moduloActual;
     $("sprite-fin").innerHTML = b.gano ? D.personaje(b.perfil.id, b.perfil.nombre) : D.jefe(m);
     if (b.gano) {
-      $("titulo-fin").textContent = repasoActual ? "¡Repaso superado!" : (m.final ? "¡Venciste al Comité de Riesgo Supremo!" : "¡Venciste a " + m.jefe + "!");
-      $("texto-fin").textContent = "Lo que acertaste quedó como aprendido en esta sesión.";
+      $("titulo-fin").textContent = repasoActual ? "¡Repaso superado!" : (m.evaluacion ? "¡Aprobaste la evaluación general!" : "¡Venciste a " + m.jefe + "!");
+      $("texto-fin").textContent = m.evaluacion
+        ? "Respondiste bien una pregunta de cada tema. Tu constancia incluye el resumen de todas las lecciones."
+        : "Respondiste bien todas las preguntas del módulo: 100 % aprendido.";
     } else {
       $("titulo-fin").textContent = b.corazones <= 0 ? "Esta vez ganó el jefe" : "Te retiraste de la batalla";
       $("texto-fin").textContent = "Lo que fallaste aparece en el jefe de repaso. Repasa la conceptualización e inténtalo otra vez.";

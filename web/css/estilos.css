@@ -559,3 +559,10 @@ details.modulo-avance > summary::before { content: none; }
   body.imprimiendo .subtitulo, body.imprimiendo .etiqueta { color: #000; }
   body.imprimiendo .no-imprimir { display: none !important; }
 }
+
+/* ---------- Pasos de cada módulo en el mapa ---------- */
+.casilla-pasos { margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 4px; }
+.paso-chip { font-size: 0.72rem; padding: 2px 7px; border-radius: 999px; border: 1px solid var(--linea); color: var(--tiza-tenue); }
+.paso-chip.hecho { border-color: var(--tiza-verde); color: var(--tiza-verde); }
+.casilla-evaluacion .casilla-boton { border-color: var(--tiza-azul); }
+.nota-area { color: var(--tiza-azul); }

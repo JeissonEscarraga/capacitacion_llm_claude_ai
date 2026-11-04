@@ -33,11 +33,11 @@
             "Puede resumir, redactar borradores, explicar, comparar documentos, ordenar información o proponer ideas. No necesitas saber programar para usarlo."
           ],
           visual: { tipo: "chat", mensajes: [
-            { de: "tu", t: "Resume en 5 puntos este contrato de arrendamiento que te adjunto." },
-            { de: "claude", t: "Claro. Estos son los 5 puntos clave: 1) duración de 12 meses, 2) canon mensual y reajuste anual..." }
+            { de: "tu", t: "Resume en 5 puntos el contrato de arrendamiento que está en mi carpeta Contratos/2026." },
+            { de: "claude", t: "Leí el archivo desde tu carpeta. Estos son los 5 puntos clave: 1) duración de 12 meses, 2) canon mensual y reajuste anual..." }
           ] },
           simple: "Piensa en Claude como un practicante muy rápido que ha leído muchísimo: ayuda bastante, pero no conoce tu caso hasta que se lo cuentas y a veces se equivoca con total seguridad.",
-          ejemplo: "Pedirle un primer borrador de una carta al cliente o el resumen de una sentencia que tú mismo le pegas."
+          ejemplo: "Pedirle un primer borrador de una carta o el resumen de una sentencia pública. Si el documento es de un cliente o de la firma, no se sube: se trabaja con Claude Code desde la carpeta (lo verás en el módulo 2)."
         },
         {
           tipo: "concepto",
@@ -62,7 +62,7 @@
             "No lo hace con mala intención: simplemente completa con lo que le parece probable. Por eso toda cita, cifra y fecha se verifica en la fuente oficial."
           ],
           visual: { tipo: "comparar",
-            izq: { titulo: "✅ Muy útil para", items: ["Borradores y primeras versiones", "Resumir textos que tú le das", "Ordenar ideas y proponer estructuras", "Reescribir en lenguaje claro"] },
+            izq: { titulo: "✅ Muy útil para", items: ["Borradores y primeras versiones", "Resumir documentos de tu carpeta (con Claude Code)", "Ordenar ideas y proponer estructuras", "Reescribir en lenguaje claro"] },
             der: { titulo: "⚠️ Verifica siempre", items: ["Citas de sentencias y normas", "Números, fechas y plazos", "Nombres de personas y entidades", "Cualquier dato que vaya a un cliente"] }
           },
           simple: "Trátalo como el borrador de alguien nuevo en la firma: probablemente bueno, pero lo firmas tú, así que lo revisas tú.",
@@ -116,7 +116,7 @@
           items: [
             { t: "Pedirle tres ideas de título para una charla", c: 0 },
             { t: "Copiar una cita de jurisprudencia sin buscarla", c: 1 },
-            { t: "Resumir un documento que tú mismo le diste", c: 0 },
+            { t: "Resumir con Claude Code un documento de tu carpeta y revisar el resumen", c: 0 },
             { t: "Preguntarle por una ley expedida ayer, sin búsqueda web", c: 1, r: "Tiene una fecha de corte: puede no conocerla." },
             { t: "Pedirle que reescriba un párrafo en lenguaje claro", c: 0 },
             { t: "Enviar al cliente su respuesta sin leerla", c: 1 }
@@ -145,18 +145,33 @@
         },
         {
           tipo: "concepto",
-          titulo: "Proyectos: el expediente digital",
+          titulo: "Política de la firma: los archivos no se suben",
           texto: [
-            "Un Proyecto agrupa varias conversaciones con los mismos documentos e instrucciones. Así no tienes que volver a subir los archivos ni repetir las reglas en cada chat.",
+            "En la firma, los documentos de clientes y de la firma no se suben ni se adjuntan a los chats ni a los Proyectos de Claude. Cuando necesitas que Claude trabaje con un documento, usas Claude Code: el archivo se queda en tu carpeta del equipo o de la firma y Claude lo lee desde ahí.",
+            "El chat (claude.ai) queda para preguntas generales, redacción sin datos de clientes y material público.",
+            "Ojo: aunque el archivo no se sube ni queda guardado en claude.ai, el texto que Claude lee sí viaja al modelo para procesarse, bajo el contrato de la firma. Por eso igual se minimiza: si no necesita nombres o cédulas, trabaja con una copia seudonimizada."
+          ],
+          visual: { tipo: "comparar",
+            izq: { titulo: "💬 Chat de Claude (claude.ai)", items: ["Preguntas generales", "Redactar sin datos de clientes", "Normas y sentencias públicas", "Ideas, estructuras, lenguaje claro"] },
+            der: { titulo: "💻 Claude Code en tu equipo", items: ["Documentos de clientes y de la firma", "Se leen desde tu carpeta, sin subirlos", "Los resultados se guardan en la misma carpeta", "Copias seudonimizadas cuando se pueda"] }
+          },
+          simple: "Es como pedirle al practicante que lea el expediente en tu oficina, en lugar de enviarle el expediente por correo.",
+          ejemplo: "Para revisar el contrato de un cliente, abres Claude Code en la carpeta del caso y le pides: «Revisa Contratos/suministro.docx y lista los riesgos para el comprador». No adjuntas nada."
+        },
+        {
+          tipo: "concepto",
+          titulo: "Proyectos: reglas e instrucciones que se repiten",
+          texto: [
+            "Un Proyecto agrupa varias conversaciones con las mismas instrucciones y material de referencia: plantillas propias, guías internas sin datos de clientes o normas públicas. Así no repites las reglas en cada chat. Por la política de la firma, en un Proyecto no van documentos de clientes.",
             "Las instrucciones del proyecto son reglas permanentes: tono, formato, qué citar, qué evitar."
           ],
           visual: { tipo: "flujo", pasos: [
-            { i: "📁", t: "Proyecto «Cliente X»" },
-            { i: "📄", t: "Documentos + instrucciones" },
-            { i: "💬", t: "Cada chat ya los conoce" }
+            { i: "📁", t: "Proyecto «Redacción de conceptos»" },
+            { i: "📝", t: "Instrucciones + plantillas sin datos de clientes" },
+            { i: "💬", t: "Cada chat ya las conoce" }
           ] },
-          simple: "Un Proyecto es como la carpeta del expediente: todo lo del caso está ahí y cualquiera que la abra sabe de qué se trata.",
-          ejemplo: "Proyecto «Due diligence Empresa B» con los estatutos, las actas y la instrucción «Responde siempre con tabla de hallazgos y nivel de riesgo»."
+          simple: "Un Proyecto es como el manual de estilo pegado en la pared: cada vez que alguien escribe, ya sabe las reglas.",
+          ejemplo: "Proyecto «Redacción de conceptos» con el formato de la firma y la instrucción «Responde siempre con tabla de hallazgos y nivel de riesgo». Los documentos del caso se trabajan aparte, con Claude Code."
         },
         {
           tipo: "concepto",
@@ -205,11 +220,11 @@
         {
           tipo: "elige",
           titulo: "Practica: un sábado en casa",
-          situacion: "Un socio te pide revisar con urgencia el contrato de un cliente un sábado. Estás en tu casa y en tu computador personal tienes abierta tu cuenta gratuita de Claude. ¿Qué haces?",
+          situacion: "Un socio te pide revisar con urgencia el contrato de un cliente un sábado. Tienes acceso a la carpeta de la firma desde tu equipo de trabajo y, en el navegador, tu cuenta gratuita de Claude. ¿Qué haces?",
           opciones: [
             { t: "Lo subo a mi cuenta gratuita: es más rápido.", ok: false, r: "La cuenta personal queda fuera de los controles y garantías de la firma." },
-            { t: "Entro con la cuenta corporativa de la firma y lo trabajo ahí.", ok: true, r: "Correcto: la información de clientes va solo en herramientas y cuentas de la firma." },
-            { t: "Le pido el favor a un amigo que tiene plan pago.", ok: false, r: "Sería entregar información confidencial a un tercero." }
+            { t: "Lo adjunto a un chat de la cuenta corporativa.", ok: false, r: "Mejor cuenta, pero la política de la firma es no subir archivos: se leen en local con Claude Code." },
+            { t: "Abro Claude Code con la cuenta de la firma sobre la carpeta del caso, sin subir el archivo.", ok: true, r: "Correcto: cuenta corporativa y lectura local, como pide la política de la firma." }
           ]
         },
         {
@@ -219,7 +234,7 @@
           categorias: ["Instrucciones del proyecto", "Mensaje del chat"],
           items: [
             { t: "Responde siempre en español formal y cita la norma", c: 0 },
-            { t: "Resume el documento que acabo de subir", c: 1 },
+            { t: "¿Qué diferencia hay entre un otrosí y una adición?", c: 1 },
             { t: "Usa siempre el formato de concepto de la firma", c: 0 },
             { t: "¿Qué dice la cláusula séptima?", c: 1 },
             { t: "Termina cada respuesta con una sección de riesgos", c: 0 }
@@ -247,7 +262,7 @@
             { i: "✅", t: "Criterios", d: "¿Qué es un buen resultado? «Cita la cláusula y la norma»." }
           ] },
           simple: "Pedirle algo a Claude es como delegarle a un practicante: si solo le dices «revisa esto», te devolverá cualquier cosa.",
-          ejemplo: "«Actúa como abogado corporativo colombiano. Revisa el contrato de suministro adjunto, identifica los riesgos para el comprador, cita cada cláusula y propone una redacción alternativa en una tabla.»"
+          ejemplo: "En Claude Code, sobre la carpeta del caso: «Actúa como abogado corporativo colombiano. Revisa Contratos/suministro.docx, identifica los riesgos para el comprador, cita cada cláusula y propone una redacción alternativa en una tabla. Guarda el resultado en Salidas/riesgos.md.»"
         },
         {
           tipo: "concepto",
@@ -257,7 +272,7 @@
           ],
           visual: { tipo: "comparar",
             izq: { titulo: "❌ Pedido vago", items: ["«Revisa este contrato.»", "«¿Está bien?»", "«Hazlo como te parezca.»"] },
-            der: { titulo: "✅ Pedido claro", items: ["«Revisa el contrato adjunto desde la posición del comprador.»", "«Señala las 5 cláusulas más riesgosas y explica por qué.»", "«Entrégalo en una tabla: cláusula, riesgo, propuesta.»"] }
+            der: { titulo: "✅ Pedido claro", items: ["«Revisa Contratos/suministro.docx desde la posición del comprador.»", "«Señala las 5 cláusulas más riesgosas y explica por qué.»", "«Entrégalo en una tabla: cláusula, riesgo, propuesta.»"] }
           },
           simple: "Un pedido claro es como una buena instrucción a un mensajero: dirección, hora y a quién entregar.",
           ejemplo: "Si necesitas un correo para un cliente, di el tono (cercano o formal), la extensión y qué debe quedar claro."
@@ -266,22 +281,22 @@
           tipo: "concepto",
           titulo: "Separa las instrucciones del material",
           texto: [
-            "Cuando pegas un documento largo, conviene ponerlo entre «etiquetas» para que Claude sepa dónde empieza y dónde termina. Es tan simple como escribir <contrato> antes y </contrato> después.",
-            "Con varios documentos, cada uno lleva su etiqueta y luego puedes referirte a ellos por su nombre."
+            "Con Claude Code no pegas documentos: le dices qué archivos leer, con su nombre y su ubicación en la carpeta. Nombrarlos con claridad evita confusiones.",
+            "Si dentro del pedido escribes un texto de ejemplo (sin datos de clientes), ponlo entre «etiquetas», como <ejemplo> ... </ejemplo>, para que Claude sepa dónde empieza y dónde termina."
           ],
           visual: { tipo: "chat", mensajes: [
-            { de: "tu", t: "Compara las dos versiones y lista los cambios.\n<version_1> ...texto... </version_1>\n<version_2> ...texto... </version_2>" },
-            { de: "claude", t: "Encontré 4 cambios entre version_1 y version_2: 1) la cláusula de plazo pasó de 30 a 15 días..." }
+            { de: "tu", t: "Compara Contratos/v1.docx con Contratos/v2.docx y lista los cambios.\nUsa este formato:\n<ejemplo> Cláusula | Antes | Después | Riesgo </ejemplo>" },
+            { de: "claude", t: "Leí los dos archivos de tu carpeta. Encontré 4 cambios: 1) la cláusula de plazo pasó de 30 a 15 días..." }
           ] },
           simple: "Es como poner cada documento en un sobre con su rótulo: nada se mezcla.",
-          ejemplo: "<demanda>, <contestacion> y <pruebas> por separado para pedir un cuadro de hechos probados y no probados."
+          ejemplo: "«Lee Caso/demanda.pdf, Caso/contestacion.pdf y la carpeta Caso/pruebas, y arma un cuadro de hechos probados y no probados con el folio de cada prueba.»"
         },
         {
           tipo: "concepto",
           titulo: "Ejemplos y permiso para decir «no consta»",
           texto: [
             "Si muestras un ejemplo del resultado que esperas, Claude imita el formato y el nivel de detalle.",
-            "Para reducir invenciones, pídele que se base solo en los documentos que le diste, que cite el fragmento de apoyo y que responda «no consta» si la información no está."
+            "Para reducir invenciones, pídele que se base solo en los archivos que le indicas, que cite el fragmento de apoyo y que responda «no consta» si la información no está."
           ],
           visual: { tipo: "tarjetas", items: [
             { i: "🧾", t: "Muestra un ejemplo", d: "«Usa este formato: Hecho / Prueba / Folio»." },
@@ -289,7 +304,7 @@
             { i: "🙅", t: "Permite el «no consta»", d: "«Si no está en los documentos, dilo»." }
           ] },
           simple: "Es como decirle a un practicante: «si no lo encuentras en el expediente, no lo inventes; avísame».",
-          ejemplo: "«Con base solo en la escritura adjunta, ¿quiénes son los socios? Cita el texto. Si no aparece, responde: no consta.»"
+          ejemplo: "«Con base solo en Sociedad/escritura.pdf, ¿quiénes son los socios? Cita el texto. Si no aparece, responde: no consta.»"
         },
         {
           tipo: "concepto",
@@ -314,9 +329,9 @@
           categorias: ["Le falta información", "Pedido claro"],
           items: [
             { t: "«Mejora este texto.»", c: 0, r: "¿Mejorar cómo? ¿Para quién? ¿Con qué tono?" },
-            { t: "«Resume la sentencia adjunta en 5 viñetas para un cliente sin formación jurídica.»", c: 1 },
+            { t: "«Resume la Sentencia T-323 de 2024 en 5 viñetas para alguien sin formación jurídica.»", c: 1 },
             { t: "«Haz un contrato.»", c: 0 },
-            { t: "«Con base solo en el acta adjunta, lista las decisiones tomadas y cita el numeral.»", c: 1 },
+            { t: "«Con base solo en Actas/2026-03.pdf, lista las decisiones tomadas y cita el numeral.»", c: 1 },
             { t: "«¿Qué opinas?»", c: 0 }
           ]
         },
@@ -404,9 +419,9 @@
         },
         {
           tipo: "concepto",
-          titulo: "Minimiza antes de cargar",
+          titulo: "Minimiza antes de pedir",
           texto: [
-            "Muchas veces Claude no necesita saber quién es la persona para ayudarte. Puedes quitar o reemplazar nombres, cédulas y datos innecesarios.",
+            "Aunque Claude Code lea los archivos desde tu carpeta sin subirlos, el texto que lee viaja al modelo para procesarse. Muchas veces Claude no necesita saber quién es la persona: puedes trabajar con una copia sin nombres, cédulas ni datos innecesarios.",
             "Anonimizar es quitarlos del todo; seudonimizar es reemplazarlos por alias (Demandante A, Empresa B)."
           ],
           visual: { tipo: "comparar",
@@ -448,10 +463,10 @@
         {
           tipo: "elige",
           titulo: "Practica: preparar un expediente",
-          situacion: "Quieres que Claude te ayude a ordenar los hechos de una demanda laboral. El expediente tiene nombres, cédulas, salarios y una incapacidad médica. ¿Qué haces antes de cargarlo?",
+          situacion: "Quieres que Claude Code te ayude a ordenar los hechos de una demanda laboral. El expediente, en la carpeta del caso, tiene nombres, cédulas, salarios y una incapacidad médica. ¿Qué haces antes de pedírselo?",
           opciones: [
-            { t: "Lo cargo completo: así Claude tiene todo el contexto.", ok: false, r: "Estarías tratando más datos de los necesarios, incluido un dato sensible." },
-            { t: "Reemplazo nombres y cédulas por alias y quito lo que no hace falta para ordenar los hechos.", ok: true, r: "Eso es minimizar: Claude te ayuda igual y expones mucho menos." },
+            { t: "Le pido que lea el expediente completo: así tiene todo el contexto.", ok: false, r: "Estarías tratando más datos de los necesarios, incluido un dato sensible." },
+            { t: "Preparo una copia con alias en lugar de nombres y cédulas, sin lo que no hace falta, y le pido que trabaje solo sobre esa copia.", ok: true, r: "Eso es minimizar: Claude te ayuda igual y expones mucho menos." },
             { t: "Lo convierto a PDF para que los datos queden protegidos.", ok: false, r: "El formato no protege nada: Claude lee el PDF completo." }
           ]
         }
@@ -479,10 +494,10 @@
         },
         {
           tipo: "concepto",
-          titulo: "Lo que entra: no todo se puede cargar",
+          titulo: "Lo que entra: no todo se puede usar",
           texto: [
-            "Cargar una obra en una herramienta de IA implica copiarla. Comprar un libro no da permiso para reproducirlo ni para distribuir resúmenes extensos a terceros.",
-            "Antes de cargar material de terceros, revisa la licencia o los términos de uso."
+            "Darle una obra a una herramienta de IA para que la lea implica copiarla. Comprar un libro no da permiso para reproducirlo ni para distribuir resúmenes extensos a terceros.",
+            "Antes de usar material de terceros con IA, revisa la licencia o los términos de uso."
           ],
           visual: { tipo: "comparar",
             izq: { titulo: "✅ Generalmente sin problema", items: ["Documentos propios de la firma", "Normas y sentencias oficiales", "Documentos del cliente con su autorización"] },
@@ -544,8 +559,8 @@
           categorias: ["Adelante", "Revisa licencia o términos primero"],
           items: [
             { t: "Resumir una sentencia publicada por la Corte", c: 0 },
-            { t: "Cargar un libro de doctrina comprado para repartir resúmenes a clientes", c: 1 },
-            { t: "Revisar un contrato que el cliente te envió para eso", c: 0 },
+            { t: "Hacer que Claude lea un libro de doctrina comprado para repartir resúmenes a clientes", c: 1 },
+            { t: "Revisar con Claude Code, en la carpeta del caso, un contrato que el cliente te envió para eso", c: 0 },
             { t: "Descargar masivamente un portal para entrenar un modelo propio", c: 1 },
             { t: "Mejorar la redacción de un memorando propio de la firma", c: 0 }
           ]
@@ -571,12 +586,13 @@
           tipo: "concepto",
           titulo: "El secreto profesional sigue vigente",
           texto: [
-            "El Código Disciplinario del Abogado (Ley 1123 de 2007) incluye el deber de guardar el secreto profesional. Eso aplica también a lo que escribes o cargas en herramientas de IA.",
-            "No se trata de prohibir, sino de usar bien: herramienta aprobada, cuenta corporativa y solo la información necesaria."
+            "El Código Disciplinario del Abogado (Ley 1123 de 2007) incluye el deber de guardar el secreto profesional. Eso aplica también a lo que escribes o le das a leer a una herramienta de IA.",
+            "No se trata de prohibir, sino de usar bien: herramienta aprobada, cuenta corporativa, archivos leídos en local con Claude Code (nunca subidos) y solo la información necesaria."
           ],
           visual: { tipo: "flujo", pasos: [
             { i: "✅", t: "Herramienta aprobada por la firma" },
             { i: "🏢", t: "Cuenta corporativa" },
+            { i: "💻", t: "Archivos en local con Claude Code" },
             { i: "✂️", t: "Solo lo necesario" },
             { i: "👀", t: "Revisión humana" }
           ] },
@@ -615,7 +631,7 @@
           tipo: "concepto",
           titulo: "La «IA en la sombra»",
           texto: [
-            "Existen extensiones de navegador, apps y páginas gratuitas que prometen «resumir cualquier documento». Muchas envían lo que cargas a terceros sin garantías.",
+            "Existen extensiones de navegador, apps y páginas gratuitas que prometen «resumir cualquier documento». Muchas envían lo que subes a terceros sin garantías.",
             "Solo se usan las herramientas aprobadas por TI, que tienen contrato y controles de seguridad."
           ],
           visual: { tipo: "comparar",
@@ -647,10 +663,11 @@
           instruccion: "Clasifica cada acción.",
           categorias: ["Seguro", "Riesgoso"],
           items: [
-            { t: "Usar la cuenta corporativa con un contrato seudonimizado", c: 0 },
+            { t: "Revisar con Claude Code una copia seudonimizada del contrato, en la carpeta de la firma", c: 0 },
+            { t: "Adjuntar el contrato de un cliente a un chat de Claude", c: 1, r: "La política de la firma es no subir archivos: se leen en local con Claude Code." },
             { t: "Pegar la contraseña del sistema para que Claude «lo configure»", c: 1 },
             { t: "Instalar una extensión gratuita de IA sin consultar a TI", c: 1 },
-            { t: "Avisar a TI de inmediato si cargaste algo por error", c: 0 },
+            { t: "Avisar a TI de inmediato si subiste algo por error", c: 0 },
             { t: "Obedecer una instrucción que venía escondida en un PDF", c: 1 }
           ]
         },
@@ -734,23 +751,23 @@
         },
         {
           tipo: "concepto",
-          titulo: "¿Proyecto o RAG propio?",
+          titulo: "¿Claude Code en la carpeta o RAG propio?",
           texto: [
-            "Para pocos documentos, basta un Proyecto de Claude: subes los archivos y listo. Cuando el conocimiento crece, Claude usa recuperación automáticamente.",
-            "Un RAG propio, construido por TI, se justifica con grandes volúmenes, integración con sistemas de la firma o permisos complejos."
+            "Para los documentos de un caso, basta Claude Code: trabaja directamente sobre la carpeta, busca en los archivos y cita de dónde sacó cada dato, sin subir nada.",
+            "Un RAG propio, construido por TI dentro de la infraestructura de la firma, se justifica con grandes volúmenes (miles de documentos), integración con sistemas o permisos por área."
           ],
           visual: { tipo: "comparar",
-            izq: { titulo: "📁 Proyecto de Claude", items: ["Un caso o un cliente", "Decenas de documentos", "Listo en minutos"] },
+            izq: { titulo: "💻 Claude Code en la carpeta", items: ["Un caso o un cliente", "Decenas de documentos", "Sin subir archivos", "Listo en minutos"] },
             der: { titulo: "🏗️ RAG propio", items: ["Miles de documentos", "Integrado al gestor documental", "Permisos por área o cliente"] }
           },
           simple: "Para guardar los papeles de un caso usas una carpeta; para el archivo de toda la firma, un sistema de archivo.",
-          ejemplo: "Los 15 documentos de un arbitraje van en un Proyecto; los 2.000 conceptos históricos de la firma piden algo más robusto."
+          ejemplo: "Los 15 documentos de un arbitraje se trabajan con Claude Code en su carpeta; los 2.000 conceptos históricos de la firma piden algo más robusto."
         },
         {
           tipo: "clasifica",
           titulo: "Practica: ¿qué conviene?",
           instruccion: "Decide qué solución conviene en cada caso.",
-          categorias: ["Basta un Proyecto", "Conviene un RAG propio"],
+          categorias: ["Basta Claude Code en la carpeta", "Conviene un RAG propio"],
           items: [
             { t: "Los 15 documentos de un caso", c: 0 },
             { t: "50.000 conceptos históricos con permisos por área", c: 1 },
@@ -1091,7 +1108,8 @@
           titulo: "¿Qué es Claude Code?",
           texto: [
             "Claude Code es una herramienta de Anthropic que trabaja sobre una carpeta: lee archivos, ejecuta comandos y crea o modifica documentos y programas.",
-            "Funciona en la terminal, en editores como VS Code, en la aplicación de escritorio y en la web."
+            "Funciona en la terminal, en editores como VS Code, en la aplicación de escritorio y en la web.",
+            "En la firma es la forma de trabajar con documentos: los archivos se quedan en tu carpeta y Claude los lee desde ahí, sin subirlos a un chat."
           ],
           visual: { tipo: "flujo", pasos: [
             { i: "📂", t: "Una carpeta de trabajo" },
@@ -1275,13 +1293,13 @@
             "Cada necesidad tiene una herramienta más adecuada. Elegir bien ahorra tiempo y reduce riesgos."
           ],
           visual: { tipo: "tarjetas", items: [
-            { i: "💬", t: "Una pregunta o un borrador", d: "Chat en la cuenta corporativa." },
-            { i: "📁", t: "Trabajo continuo de un caso", d: "Un Proyecto con sus documentos e instrucciones." },
+            { i: "💬", t: "Una pregunta o un borrador sin datos de clientes", d: "Chat en la cuenta corporativa." },
+            { i: "📘", t: "Reglas e instrucciones que se repiten", d: "Un Proyecto, sin documentos de clientes." },
             { i: "📦", t: "Un procedimiento que se repite", d: "Una Skill." },
             { i: "🔌", t: "Información en otra aplicación", d: "Un conector aprobado por TI." },
             { i: "📚", t: "Miles de documentos de la firma", d: "RAG con permisos." },
             { i: "🤖", t: "Una tarea larga de varios pasos", d: "Un agente, con aprobación humana." },
-            { i: "📂", t: "Trabajo sobre carpetas", d: "Claude Code." },
+            { i: "📂", t: "Documentos de clientes o de la firma", d: "Claude Code, leyendo en local, sin subirlos." },
             { i: "🏗️", t: "Integración con sistemas", d: "La API, con la clave protegida." }
           ] },
           simple: "Como en una caja de herramientas: con un martillo puedes apretar un tornillo, pero el destornillador lo hace mejor.",
@@ -1289,18 +1307,18 @@
         },
         {
           tipo: "concepto",
-          titulo: "Antes de cargar información",
+          titulo: "Antes de darle información a la IA",
           texto: [
-            "Haz estas cuatro preguntas antes de poner cualquier información en una herramienta de IA."
+            "Haz estas cuatro preguntas antes de darle cualquier información a una herramienta de IA."
           ],
           visual: { tipo: "tarjetas", items: [
-            { i: "1️⃣", t: "¿Es una herramienta aprobada?", d: "Cuenta corporativa, nunca la personal." },
+            { i: "1️⃣", t: "¿Es una herramienta aprobada?", d: "Cuenta corporativa; los archivos, en local con Claude Code, nunca subidos." },
             { i: "2️⃣", t: "¿Hay datos personales o sensibles?", d: "Revisa la base legal y la finalidad." },
             { i: "3️⃣", t: "¿Necesito todos estos datos?", d: "Minimiza: alias en vez de nombres." },
             { i: "4️⃣", t: "¿Tengo derecho a usar este material?", d: "Licencias y términos de uso." }
           ] },
           simple: "Es el chequeo antes de despegar: cuatro preguntas que evitan la mayoría de problemas.",
-          ejemplo: "Antes de cargar 300 contratos laborales: cuenta corporativa, base legal para datos de salud y seudonimización."
+          ejemplo: "Antes de analizar 300 contratos laborales: Claude Code con la cuenta corporativa sobre una copia seudonimizada, y base legal para los datos de salud."
         },
         {
           tipo: "concepto",
@@ -1337,6 +1355,87 @@
             { t: "Nada, para no meterlo en problemas.", ok: false, r: "Callar impide contener el daño y cumplir las obligaciones de la firma." },
             { t: "Reportarlo de inmediato al responsable de seguridad o de protección de datos.", ok: true, r: "Así se contiene, se evalúa y, si aplica, se reporta a la SIC." },
             { t: "Cargar la base en otra herramienta para comparar.", ok: false, r: "Eso agravaría el incidente." }
+          ]
+        }
+      ]
+    },
+
+    /* ------------------------------------------------------------------ */
+    "resumen-general": {
+      intro: "Llegaste al cierre. Aquí repasamos en pocos pasos todo el curso y luego viene la evaluación: una pregunta de cada tema. Al terminar, tu constancia incluye el resumen de todas las lecciones.",
+      pasos: [
+        {
+          tipo: "concepto",
+          titulo: "El mapa del curso",
+          texto: [
+            "Recorriste 13 temas. Juntos responden tres preguntas: ¿cómo funciona Claude?, ¿cómo se usa en la firma? y ¿cómo se protege la información?"
+          ],
+          visual: { tipo: "tarjetas", items: [
+            { i: "🧠", t: "Cómo funciona", d: "Fundamentos: predice texto, puede inventar, tokens y modelos." },
+            { i: "🏢", t: "Cómo se usa", d: "Cuenta corporativa, Proyectos para reglas, Claude Code para documentos, buenos pedidos." },
+            { i: "🛡️", t: "Cómo se protege", d: "Datos personales, propiedad intelectual, confidencialidad y seguridad." },
+            { i: "🧰", t: "Herramientas avanzadas", d: "RAG, Skills, MCP y conectores, agentes, Claude Code y API." }
+          ] },
+          simple: "Es como aprender a conducir: entender el carro, saber manejarlo y conocer las normas de tránsito.",
+          ejemplo: "Cada vez que uses IA en tu trabajo pasarás por las tres preguntas, aunque sea en segundos."
+        },
+        {
+          tipo: "concepto",
+          titulo: "De la tarea al resultado, en seis pasos",
+          texto: [
+            "Todo lo aprendido se resume en una secuencia que sirve para casi cualquier uso de la IA en la firma."
+          ],
+          visual: { tipo: "flujo", pasos: [
+            { i: "🎯", t: "Define la tarea" },
+            { i: "🧰", t: "Elige la herramienta" },
+            { i: "✂️", t: "Prepara y minimiza los datos" },
+            { i: "📝", t: "Pide con claridad" },
+            { i: "🔍", t: "Revisa y verifica" },
+            { i: "✅", t: "Decide, entrega y registra" }
+          ] },
+          simple: "Como una receta: si te saltas un paso, el plato puede salir, pero no siempre bien.",
+          ejemplo: "Revisar un contrato: riesgos para el comprador → Claude Code en la carpeta → copia sin datos innecesarios → pedido con rol y formato → verificar cláusulas citadas → entregar con tu revisión."
+        },
+        {
+          tipo: "concepto",
+          titulo: "Las reglas de oro de la firma",
+          texto: [
+            "Si solo recuerdas una cosa de este curso, que sea esta lista."
+          ],
+          visual: { tipo: "tarjetas", items: [
+            { i: "🏢", t: "Cuenta corporativa", d: "Nunca cuentas personales con información de la firma." },
+            { i: "💻", t: "Archivos en local", d: "Los documentos se leen con Claude Code; no se suben a chats ni Proyectos." },
+            { i: "✂️", t: "Minimiza", d: "Solo los datos necesarios; alias en lugar de nombres." },
+            { i: "🔍", t: "Verifica", d: "Citas, cifras, fechas y derechos de terceros." },
+            { i: "🙋", t: "Tú confirmas", d: "Enviar, radicar, borrar o pagar lo decide una persona." },
+            { i: "🔐", t: "Claves fuera", d: "Nunca en chats, correos, documentos ni código." },
+            { i: "📣", t: "Reporta", d: "Cualquier incidente, de inmediato." }
+          ] },
+          simple: "Siete reglas, como siete hábitos: al principio se piensan, después salen solas.",
+          ejemplo: "Antes de cada uso, repásalas mentalmente: toma menos de un minuto."
+        },
+        {
+          tipo: "clasifica",
+          titulo: "Practica: ¿correcto o incorrecto?",
+          instruccion: "Clasifica cada práctica según lo aprendido en el curso.",
+          categorias: ["Correcto", "Incorrecto"],
+          items: [
+            { t: "Leer el contrato de un cliente con Claude Code desde la carpeta del caso", c: 0 },
+            { t: "Adjuntar un expediente a un chat de Claude", c: 1 },
+            { t: "Verificar en la relatoría una sentencia que citó Claude", c: 0 },
+            { t: "Dejar que un agente envíe correos a clientes sin revisión", c: 1 },
+            { t: "Guardar la clave de la API en el código", c: 1 },
+            { t: "Trabajar con una copia seudonimizada cuando no se necesitan los nombres", c: 0 }
+          ]
+        },
+        {
+          tipo: "elige",
+          titulo: "Practica: un caso que lo junta todo",
+          situacion: "Te piden un análisis de riesgos de 20 contratos de proveedores para mañana. ¿Cuál es el mejor plan?",
+          opciones: [
+            { t: "Subirlos a un chat, pedir «revísalos» y enviar lo que salga.", ok: false, r: "Rompe la política de archivos, el pedido es vago y no hay revisión." },
+            { t: "Claude Code sobre la carpeta, pedido con rol, formato y criterios, citas de cada cláusula y revisión antes de entregar.", ok: true, r: "Herramienta correcta, pedido claro y verificación: el ciclo completo." },
+            { t: "Un agente que los revise y envíe el informe directamente al cliente.", ok: false, r: "Falta la revisión humana antes de una acción con efectos externos." }
           ]
         }
       ]

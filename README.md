@@ -22,7 +22,8 @@ La mecánica se inspira en la versión web de [Logic Boss Game](https://github.c
 | 10 | El Gólem Autónomo | Agentes, flujos fijos, subagentes, Agent SDK, trazabilidad |
 | 11 | El Titán de la Terminal | Claude Code: CLAUDE.md, permisos, modo plan, hooks, git |
 | 12 | El Leviatán de los Tokens | API de Anthropic: claves, costos, caché de prompts, lotes, tool use, workspaces |
-| Final | El Comité de Riesgo Supremo | Casos integrales (se abre al vencer a los 12) |
+| Final | El Comité de Riesgo Supremo | Casos integrales |
+| Cierre | El Gran Examinador | Resumen general del curso y evaluación: una pregunta al azar de cada tema; el PDF incluye el resultado por tema y la idea clave de cada lección |
 
 Son 83 preguntas, cada una con su concepto y su explicación. Cada módulo tiene dos partes:
 
@@ -31,10 +32,29 @@ Son 83 preguntas, cada una con su concepto y su explicación. Cada módulo tiene
 
 Lo que se falla aparece luego en un **jefe de repaso**. Al completar la conceptualización y terminar la práctica se descarga la constancia en PDF.
 
+## Personajes y áreas
+
+Al empezar, cada persona elige el personaje más cercano a su trabajo. Los **ejemplos de la conceptualización se adaptan a su área** (`web/js/ejemplos-areas.js`), y cada personaje tiene una ventaja distinta en las batallas:
+
+| Personaje | Área | Ventaja |
+|---|---|---|
+| Socio(a) estratega | Jurídica | 1 punto de credibilidad extra |
+| Asociado(a) ágil | Jurídica | Golpe crítico con 2 aciertos seguidos |
+| Paralegal meticuloso(a) | Jurídica | El primer error no quita credibilidad |
+| Analista de datos | Tecnología y datos | 2 consultas al expediente |
+| IT & Big Data | Tecnología y datos | 3 consultas, pero 2 de credibilidad |
+| Administrativo(a) organizado(a) | Administrativa | Cada crítico devuelve una consulta |
+| Experto(a) multidisciplinar | Multidisciplinar (validación de patentes) | Crítico con 2 aciertos y escudo, pero 2 de credibilidad |
+| Analista de finanzas | Finanzas | 50 % más de experiencia |
+
+## Política de documentos que enseña el juego
+
+Los documentos de clientes y de la firma **no se suben ni se adjuntan** a chats ni a Proyectos de Claude: se trabajan con **Claude Code**, que los lee desde la carpeta local o de la firma. El chat queda para preguntas generales, redacción sin datos de clientes y material público. El juego aclara que, aunque el archivo no se sube, el texto que Claude lee sí se procesa en el modelo bajo el contrato de la firma; por eso también enseña a trabajar con copias seudonimizadas.
+
 ## Cómo funciona
 
 1. **Entrada con nombre y correo**, más el aviso de privacidad. No hay clave ni cuenta.
-2. **Juego:** antes de cada jefe hay una conceptualización paso a paso (no se puede saltar la primera vez); en la batalla, cada respuesta muestra la explicación. Lo que se falla vuelve en el jefe de repaso. El jefe final está siempre abierto.
+2. **Juego:** antes de cada jefe hay una conceptualización paso a paso (no se puede saltar la primera vez). En la batalla, el jefe tiene tantos puntos como preguntas el módulo: hay que responder bien **todas** (las falladas vuelven al final de la fila), así que «vencido» significa 100 % aprendido. El golpe crítico devuelve un punto de credibilidad. En el mapa, cada módulo muestra sus tres pasos: Aprende, Practica y PDF.
 3. **Constancia en PDF:** se descarga sola solo si se completó la conceptualización y se terminó la práctica (ganada o perdida; si la persona se retira, no hay constancia; el repaso tampoco genera). Al inicio muestra la fecha y hora en que se generó; incluye participante, correo, módulo, fechas de conceptualización y práctica, resultado, puntaje y cada pregunta: lo que eligió, la respuesta correcta y la explicación de las falladas. Se genera en el navegador con [jsPDF](https://github.com/parallax/jsPDF) (MIT), copiado en `web/vendor/`, así que no se envía nada a terceros.
 4. **Envío a TI:** el botón «Enviar a TI» abre un correo ya redactado dirigido al buzón de TI configurado en `web/config.js` (`correoTI`, hoy `admon_sistemas@cavelier.com`). La persona adjunta el PDF y lo envía desde su cuenta de la firma, así que el remitente queda verificado por Microsoft 365.
 5. **Nada se guarda:** el avance vive en memoria mientras la página está abierta. Al recargar o salir se pierde; las constancias descargadas son el registro.
@@ -85,6 +105,7 @@ web/
   css/estilos.css     estilo de pizarra
   js/contenido.js     temas, resúmenes y preguntas de la batalla  ← contenido
   js/conceptos.js     conceptualización de cada módulo (pasos, visuales, prácticas)  ← contenido
+  js/ejemplos-areas.js  ejemplos e introducciones adaptados por área  ← contenido
   js/logica.js        batalla, progreso, niveles (sin interfaz)
   js/constancia.js    constancia en PDF y correo para TI
   vendor/jspdf.umd.min.js  jsPDF 2.5.1 (MIT)

@@ -117,10 +117,61 @@
         silla(28) + silla(60) + silla(92) +
         g("c-amarilla", p("M44 30l6-14l10 10l10-10l6 14z")) +
         g("c-amarilla sin-relleno fino brillo", p("M60 8v-4M44 10l-3-3M76 10l3-3"));
+    },
+    libro: function (k) {
+      // Gran libro abierto con ojos y birrete: el examinador.
+      return g(k, p("M14 96V44q24-8 46 4q22-12 46-4v52q-24-8-46 4q-22-12-46-4z")) +
+        g("c-blanca sin-relleno fino", p("M60 48v52M22 56q16-4 30 2M22 66q16-4 30 2M68 58q14-6 30-2M68 68q14-6 30-2")) +
+        ojos(40, 80, 80, 6) + ceño(40, 80, 80) +
+        g("c-pizarra", p("M36 24l24-10l24 10l-24 10z")) +
+        g("c-amarilla sin-relleno", p("M36 24l24-10l24 10l-24 10zM46 28v8q14 6 28 0v-8M84 24v12")) +
+        g("c-amarilla sin-relleno fino brillo", p("M10 30l4-4M106 30l-4-4"));
     }
   };
 
   var PERSONAJES = {
+    it: function () {
+      // Persona con audífonos, servidor y nube de datos.
+      return g("c-roja", p("M40 112q2-42 20-44q18 2 20 44z")) +
+        g("c-blanca", c(60, 52, 13)) + ojos(55, 66, 51, 2) +
+        g("c-tenue", p("M47 47q1-15 13-15t13 15q-5-8-13-8t-13 8z")) +
+        g("c-blanca sin-relleno", p("M45 54q-2-18 15-19q17 1 15 19")) +
+        g("c-roja", p("M42 50h5v9h-5zM73 50h5v9h-5z")) +
+        g("c-azul", p("M84 76h22v32H84z")) +
+        g("c-blanca sin-relleno fino", p("M88 84h14M88 92h14M88 100h14")) +
+        g("c-verde lleno", c(102, 84, 1.4) + c(102, 92, 1.4)) +
+        g("c-azul sin-relleno fino", p("M86 66q-4-10 6-12q2-8 11-5q9-1 9 8q6 2 3 9z"));
+    },
+    administrativo: function () {
+      // Persona con agenda y clip.
+      return g("c-amarilla", p("M40 112q2-42 20-44q18 2 20 44z")) +
+        g("c-blanca", c(60, 52, 13)) + ojos(55, 66, 51, 2) +
+        g("c-naranja", p("M46 50q0-20 14-20t14 20q-3-12-14-12q-11 0-14 12zM72 44q10 4 6 14")) +
+        g("c-azul", p("M80 74h26v34H80z")) +
+        g("c-blanca sin-relleno fino", p("M84 82h18M84 88h18M84 94h12M86 70v8M100 70v8")) +
+        g("c-roja sin-relleno", p("M30 96v-14a4 4 0 0 1 8 0v16a6 6 0 0 1-12 0v-12"));
+    },
+    multidisciplinar: function () {
+      // Persona con lupa y engranaje (validación técnica de patentes).
+      return g("c-verde", p("M40 112q2-42 20-44q18 2 20 44z")) +
+        g("c-blanca", c(60, 52, 13)) + ojos(55, 66, 51, 2) +
+        g("c-tenue", p("M47 48q2-16 13-16t13 16q-4-8-13-8t-13 8z")) +
+        g("c-blanca", p("M50 70h20v6H50z")) +
+        g("c-amarilla sin-relleno", c(96, 84, 9) + p("M102 91l8 9")) +
+        g("c-azul sin-relleno fino", c(96, 84, 4)) +
+        g("c-naranja sin-relleno", c(24, 92, 7) + p("M24 81v4M24 99v4M13 92h4M31 92h4M16 84l3 3M29 97l3 3M16 100l3-3M29 87l3-3"));
+    },
+    finanzas: function () {
+      // Persona con calculadora y gráfico de crecimiento.
+      return g("c-naranja", p("M40 112q2-42 20-44q18 2 20 44z")) +
+        g("c-blanca", p("M54 68l6 10l6-10z")) + g("c-verde", p("M58 76l2 14l2-14z")) +
+        g("c-blanca", c(60, 52, 13)) + ojos(55, 66, 51, 2) +
+        g("c-morada", p("M47 48q2-16 13-16t13 16q-4-8-13-8t-13 8z")) +
+        g("c-tenue", p("M84 78h20v30H84z")) +
+        g("c-verde lleno", p("M87 81h14v6H87z")) +
+        g("c-blanca lleno", c(89, 93, 1.6) + c(94, 93, 1.6) + c(99, 93, 1.6) + c(89, 100, 1.6) + c(94, 100, 1.6) + c(99, 100, 1.6)) +
+        g("c-amarilla sin-relleno", p("M14 104l8-10l7 5l10-14M33 85h6v6"));
+    },
     socio: function () {
       return g("c-azul", p("M40 112q2-42 20-44q18 2 20 44z")) +
         g("c-blanca", p("M54 68l6 10l6-10z")) + g("c-roja", p("M58 76l2 14l2-14z")) +

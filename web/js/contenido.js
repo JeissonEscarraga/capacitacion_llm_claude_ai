@@ -121,7 +121,8 @@
       leccion: [
         "Para información de la firma se usa la cuenta corporativa (planes Team o Enterprise) que administra la firma, no una cuenta personal gratuita.",
         "Los planes comerciales se rigen por los Términos Comerciales de Anthropic: por defecto no se usan tus datos para entrenar modelos, y hay administración centralizada, inicio de sesión corporativo y controles de retención.",
-        "Un Proyecto agrupa chats con instrucciones y documentos comunes. Las instrucciones del proyecto evitan repetir lo mismo en cada mensaje.",
+        "Política de la firma: los documentos de clientes y de la firma no se suben a los chats ni a los Proyectos; se leen en local con Claude Code.",
+        "Un Proyecto agrupa chats con instrucciones y material de referencia comunes (sin documentos de clientes). Evita repetir lo mismo en cada mensaje.",
         "Un Artifact es un contenido independiente (documento, tabla, código, página interactiva) que Claude crea en un panel aparte.",
         "La búsqueda web trae fuentes actuales, pero las fuentes se abren y se verifican. Antes de compartir un chat o artifact, revisa que no lleve datos confidenciales."
       ],
@@ -140,13 +141,13 @@
         {
           id: "tra-2", concepto: "Proyectos (Projects)",
           p: "¿Para qué sirve un Proyecto en Claude?",
-          ok: "Agrupar conversaciones con instrucciones y documentos comunes que Claude usa como contexto en cada chat del proyecto",
+          ok: "Agrupar conversaciones con instrucciones y material de referencia comunes que Claude usa en cada chat del proyecto",
           no: [
             "Para gestionar el cronograma y las tareas del equipo como un software de proyectos",
             "Para facturar horas a los clientes",
             "Para que Claude trabaje solo sin que nadie lo revise"
           ],
-          e: "Ejemplo: un proyecto «Due diligence Cliente X» con el reglamento interno, las listas de verificación y el formato de informe. Cada chat dentro del proyecto parte de ese conocimiento."
+          e: "Ejemplo: un proyecto «Redacción de conceptos» con el formato de informe y las reglas de estilo de la firma. Por política de la firma, los documentos de clientes no van en Proyectos: se trabajan en local con Claude Code."
         },
         {
           id: "tra-3", concepto: "Artifacts",
@@ -191,6 +192,17 @@
             "Que el enlace sea corto"
           ],
           e: "Un enlace se puede reenviar. La confidencialidad y el secreto profesional también aplican a lo que compartes desde herramientas de IA."
+        },
+        {
+          id: "tra-7", concepto: "Política de la firma: lectura local con Claude Code",
+          p: "Necesitas que Claude revise el contrato de un cliente. Según la política de la firma, ¿cómo lo haces?",
+          ok: "Con Claude Code y la cuenta de la firma, leyendo el archivo desde la carpeta del caso, sin subirlo a un chat",
+          no: [
+            "Lo adjunto a un chat de la cuenta corporativa",
+            "Lo subo a un Proyecto para tenerlo siempre a mano",
+            "Lo copio completo y lo pego en el chat"
+          ],
+          e: "Los documentos no se suben a claude.ai. Claude Code los lee desde tu carpeta; el texto que lee se procesa bajo el contrato de la firma, por eso igual conviene trabajar con copias seudonimizadas cuando sea posible."
         }
       ]
     },
@@ -212,7 +224,7 @@
         {
           id: "pro-1", concepto: "Estructura de un buen prompt",
           p: "¿Cuál es el mejor prompt para revisar un contrato?",
-          ok: "«Actúa como abogado corporativo colombiano. Revisa el contrato de suministro adjunto, identifica las cláusulas de riesgo para el comprador, cita cada cláusula y propone redacción alternativa en una tabla.»",
+          ok: "«Actúa como abogado corporativo colombiano. Revisa Contratos/suministro.docx, identifica las cláusulas de riesgo para el comprador, cita cada cláusula y propone redacción alternativa en una tabla.»",
           no: [
             "«Revisa esto.»",
             "«¿Está bien el contrato?»",
@@ -289,7 +301,7 @@
         "Regla general: autorización previa, expresa e informada del titular para una finalidad concreta, salvo las excepciones legales (art. 9 y 10).",
         "Los datos sensibles (salud, biométricos, orientación política, religión, vida sexual, etc.) tienen protección reforzada (art. 5 y 6).",
         "Usar una IA con servidores fuera de Colombia es un flujo transfronterizo: hay que evaluarlo como transferencia o transmisión (art. 26 y Decreto 1074 de 2015). Si el proveedor actúa como encargado, se necesita contrato de transmisión.",
-        "La SIC vigila el cumplimiento y publicó lineamientos sobre tratamiento de datos personales en sistemas de IA (Circular Externa 002 de 2024). Minimiza: anonimiza o seudonimiza antes de cargar."
+        "La SIC vigila el cumplimiento y publicó lineamientos sobre tratamiento de datos personales en sistemas de IA (Circular Externa 002 de 2024). Minimiza: anonimiza o seudonimiza antes de pedirle a Claude que lea."
       ],
       preguntas: [
         {
@@ -349,10 +361,10 @@
         },
         {
           id: "dat-6", concepto: "Minimización: anonimizar y seudonimizar",
-          p: "Antes de cargar un expediente en Claude para analizar la estrategia procesal, ¿qué buena práctica aplicas?",
+          p: "Antes de pedirle a Claude Code que lea un expediente para analizar la estrategia procesal, ¿qué buena práctica aplicas?",
           ok: "Quitar o reemplazar nombres, cédulas y datos que no se necesitan para la tarea (anonimizar o seudonimizar)",
           no: [
-            "Cargar todo, por si acaso Claude lo necesita",
+            "Que lea todo, por si acaso Claude lo necesita",
             "Cambiar el nombre del archivo",
             "Convertirlo a PDF para que no se lean los datos"
           ],
@@ -381,7 +393,7 @@
       leccion: [
         "Derecho de autor en Colombia: Ley 23 de 1982 y Decisión Andina 351 de 1993. Propiedad industrial: Decisión 486 de 2000.",
         "La Decisión 351 define al autor como persona natural: sin aporte creativo humano, un resultado 100 % generado por IA difícilmente tiene autor protegido.",
-        "Cargar obras de terceros (libros, bases de datos, informes) puede implicar reproducción: revisa la licencia antes.",
+        "Darle a la IA obras de terceros (libros, bases de datos, informes) puede implicar reproducción: revisa la licencia antes.",
         "Que un dato sea público no significa que su uso comercial o masivo esté permitido: revisa los términos de uso de cada fuente.",
         "Según los Términos Comerciales de Anthropic, los resultados (outputs) pertenecen al cliente. Pero la IA no verifica disponibilidad de marcas ni derechos previos de terceros."
       ],
@@ -399,7 +411,7 @@
         },
         {
           id: "pin-2", concepto: "Obras de terceros como insumo",
-          p: "Quieres cargar en Claude un libro de doctrina comprado en PDF para resumirlo y enviar el resumen a clientes. ¿Qué evalúas?",
+          p: "Quieres que Claude lea un libro de doctrina comprado en PDF para resumirlo y enviar el resumen a clientes. ¿Qué evalúas?",
           ok: "La licencia de uso del libro y los derechos de autor: reproducir o distribuir la obra o resúmenes sustanciales puede requerir autorización",
           no: [
             "Nada: si lo compré, puedo hacer lo que quiera con él",
@@ -549,7 +561,7 @@
         "Ventajas: respuestas basadas en fuentes propias y actualizadas, con cita al documento de origen.",
         "Piezas: dividir documentos en fragmentos (chunking), representarlos como vectores (embeddings), buscar los más parecidos a la pregunta y dárselos a Claude.",
         "Un RAG debe respetar los permisos: nadie debería recibir fragmentos de documentos que no puede ver.",
-        "Para pocos documentos basta un Proyecto de Claude, que activa la recuperación automáticamente cuando el conocimiento crece. Un RAG propio se justifica con grandes volúmenes o integración con sistemas."
+        "Para los documentos de un caso basta Claude Code sobre la carpeta, sin subir nada. Un RAG propio, dentro de la infraestructura de la firma, se justifica con grandes volúmenes o integración con sistemas."
       ],
       preguntas: [
         {
@@ -608,15 +620,15 @@
           e: "Las barreras de información (por ejemplo, conflictos de interés entre clientes) deben mantenerse en el RAG. Lo ideal es filtrar por los permisos del usuario antes de recuperar."
         },
         {
-          id: "rag-6", concepto: "Cuándo basta un Proyecto y cuándo un RAG propio",
+          id: "rag-6", concepto: "Cuándo basta Claude Code y cuándo un RAG propio",
           p: "Tienes 15 documentos de un caso y quieres hacerles preguntas. ¿Necesitas construir un RAG propio?",
-          ok: "Probablemente no: caben en el conocimiento de un Proyecto de Claude; un RAG propio se justifica con grandes volúmenes o integración con sistemas",
+          ok: "Probablemente no: Claude Code puede trabajar directamente sobre la carpeta del caso; un RAG propio se justifica con grandes volúmenes o integración con sistemas",
           no: [
             "Sí, siempre se necesita un RAG con servidor propio",
             "Sí, y además hay que entrenar un modelo nuevo",
             "No se puede: Claude no lee más de un documento a la vez"
           ],
-          e: "Empieza por lo simple. Los Proyectos de Claude usan recuperación automáticamente cuando el conocimiento crece. Un desarrollo propio tiene costo de construcción, seguridad y mantenimiento."
+          e: "Empieza por lo simple: Claude Code lee los archivos de la carpeta sin subirlos, como pide la política de la firma. Un desarrollo propio tiene costo de construcción, seguridad y mantenimiento."
         }
       ]
     },
@@ -1070,7 +1082,7 @@
     final: true,
     leccion: [
       "Elige la herramienta según el problema: chat o proyecto, skill, conector, RAG, agente, Claude Code o API.",
-      "Antes de cargar datos: base legal, minimización, herramienta aprobada y cuenta corporativa.",
+      "Antes de darle datos a la IA: base legal, minimización, herramienta aprobada, cuenta corporativa y lectura local con Claude Code.",
       "Antes de usar el resultado: verificación humana, citas comprobadas y derechos de terceros revisados.",
       "Seguridad: claves fuera del código, mínimo privilegio y reporte inmediato de incidentes."
     ],
@@ -1078,7 +1090,7 @@
       {
         id: "fin-1", concepto: "Datos sensibles a escala",
         p: "Un cliente te pide usar Claude para analizar 300 contratos laborales que incluyen datos de salud de los trabajadores. ¿Qué haces primero?",
-        ok: "Verificar la base legal para tratar datos sensibles, minimizar o seudonimizar, usar la cuenta corporativa aprobada y revisar los resultados",
+        ok: "Verificar la base legal para datos sensibles, trabajar con Claude Code sobre una copia seudonimizada en la carpeta de la firma (sin subir archivos) y revisar los resultados",
         no: [
           "Cargar los 300 contratos en una cuenta gratuita para ir más rápido",
           "Pedirle a Claude que decida si es legal",
@@ -1089,7 +1101,7 @@
       {
         id: "fin-2", concepto: "Elegir RAG o Proyecto para conocimiento interno",
         p: "La firma quiere un asistente que responda preguntas sobre sus 2.000 conceptos internos. ¿Qué arquitectura propones?",
-        ok: "Recuperación (RAG o conocimiento de Proyecto) con permisos por documento, citas a la fuente y validación humana",
+        ok: "Un RAG dentro de la infraestructura de la firma, con permisos por documento, citas a la fuente y validación humana",
         no: [
           "Pegar los 2.000 conceptos en un solo mensaje",
           "Entrenar un modelo desde cero",
@@ -1157,7 +1169,45 @@
 
   var TODOS = MODULOS.concat([FINAL]);
 
-  var api = { MODULOS: MODULOS, FINAL: FINAL, TODOS: TODOS };
+  // La idea clave de cada lección, para el resumen general (pantalla y PDF).
+  var CLAVES = {
+    "fundamentos": "Claude genera texto probable, no consulta fuentes oficiales: puede inventar, así que toda cita, cifra y fecha se verifica, y responde quien firma.",
+    "claude-trabajo": "Cuenta corporativa siempre; los documentos no se suben a chats ni Proyectos: se leen en local con Claude Code. Los Proyectos guardan reglas e instrucciones.",
+    "prompts": "Un buen pedido dice rol, tarea, contexto, formato y criterios; pide citas, permite el «no consta» y corrige con detalle en vez de empezar de cero.",
+    "datos-personales": "Dato personal es lo que identifica a una persona natural; se necesita base legal y finalidad, los sensibles tienen candado doble y siempre se minimiza.",
+    "propiedad-intelectual": "Lo que entra puede tener derechos (revisa licencias y términos); lo que sale es de la firma, pero la autoría exige aporte humano y la IA no revisa marcas.",
+    "confidencialidad": "Secreto profesional también con IA: herramientas aprobadas, claves nunca en chats, desconfía de instrucciones ocultas y reporta los incidentes de inmediato.",
+    "rag": "RAG busca los fragmentos relevantes de tus documentos para que Claude responda citando; debe respetar permisos. Para un caso basta Claude Code en la carpeta.",
+    "skills": "Una Skill es un procedimiento reutilizable (SKILL.md); se activa por su descripción y solo se instalan las revisadas.",
+    "mcp": "MCP y los conectores unen a Claude con otras aplicaciones usando tus permisos: mínimo privilegio y tu confirmación antes de enviar, borrar o pagar.",
+    "agentes": "Un agente planifica y usa herramientas en ciclos; si los pasos son fijos, mejor un flujo. Persona en el ciclo y registro de lo que hizo.",
+    "claude-code": "Claude Code trabaja sobre tus carpetas sin subir archivos; CLAUDE.md fija reglas, el modo plan y los permisos te dan control, y git permite deshacer.",
+    "api": "La API integra a Claude en los sistemas; la clave va en un gestor de secretos, se paga por tokens y la caché y los lotes reducen costos.",
+    "final": "Elige la herramienta según la necesidad y aplica dos chequeos: antes de darle información a la IA y antes de usar lo que produjo."
+  };
+
+  // Lección de cierre: resume todo y evalúa con una pregunta al azar de cada módulo.
+  var EVALUACION = {
+    id: "resumen-general",
+    tema: "Resumen general y evaluación del curso",
+    jefe: "El Gran Examinador",
+    forma: "libro",
+    color: "azul",
+    frase: "Una pregunta de cada tema. ¿Recuerdas todo lo que aprendiste?",
+    evaluacion: true,
+    corazonesExtra: 2,
+    leccion: [
+      "Claude genera texto probable: verifica citas, cifras y fechas, y asume el resultado como trabajo propio.",
+      "Cuenta corporativa siempre; los documentos se leen en local con Claude Code, nunca se suben a un chat.",
+      "Antes de darle información a la IA: base legal, finalidad, minimización y derechos sobre el material.",
+      "Pide con claridad (rol, tarea, contexto, formato, criterios) y exige fuentes.",
+      "Elige la herramienta adecuada: chat, Proyecto, Skill, conector, RAG, agente, Claude Code o API.",
+      "Mínimo privilegio, persona en el ciclo para acciones con consecuencias, claves fuera de los chats y reporte inmediato de incidentes."
+    ],
+    preguntas: [] // se llenan al iniciar: una pregunta al azar de cada módulo
+  };
+
+  var api = { MODULOS: MODULOS, FINAL: FINAL, TODOS: TODOS, EVALUACION: EVALUACION, CLAVES: CLAVES };
 
   if (typeof module !== "undefined" && module.exports) {
     module.exports = api;

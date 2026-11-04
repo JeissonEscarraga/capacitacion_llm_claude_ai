@@ -40,7 +40,7 @@ test("una batalla perfecta vence al jefe y marca lo aprendido", () => {
   assert.ok(prog.xp > 0);
   const r = L.resumenModulo(prog, m);
   assert.strictEqual(r.repasar, 0);
-  assert.ok(r.aprendidas >= 3);
+  assert.strictEqual(r.porcentaje, 100);
 });
 
 test("los errores quitan credibilidad, quedan por repasar y el escudo del paralegal funciona", () => {
@@ -134,4 +134,70 @@ test("cada módulo tiene conceptualización completa y bien formada", () => {
       }
     });
   });
+});
+
+test("vencer al jefe exige responder bien todas las preguntas (100 % aprendido)", () => {
+  for (const perfil of Object.keys(L.PERFILES)) {
+    const prog = L.progresoVacio();
+    const m = C.MODULOS[5];
+    const b = new L.Batalla({ modulo: m, perfil, progreso: prog, rnd: rndFijo(13) });
+    let n = 0;
+    while (!b.fin && n++ < 100) {
+      b.siguiente();
+      // Falla la primera pregunta una vez y luego acierta todo.
+      b.responder(n === 1 ? (b.actual.correcta + 1) % 4 : b.actual.correcta);
+    }
+    assert.ok(b.gano, perfil + " debe ganar");
+    const r = L.resumenModulo(prog, m);
+    assert.strictEqual(r.porcentaje, 100, perfil + ": vencido debe ser 100 % aprendido");
+    assert.strictEqual(r.superado, true);
+  }
+});
+
+test("el golpe crítico devuelve credibilidad y las ventajas nuevas funcionan", () => {
+  const prog = L.progresoVacio();
+  const b = new L.Batalla({ modulo: C.MODULOS[0], perfil: "administrativo", progreso: prog, rnd: rndFijo(2) });
+  b.siguiente(); b.responder((b.actual.correcta + 1) % 4); // pierde 1
+  assert.strictEqual(b.corazones, 2);
+  let ev;
+  for (let i = 0; i < 3; i++) { b.siguiente(); ev = b.responder(b.actual.correcta); }
+  assert.ok(ev.critico);
+  assert.strictEqual(b.corazones, 3, "crítico cura 1");
+  assert.ok(ev.comodinGanado, "administrativo gana una consulta");
+  const f = new L.Batalla({ modulo: C.MODULOS[0], perfil: "finanzas", progreso: L.progresoVacio(), rnd: rndFijo(2) });
+  f.siguiente();
+  assert.strictEqual(f.responder(f.actual.correcta).xp, 15, "finanzas: +50 % de experiencia");
+  assert.strictEqual(new L.Batalla({ modulo: C.MODULOS[0], perfil: "it", progreso: L.progresoVacio() }).comodines, 3);
+});
+
+test("los 8 personajes tienen área y hay ejemplos adaptados para cada paso", () => {
+  const E = require("../js/ejemplos-areas.js");
+  const K = require("../js/conceptos.js").CONCEPTOS;
+  const ids = Object.keys(L.PERFILES);
+  ["it", "administrativo", "multidisciplinar", "finanzas"].forEach((id) => assert.ok(ids.includes(id), id));
+  ids.forEach((id) => assert.ok(L.AREAS[L.PERFILES[id].area], "área de " + id));
+  const modulos = C.TODOS.concat([C.EVALUACION]);
+  ["tecnologia", "administrativo", "multidisciplinar", "finanzas"].forEach((area) => {
+    modulos.forEach((m) => {
+      const a = E[area][m.id];
+      assert.ok(a && a.intro, area + " intro " + m.id);
+      K[m.id].pasos.filter((p) => p.tipo === "concepto").forEach((p) => {
+        assert.ok(a.ejemplos[p.titulo], area + " sin ejemplo: " + m.id + " / " + p.titulo);
+      });
+    });
+  });
+});
+
+test("la evaluación general toma una pregunta de cada módulo y tiene resumen de todos", () => {
+  const qs = L.preguntasEvaluacion(C.TODOS, rndFijo(4));
+  assert.strictEqual(qs.length, C.TODOS.length);
+  assert.strictEqual(new Set(qs.map((q) => q.modulo)).size, C.TODOS.length);
+  C.TODOS.forEach((m) => assert.ok(C.CLAVES[m.id], "idea clave de " + m.id));
+  const prog = L.progresoVacio();
+  const mod = Object.assign({}, C.EVALUACION, { preguntas: qs });
+  const b = new L.Batalla({ modulo: mod, perfil: "socio", progreso: prog, rnd: rndFijo(4) });
+  assert.strictEqual(b.corazonesMax, 6, "evaluación da 2 de credibilidad extra");
+  while (!b.fin) { b.siguiente(); b.responder(b.actual.correcta); }
+  assert.ok(b.gano && prog.modulos["resumen-general"].superado);
+  assert.ok(b.historial.every((h) => h.tema), "cada respuesta trae su tema");
 });
