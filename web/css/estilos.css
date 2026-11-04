@@ -567,3 +567,44 @@ details.modulo-avance > summary::before { content: none; }
 .casilla-evaluacion .casilla-boton { border-color: var(--tiza-azul); }
 .nota-area { color: var(--tiza-azul); }
 .enlace { font: inherit; color: var(--tiza-azul); background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; }
+
+/* ---------- Taller ---------- */
+.casilla-taller .casilla-boton { border-color: var(--tiza-verde); border-style: double; border-width: 4px; }
+.receta-cabecera { display: flex; gap: 14px; align-items: center; }
+.receta-icono { font-size: 2.6rem; line-height: 1; }
+.receta-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.receta-chip { font-size: 0.85rem; padding: 4px 10px; border-radius: 999px; border: 2px solid var(--linea); background: var(--pizarra); }
+.nota-meta { border-color: var(--tiza-verde); }
+.nota-meta .nota-caja-titulo { color: var(--tiza-verde); }
+.nota-resultado { border-color: var(--tiza-verde); }
+.nota-resultado .nota-caja-titulo { color: var(--tiza-verde); }
+.nota-cuidado { border-color: var(--tiza-roja); }
+.nota-cuidado .nota-caja-titulo { color: var(--tiza-roja); }
+.receta-pasos { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; counter-reset: none; }
+.receta-paso { display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: 12px; border-radius: 14px; background: var(--pizarra); border: 2px solid var(--linea); transition: border-color 0.2s ease; }
+.receta-paso.hecho { border-color: var(--tiza-verde); }
+.receta-numero { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; background: var(--tiza-amarilla); color: var(--pizarra-honda); }
+.receta-paso.hecho .receta-numero { background: var(--tiza-verde); }
+.receta-cuerpo { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.receta-cuerpo > p { margin: 0; }
+.receta-check { font-size: 0.88rem; color: var(--tiza-tenue); display: inline-flex; align-items: center; gap: 6px; cursor: pointer; align-self: flex-start; }
+.receta-check input { width: 18px; height: 18px; accent-color: var(--tiza-verde); }
+.receta-avance { margin: 0; font-weight: 700; color: var(--tiza-verde); }
+.terminal, .archivo { border-radius: 12px; overflow: hidden; border: 2px solid var(--linea); }
+.terminal { background: #0b0f0d; }
+.archivo { background: var(--pizarra-honda); }
+.bloque-cabecera { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 10px; background: rgba(255, 255, 255, 0.06); font-size: 0.82rem; }
+.bloque-titulo { color: var(--tiza-tenue); font-weight: 700; }
+.bloque-codigo { margin: 0; padding: 10px 12px; font-family: ui-monospace, Consolas, monospace; font-size: 0.86rem; line-height: 1.55; white-space: pre-wrap; word-break: break-word; color: var(--tiza); }
+.terminal .linea { display: block; }
+.terminal .prompt { color: var(--tiza-verde); font-weight: 700; }
+.terminal .comentario { color: var(--tiza-tenue); font-style: italic; }
+.boton-copiar { font: inherit; font-size: 0.78rem; color: var(--tiza); background: transparent; border: 1px solid var(--linea); border-radius: 8px; padding: 2px 8px; cursor: pointer; }
+.boton-copiar:hover { border-color: var(--tiza-amarilla); }
+.ruta-clic { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.ruta-boton { padding: 5px 10px; border-radius: 8px; background: var(--tiza-azul); color: var(--pizarra-honda); font-weight: 700; font-size: 0.88rem; }
+.ruta-flecha { color: var(--tiza-amarilla); font-weight: 700; }
+.constructor { display: flex; flex-direction: column; gap: 10px; }
+.constructor-fila { display: flex; flex-direction: column; gap: 6px; }
+.constructor-opciones { justify-content: flex-start; }
+.constructor-vista { min-height: 80px; }
