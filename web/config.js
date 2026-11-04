@@ -9,5 +9,5 @@
  * contraseñas.
  */
 window.AIBOSS_CONFIG = {
-  correoTI: "admon_sistemas@cavelier.com"
+  correoTI: "capacitacionai@cavelier.com"
 };
