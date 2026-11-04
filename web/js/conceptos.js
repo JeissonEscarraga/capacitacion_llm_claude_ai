@@ -812,6 +812,162 @@
     },
 
     /* ------------------------------------------------------------------ */
+    "riesgos-legales": {
+      intro: "Ya sabes que en la firma no se suben documentos a los chats. Aquí verás por qué, desde lo legal: qué normas se comprometen al subir correos, documentos de patentes o marcas, secretos de innovación o contratos con datos, y qué consecuencias puede haber.",
+      pasos: [
+        {
+          tipo: "concepto",
+          titulo: "Subir es entregar",
+          texto: [
+            "Cuando subes o pegas algo en un chat de IA, la información sale de los sistemas de la firma y queda en los servidores de un tercero: en su historial, en enlaces que se pueden compartir y, en cuentas personales, posiblemente sujeta a condiciones que permiten usarla para entrenar modelos.",
+            "Para el derecho, eso puede ser revelar información confidencial, tratar datos personales sin base legal o romper un deber de reserva, aunque nadie la vea nunca."
+          ],
+          visual: { tipo: "flujo", pasos: [
+            { i: "📄", t: "Documento o correo" },
+            { i: "⬆️", t: "Lo subes o lo pegas en un chat" },
+            { i: "☁️", t: "Queda en servidores de un tercero" },
+            { i: "⚖️", t: "Riesgos: privacidad, reserva, derechos" }
+          ] },
+          simple: "Subir un documento a un chat es como dejar una copia en una oficina ajena: aunque nadie la lea, ya no está solo bajo tu llave.",
+          ejemplo: "Pegar en un chat gratuito el borrador de una demanda con nombres de las partes ya es un tratamiento de datos y una revelación de información del cliente."
+        },
+        {
+          tipo: "concepto",
+          titulo: "Correos electrónicos",
+          texto: [
+            "Un correo casi nunca es «solo tuyo»: trae nombres, direcciones, firmas y cargos de varias personas, y muchas veces información del cliente, estrategias o adjuntos.",
+            "La Constitución protege la correspondencia y las comunicaciones privadas (art. 15). Los datos de quienes escriben están protegidos por la Ley 1581, y lo que el cliente te cuenta, por el secreto profesional (Ley 1123 de 2007)."
+          ],
+          visual: { tipo: "tarjetas", items: [
+            { i: "👥", t: "Datos de terceros", d: "Nombres, correos, teléfonos y firmas de remitentes y destinatarios." },
+            { i: "✉️", t: "Comunicación privada", d: "Protegida por el art. 15 de la Constitución." },
+            { i: "🤐", t: "Secreto profesional", d: "Lo que el cliente comunica a la firma." },
+            { i: "📎", t: "Adjuntos", d: "Contratos, facturas o planos dentro del mismo correo." }
+          ] },
+          simple: "Reenviar un correo a un desconocido no se vuelve inofensivo porque el desconocido sea una máquina.",
+          ejemplo: "Para pedir un borrador de respuesta no hace falta pegar la cadena completa: describe el asunto sin nombres ni datos del cliente, o usa Claude Code con una copia minimizada."
+        },
+        {
+          tipo: "concepto",
+          titulo: "Documentos para patentar",
+          texto: [
+            "Una invención solo se puede patentar si es nueva: lo que llega al público antes de la solicitud forma parte del estado de la técnica (Decisión 486, art. 16). Hasta que se radica, la descripción, los dibujos, las reivindicaciones y los resultados de pruebas deben mantenerse en reserva.",
+            "Subirlos a un chat no siempre equivale a publicarlos, pero saca la información de los controles de la firma y del acuerdo de confidencialidad con el cliente. Existe un período de gracia limitado (art. 17), pero no conviene depender de él."
+          ],
+          visual: { tipo: "comparar",
+            izq: { titulo: "🔒 Antes de radicar", items: ["Descripción y reivindicaciones", "Dibujos y planos", "Resultados de laboratorio", "Correos con el inventor"] },
+            der: { titulo: "⚠️ Si se filtra", items: ["Riesgo para la novedad", "Pérdida del valor como secreto", "Incumplimiento de confidencialidad", "Ventaja para competidores"] }
+          },
+          simple: "Una invención antes de radicarse es como una carta sellada: si alguien la abre antes de tiempo, ya no se puede volver a sellar.",
+          ejemplo: "Para comparar una invención no radicada con anterioridades, se usa Claude Code en la carpeta del caso, con la cuenta de la firma y aprobación del área; nunca un chat."
+        },
+        {
+          tipo: "concepto",
+          titulo: "Marcas antes de radicar",
+          texto: [
+            "En Colombia, la marca se concede a quien la solicita primero. Antes de radicarla, el nombre, el logo y los planes de lanzamiento del cliente son información confidencial.",
+            "Si se filtran (por ejemplo, porque quedaron en un chat compartido o en una herramienta no aprobada), un tercero podría solicitar antes una marca igual o parecida."
+          ],
+          visual: { tipo: "flujo", pasos: [
+            { i: "💡", t: "El cliente crea un nombre" },
+            { i: "🔒", t: "Se mantiene en reserva" },
+            { i: "📝", t: "Se radica la solicitud" },
+            { i: "📣", t: "Recién ahí se divulga" }
+          ] },
+          simple: "Es como contar el número ganador antes de comprar el billete.",
+          ejemplo: "Buscar antecedentes de un signo nuevo se hace en las bases oficiales y, si se usa IA, con Claude Code y la cuenta de la firma, no pegando el nombre y la estrategia en un chat."
+        },
+        {
+          tipo: "concepto",
+          titulo: "Secretos de innovación y patentabilidad",
+          texto: [
+            "Los análisis de patentabilidad, las estrategias de protección y los datos técnicos de los clientes son secreto empresarial solo si se toman medidas razonables para mantenerlos en reserva (Decisión 486, art. 260).",
+            "Revelar información industrial o comercial reservada que se conoce por el cargo puede ser un delito (art. 308 del Código Penal). Además, casi siempre hay acuerdos de confidencialidad cuyo incumplimiento genera indemnizaciones."
+          ],
+          visual: { tipo: "tarjetas", items: [
+            { i: "🧪", t: "Datos técnicos", d: "Fórmulas, procesos, resultados de pruebas." },
+            { i: "📈", t: "Estrategia de protección", d: "Qué, dónde y cuándo patentar." },
+            { i: "📊", t: "Informes de patentabilidad", d: "Opiniones sobre novedad y nivel inventivo." },
+            { i: "📜", t: "Acuerdos de confidencialidad", d: "Obligaciones contractuales con el cliente." }
+          ] },
+          simple: "Un secreto solo es secreto mientras se cuida como tal; si lo tratas como público, el derecho también lo hará.",
+          ejemplo: "Un informe de patentabilidad se redacta con Claude Code sobre la carpeta del caso, nunca pegando los datos técnicos en un chat."
+        },
+        {
+          tipo: "concepto",
+          titulo: "Contratos con nombres y datos",
+          texto: [
+            "Un contrato con nombres, cédulas, direcciones, salarios o datos bancarios contiene datos personales (Ley 1581). Si trae información de salud, contiene datos sensibles con protección reforzada.",
+            "Además, suele tener cláusulas de confidencialidad y está cubierto por el secreto profesional. Un solo documento puede comprometer varias normas a la vez."
+          ],
+          visual: { tipo: "comparar",
+            izq: { titulo: "📄 Lo que trae", items: ["Nombres y cédulas", "Salarios y datos bancarios", "A veces, datos de salud", "Cláusulas de confidencialidad"] },
+            der: { titulo: "⚖️ Lo que se compromete", items: ["Ley 1581 de 2012", "Datos sensibles (art. 5 y 6)", "El contrato mismo", "Secreto profesional (Ley 1123)"] }
+          },
+          simple: "Un contrato es como una caja con varias cerraduras: abrirla en el lugar equivocado las rompe todas a la vez.",
+          ejemplo: "Para revisar las cláusulas de un contrato laboral basta una copia sin nombres ni cédulas, leída con Claude Code desde la carpeta."
+        },
+        {
+          tipo: "concepto",
+          titulo: "Las consecuencias",
+          texto: [
+            "Las consecuencias pueden sumarse: administrativas, disciplinarias, penales, civiles y comerciales. Esta es una guía general; cada caso se analiza con el área jurídica."
+          ],
+          visual: { tipo: "tarjetas", items: [
+            { i: "🏛️", t: "Administrativas", d: "SIC: multas de hasta 2.000 SMMLV, suspensión o cierre del tratamiento (Ley 1581, art. 23)." },
+            { i: "⚖️", t: "Disciplinarias", d: "Para abogados: censura, multa, suspensión o exclusión (Ley 1123 de 2007)." },
+            { i: "🚨", t: "Penales", d: "Violación de datos personales (art. 269F) o de reserva industrial o comercial (art. 308 del Código Penal)." },
+            { i: "💸", t: "Civiles", d: "Indemnizaciones por incumplir acuerdos de confidencialidad." },
+            { i: "📉", t: "Pérdida de derechos", d: "Novedad de una invención, secreto empresarial, prioridad de una marca." },
+            { i: "🤝", t: "Confianza", d: "Reputación de la firma y relación con el cliente." }
+          ] },
+          simple: "Un descuido de segundos puede costar años de trabajo del cliente y la confianza que tardó en construirse.",
+          ejemplo: "Un único chat con una invención no radicada puede generar a la vez un incumplimiento contractual, un riesgo para la patente y una queja disciplinaria."
+        },
+        {
+          tipo: "concepto",
+          titulo: "Qué hacer en su lugar",
+          texto: [
+            "La IA sí se puede usar con información sensible, pero por el camino correcto. Y si algo ya se subió por error, se reporta de inmediato: actuar rápido reduce el daño."
+          ],
+          visual: { tipo: "flujo", pasos: [
+            { i: "🚫", t: "No subir ni pegar en chats" },
+            { i: "💻", t: "Claude Code en local, cuenta de la firma" },
+            { i: "✂️", t: "Copia minimizada o seudonimizada" },
+            { i: "✅", t: "Aprobación del área para lo más sensible" },
+            { i: "📣", t: "Si ya pasó: reporta de inmediato" }
+          ] },
+          simple: "No se trata de dejar de usar la herramienta, sino de usarla con guantes.",
+          ejemplo: "Patentes y marcas no radicadas, estrategias y contratos con datos: solo con Claude Code, cuenta corporativa, lo mínimo necesario y aprobación del área."
+        },
+        {
+          tipo: "clasifica",
+          titulo: "Practica: ¿riesgo legal o uso adecuado?",
+          instruccion: "Clasifica cada situación.",
+          categorias: ["Riesgo legal alto", "Uso adecuado"],
+          items: [
+            { t: "Pegar en un chat la cadena de correos con un cliente", c: 0 },
+            { t: "Pedir en el chat una explicación general de qué es el estado de la técnica", c: 1 },
+            { t: "Subir el borrador de una solicitud de patente no radicada a una app gratuita", c: 0 },
+            { t: "Revisar con Claude Code una copia del contrato sin nombres ni cédulas", c: 1 },
+            { t: "Escribir en un chat el nombre de una marca que el cliente lanzará el próximo año", c: 0 },
+            { t: "Reportar de inmediato que alguien subió un expediente por error", c: 1 }
+          ]
+        },
+        {
+          tipo: "elige",
+          titulo: "Practica: la invención urgente",
+          situacion: "Un cliente necesita mañana una opinión preliminar sobre la patentabilidad de una invención que aún no ha radicado. Tienes la descripción en la carpeta del caso. ¿Qué haces?",
+          opciones: [
+            { t: "Pego la descripción en un chat gratuito para ganar tiempo.", ok: false, r: "Pondría en riesgo la reserva de la invención, el acuerdo de confidencialidad y el secreto profesional." },
+            { t: "Uso Claude Code con la cuenta de la firma sobre la carpeta, con aprobación del área y lo mínimo necesario, y reviso el resultado.", ok: true, r: "Ese es el camino: la información no sale de los controles de la firma y el experto valida." },
+            { t: "Envío la descripción por correo a una herramienta externa de búsqueda.", ok: false, r: "Es otra forma de sacar la información de los controles de la firma." }
+          ]
+        }
+      ]
+    },
+
+    /* ------------------------------------------------------------------ */
     rag: {
       intro: "Claude no conoce los documentos de la firma. RAG es la técnica para que responda con base en ellos y cite de dónde sacó cada cosa.",
       pasos: [
@@ -1495,12 +1651,12 @@
           tipo: "concepto",
           titulo: "El mapa del curso",
           texto: [
-            "Recorriste 14 temas. Juntos responden tres preguntas: ¿cómo funciona Claude?, ¿cómo se usa en la firma? y ¿cómo se protege la información?"
+            "Recorriste 15 temas. Juntos responden tres preguntas: ¿cómo funciona Claude?, ¿cómo se usa en la firma? y ¿cómo se protege la información?"
           ],
           visual: { tipo: "tarjetas", items: [
             { i: "🧠", t: "Cómo funciona", d: "Fundamentos: predice texto, puede inventar, tokens y modelos." },
             { i: "🏢", t: "Cómo se usa", d: "Cuenta corporativa, Proyectos para reglas, Claude Code para documentos, aplicativos corporativos vs. personales, buenos pedidos." },
-            { i: "🛡️", t: "Cómo se protege", d: "Datos personales, propiedad intelectual, confidencialidad y seguridad." },
+            { i: "🛡️", t: "Cómo se protege", d: "Datos personales, propiedad intelectual, confidencialidad, implicaciones legales de subir información y seguridad." },
             { i: "🧰", t: "Herramientas avanzadas", d: "RAG, Skills, MCP y conectores, agentes, Claude Code y API." }
           ] },
           simple: "Es como aprender a conducir: entender el carro, saber manejarlo y conocer las normas de tránsito.",

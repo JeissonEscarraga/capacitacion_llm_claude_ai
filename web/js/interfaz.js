@@ -154,16 +154,16 @@
     return C.EVALUACION;
   }
 
-  // Área del personaje elegido y contenido adaptado a esa área (si existe).
+  // Contenido adaptado al personaje elegido (introducción y ejemplo de cada paso).
   var ICONO_AREA = { juridico: "⚖️", tecnologia: "🖥️", administrativo: "🗂️", multidisciplinar: "🔬", finanzas: "💰" };
-  function areaActual() {
-    var pf = L.PERFILES[usuario.progreso.perfil];
-    return pf ? pf.area : "juridico";
+  var ICONO_PERFIL = { socio: "🧭", asociado: "⚡", paralegal: "🔎", analista: "📊", it: "🖥️", administrativo: "🗂️", multidisciplinar: "🔬", finanzas: "💰" };
+  function perfilActual() {
+    return L.PERFILES[usuario.progreso.perfil] || null;
   }
   function adaptado(moduloId) {
-    var a = areaActual();
-    var A = window.EjemplosArea || {};
-    return a !== "juridico" && A[a] && A[a][moduloId] ? A[a][moduloId] : null;
+    var pf = perfilActual();
+    var P = window.EjemplosPerfil || {};
+    return pf && P[pf.id] && P[pf.id][moduloId] ? P[pf.id][moduloId] : null;
   }
 
   function pasosModulo(m, prog) {
@@ -357,7 +357,7 @@
     txt.appendChild(el("h3", "concepto-titulo", p.titulo));
     txt.appendChild(el("p", "concepto-parrafo", p.texto));
     var pf = L.PERFILES[usuario.progreso.perfil];
-    if (pf) txt.appendChild(el("p", "nota nota-area", ICONO_AREA[pf.area] + " Los ejemplos están pensados para tu área: " + L.AREAS[pf.area] + ". Si cambias de personaje, cambian los ejemplos."));
+    if (pf) txt.appendChild(el("p", "nota nota-area", ICONO_PERFIL[pf.id] + " Los ejemplos están pensados para tu personaje: " + pf.nombre + " (" + L.AREAS[pf.area] + "). Si cambias de personaje, cambian los ejemplos."));
     txt.appendChild(el("p", "nota", "Avanza con «Siguiente». En los pasos marcados como práctica tendrás que resolver un ejercicio para continuar. No se califican: son para aprender."));
     caja.appendChild(txt);
     art.appendChild(caja);
@@ -415,11 +415,11 @@
     var ad = adaptado(moduloActual.id);
     var ejemplo = (ad && ad.ejemplos && ad.ejemplos[p.titulo]) || p.ejemplo;
     if (ejemplo) {
-      var area = areaActual();
+      var pfE = perfilActual();
       var e = el("div", "nota-caja nota-ejemplo");
-      e.appendChild(el("p", "nota-caja-titulo", area === "juridico" || !(ad && ad.ejemplos && ad.ejemplos[p.titulo])
-        ? "⚖️ En la firma"
-        : ICONO_AREA[area] + " En tu área: " + L.AREAS[area]));
+      e.appendChild(el("p", "nota-caja-titulo", pfE && ad && ad.ejemplos && ad.ejemplos[p.titulo]
+        ? ICONO_PERFIL[pfE.id] + " Para ti, " + pfE.nombre
+        : "⚖️ En la firma"));
       e.appendChild(el("p", null, ejemplo));
       notas.appendChild(e);
     }

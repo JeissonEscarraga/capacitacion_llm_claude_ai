@@ -11,7 +11,7 @@ function rndFijo(semilla) {
 
 test("el contenido está completo y bien formado", () => {
   const ids = new Set();
-  assert.strictEqual(C.MODULOS.length, 13, "deben ser 13 jefes antes del final");
+  assert.strictEqual(C.MODULOS.length, 14, "deben ser 14 jefes antes del final");
   C.TODOS.forEach((m) => {
     assert.ok(m.id && m.tema && m.jefe && m.forma && m.frase, m.id);
     assert.ok(m.leccion.length >= 3, "lección corta en " + m.id);
@@ -170,22 +170,26 @@ test("el golpe crítico devuelve credibilidad y las ventajas nuevas funcionan", 
   assert.strictEqual(new L.Batalla({ modulo: C.MODULOS[0], perfil: "it", progreso: L.progresoVacio() }).comodines, 3);
 });
 
-test("los 8 personajes tienen área y hay ejemplos adaptados para cada paso", () => {
-  const E = require("../js/ejemplos-areas.js");
+test("cada uno de los 8 personajes tiene ejemplos propios para cada paso", () => {
+  const E = require("../js/ejemplos-perfiles.js");
   const K = require("../js/conceptos.js").CONCEPTOS;
   const ids = Object.keys(L.PERFILES);
+  assert.strictEqual(ids.length, 8);
   ["it", "administrativo", "multidisciplinar", "finanzas"].forEach((id) => assert.ok(ids.includes(id), id));
   ids.forEach((id) => assert.ok(L.AREAS[L.PERFILES[id].area], "área de " + id));
   const modulos = C.TODOS.concat([C.EVALUACION]);
-  ["tecnologia", "administrativo", "multidisciplinar", "finanzas"].forEach((area) => {
+  ids.forEach((pf) => {
     modulos.forEach((m) => {
-      const a = E[area][m.id];
-      assert.ok(a && a.intro, area + " intro " + m.id);
+      const a = E[pf] && E[pf][m.id];
+      assert.ok(a && a.intro, pf + " intro " + m.id);
       K[m.id].pasos.filter((p) => p.tipo === "concepto").forEach((p) => {
-        assert.ok(a.ejemplos[p.titulo], area + " sin ejemplo: " + m.id + " / " + p.titulo);
+        assert.ok(a.ejemplos[p.titulo], pf + " sin ejemplo: " + m.id + " / " + p.titulo);
       });
     });
   });
+  // Personajes de la misma área no comparten los mismos ejemplos.
+  const igual = (x, y) => JSON.stringify(E[x]) === JSON.stringify(E[y]);
+  assert.ok(!igual("socio", "asociado") && !igual("asociado", "paralegal") && !igual("analista", "it"));
 });
 
 test("la evaluación general toma una pregunta de cada módulo y tiene resumen de todos", () => {
