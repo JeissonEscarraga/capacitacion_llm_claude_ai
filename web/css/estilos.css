@@ -262,7 +262,127 @@ input:focus, textarea:focus { border-color: var(--tiza-azul); outline: none; }
 
 .instrucciones ul { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 4px; }
 
-/* ---------- Lección ---------- */
+/* ---------- Conceptualización ---------- */
+
+.concepto-cabecera { display: flex; gap: 14px; align-items: center; }
+.sprite-mini { width: 72px; height: 72px; flex: none; }
+.concepto-cabecera-texto { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+.concepto-progreso { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.puntos-progreso { list-style: none; margin: 0; padding: 0; display: flex; gap: 6px; flex-wrap: wrap; }
+.punto { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--tiza-tenue); }
+.punto.practica { border-radius: 3px; }
+.punto.hecho { background: var(--tiza-verde); border-color: var(--tiza-verde); }
+.punto.actual { background: var(--tiza-amarilla); border-color: var(--tiza-amarilla); transform: scale(1.25); }
+
+.concepto {
+  background: var(--pizarra-clara);
+  border: 2px solid var(--linea);
+  border-radius: 18px 14px 20px 16px;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: entrar 0.35s ease;
+}
+@keyframes entrar { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.concepto-tipo { color: var(--tiza-azul); }
+.concepto-practica .concepto-tipo, .concepto-elige .concepto-tipo, .concepto-clasifica .concepto-tipo { color: var(--tiza-naranja); }
+.concepto-titulo { margin: 0; font-family: var(--letra-titulo); font-size: clamp(1.5rem, 4vw, 2rem); color: var(--tiza-amarilla); line-height: 1.15; }
+.concepto-parrafo { margin: 0; font-size: 1.08rem; max-width: 72ch; line-height: 1.6; }
+
+.intro-caja { display: grid; grid-template-columns: 180px 1fr; gap: 20px; align-items: center; }
+.intro-caja > div:last-child { display: flex; flex-direction: column; gap: 10px; }
+.intro-caja .bocadillo { text-align: left; }
+@media (max-width: 640px) { .intro-caja { grid-template-columns: 1fr; justify-items: center; } .intro-caja .sprite-grande { width: 130px; height: 130px; } }
+
+/* Visuales */
+.visual { margin: 4px 0; }
+.icono { font-size: 1.9rem; line-height: 1; }
+
+.visual-flujo { display: flex; align-items: stretch; gap: 8px; flex-wrap: wrap; }
+.flujo-paso {
+  flex: 1 1 130px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  text-align: center;
+  background: var(--pizarra);
+  border: 2px dashed var(--tiza-azul);
+  border-radius: 14px;
+  padding: 14px 10px;
+  font-weight: 700;
+}
+.flujo-texto { font-size: 0.95rem; }
+.flecha { align-self: center; color: var(--tiza-amarilla); font-size: 1.5rem; }
+@media (max-width: 640px) {
+  .visual-flujo { flex-direction: column; }
+  .flecha { transform: rotate(90deg); }
+}
+
+.visual-tarjetas { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+.tarjeta { background: var(--pizarra); border: 2px solid var(--linea); border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; }
+.tarjeta-titulo { margin: 4px 0 0; font-weight: 700; color: var(--tiza-amarilla); }
+.tarjeta-texto { margin: 0; font-size: 0.93rem; color: var(--tiza); }
+
+.visual-comparar { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 640px) { .visual-comparar { grid-template-columns: 1fr; } }
+.columna { border-radius: 14px; padding: 12px 16px; background: var(--pizarra); border: 2px solid var(--linea); }
+.columna-a { border-color: rgba(168, 219, 156, 0.6); }
+.columna-b { border-color: rgba(240, 139, 128, 0.6); }
+.columna-titulo { margin: 0 0 6px; font-weight: 700; font-size: 1.05rem; }
+.columna ul { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 4px; }
+
+.visual-chat { display: flex; flex-direction: column; gap: 10px; max-width: 640px; }
+.burbuja { border-radius: 16px; padding: 10px 14px; display: flex; flex-direction: column; gap: 2px; max-width: 90%; }
+.burbuja-quien { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; opacity: 0.8; }
+.burbuja-texto { white-space: pre-line; }
+.burbuja-tu { align-self: flex-end; background: rgba(142, 200, 227, 0.18); border: 2px solid var(--tiza-azul); border-bottom-right-radius: 4px; }
+.burbuja-claude { align-self: flex-start; background: rgba(244, 212, 124, 0.12); border: 2px solid var(--tiza-amarilla); border-bottom-left-radius: 4px; }
+.burbuja-doc { align-self: stretch; max-width: 100%; background: var(--pizarra); border: 2px dashed var(--tiza-tenue); font-family: ui-monospace, Consolas, monospace; font-size: 0.9rem; }
+
+/* Notas */
+.notas { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 760px) { .notas { grid-template-columns: 1fr; } }
+.nota-caja { border-radius: 12px; padding: 12px 14px; border-left: 5px solid; background: var(--pizarra); }
+.nota-caja p { margin: 0; }
+.nota-caja-titulo { font-weight: 700; margin-bottom: 4px !important; }
+.nota-simple { border-color: var(--tiza-amarilla); }
+.nota-simple .nota-caja-titulo { color: var(--tiza-amarilla); }
+.nota-ejemplo { border-color: var(--tiza-azul); }
+.nota-ejemplo .nota-caja-titulo { color: var(--tiza-azul); }
+
+/* Prácticas */
+.situacion { margin: 0; font-size: 1.1rem; max-width: 72ch; padding: 12px 14px; border-radius: 12px; background: var(--pizarra); border: 2px dashed var(--tiza-naranja); }
+.practica-opciones { display: flex; flex-direction: column; gap: 10px; }
+.opcion-practica { min-height: 48px; }
+.practica-retro { margin: 0; min-height: 1.4em; font-weight: 700; }
+.practica-retro.bien { color: var(--tiza-verde); }
+.practica-retro.mal { color: var(--tiza-roja); }
+
+.clasifica { display: flex; flex-direction: column; gap: 8px; }
+.clasifica-fila {
+  display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; align-items: center;
+  padding: 10px 12px; border-radius: 12px; background: var(--pizarra); border: 2px solid var(--linea);
+}
+.clasifica-fila.bien { border-color: var(--tiza-verde); }
+.clasifica-fila.mal { border-color: var(--tiza-roja); }
+.clasifica-item { margin: 0; }
+.clasifica-botones { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.clasifica-nota { grid-column: 1 / -1; margin: 0; font-size: 0.9rem; color: var(--tiza-tenue); }
+.clasifica-nota:empty { display: none; }
+.clasifica-fila.mal .clasifica-nota { color: var(--tiza-roja); }
+.clasifica-fila.bien .clasifica-nota { color: var(--tiza-verde); }
+@media (max-width: 640px) { .clasifica-fila { grid-template-columns: 1fr; } .clasifica-botones { justify-content: flex-start; } }
+.boton-cat {
+  font: inherit; font-size: 0.88rem; color: var(--tiza); cursor: pointer;
+  background: transparent; border: 2px solid var(--linea); border-radius: 999px; padding: 6px 12px; min-height: 36px;
+}
+.boton-cat:hover { border-color: var(--tiza-tenue); }
+.boton-cat.elegida { background: var(--tiza-amarilla); border-color: var(--tiza-amarilla); color: var(--pizarra-honda); font-weight: 700; }
+
+.concepto-nav { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.concepto-nav .nota { flex: 1; text-align: center; color: var(--tiza-naranja); }
+
+/* ---------- Lección (resumen) ---------- */
 
 .leccion { display: grid; grid-template-columns: 220px 1fr; gap: 24px; align-items: start; }
 .leccion-jefe { display: flex; flex-direction: column; align-items: center; gap: 10px; }

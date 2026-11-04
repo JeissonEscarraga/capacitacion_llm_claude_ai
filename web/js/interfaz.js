@@ -182,6 +182,7 @@
       b.appendChild(el("p", "casilla-jefe", m.jefe));
       var estado = el("p", "casilla-estado");
       if (res.superado) estado.textContent = "Vencido · " + res.porcentaje + " % aprendido";
+      else if (res.noVistas === res.total && conceptoCompleto(m)) estado.textContent = "Conceptualización lista · falta la práctica";
       else if (res.noVistas === res.total) estado.textContent = m.final ? "Casos que mezclan todos los temas" : "Sin empezar";
       else estado.textContent = res.porcentaje + " % aprendido · " + res.repasar + " por repasar";
       b.appendChild(estado);
@@ -220,23 +221,280 @@
     });
   });
 
-  /* ---------------- Lección ---------------- */
+  /* ---------------- Conceptualización ---------------- */
+
+  var pasos = [];        // pasos del módulo actual (incluye el resumen final)
+  var pasoActual = 0;
+  var pasoResuelto = []; // por paso: true si se puede avanzar
+
+  function pasosDe(modulo, repaso) {
+    var resumen = { tipo: "resumen", titulo: "Lo que te llevas", puntos: modulo.leccion };
+    if (repaso) return [resumen];
+    var c = window.Conceptos.CONCEPTOS[modulo.id];
+    var lista = c ? c.pasos.slice() : [];
+    if (c && c.intro) lista.unshift({ tipo: "intro", titulo: "Antes de empezar", texto: c.intro, modulo: modulo });
+    return lista.concat([resumen]);
+  }
+
+  function conceptoCompleto(modulo) {
+    return !!(usuario.progreso.conceptos && usuario.progreso.conceptos[modulo.id]);
+  }
 
   function abrirLeccion(modulo, repaso) {
     moduloActual = modulo;
     repasoActual = repaso;
+    pasos = pasosDe(modulo, repaso);
+    var completo = repaso || conceptoCompleto(modulo);
+    pasoResuelto = pasos.map(function (p) { return completo || (p.tipo !== "elige" && p.tipo !== "clasifica"); });
+    pasoActual = 0;
     $("leccion-sprite").innerHTML = D.jefe(modulo);
-    $("leccion-frase").textContent = "«" + modulo.frase + "»";
-    $("leccion-etiqueta").textContent = repaso ? "Repaso" : (modulo.final ? "Jefe final" : "Lección rápida");
+    $("leccion-etiqueta").textContent = repaso ? "Repaso" : (modulo.final ? "Jefe final · Conceptualización" : "Conceptualización");
     $("leccion-titulo").textContent = modulo.tema;
-    $("leccion-jefe").textContent = "Te enfrentas a: " + modulo.jefe + " · " + modulo.preguntas.length + " preguntas posibles";
-    var ul = $("leccion-lista");
-    ul.innerHTML = "";
-    modulo.leccion.forEach(function (t) { ul.appendChild(el("li", null, t)); });
+    $("leccion-jefe").textContent = repaso
+      ? "Vuelven las preguntas que fallaste en esta sesión."
+      : "Aprende paso a paso. Al terminar te enfrentas a " + modulo.jefe + ".";
+    $("concepto-saltar").hidden = !(completo && !repaso);
     mostrar("leccion");
-    $("boton-batalla").focus();
+    pintarPaso();
   }
 
+  function pintarPaso() {
+    var p = pasos[pasoActual];
+    var total = pasos.length;
+    $("concepto-contador").textContent = "Paso " + (pasoActual + 1) + " de " + total;
+    var puntos = $("concepto-puntos");
+    puntos.innerHTML = "";
+    for (var i = 0; i < total; i++) {
+      var tipo = pasos[i].tipo;
+      puntos.appendChild(el("li", "punto" + (i < pasoActual ? " hecho" : "") + (i === pasoActual ? " actual" : "") +
+        (tipo === "elige" || tipo === "clasifica" ? " practica" : "")));
+    }
+    var art = $("concepto");
+    art.innerHTML = "";
+    art.className = "concepto concepto-" + p.tipo;
+    if (p.tipo === "intro") pintarIntro(art, p);
+    else if (p.tipo === "concepto") pintarConcepto(art, p);
+    else if (p.tipo === "elige") pintarElige(art, p);
+    else if (p.tipo === "clasifica") pintarClasifica(art, p);
+    else pintarResumen(art, p);
+    actualizarNav();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function actualizarNav() {
+    var ultimo = pasoActual === pasos.length - 1;
+    $("concepto-anterior").disabled = pasoActual === 0;
+    $("concepto-siguiente").hidden = ultimo;
+    $("concepto-siguiente").disabled = !pasoResuelto[pasoActual];
+    $("boton-batalla").hidden = !ultimo;
+    var tipo = pasos[pasoActual].tipo;
+    $("concepto-aviso").textContent = !pasoResuelto[pasoActual] && (tipo === "elige" || tipo === "clasifica")
+      ? "Resuelve el ejercicio para continuar."
+      : "";
+  }
+
+  function titulo(art, texto, etiquetaTexto) {
+    if (etiquetaTexto) art.appendChild(el("p", "etiqueta concepto-tipo", etiquetaTexto));
+    art.appendChild(el("h3", "concepto-titulo", texto));
+  }
+
+  function pintarIntro(art, p) {
+    var caja = el("div", "intro-caja");
+    var s = el("div", "sprite sprite-grande");
+    s.innerHTML = D.jefe(p.modulo);
+    caja.appendChild(s);
+    var txt = el("div");
+    txt.appendChild(el("p", "bocadillo", "«" + p.modulo.frase + "»"));
+    txt.appendChild(el("h3", "concepto-titulo", p.titulo));
+    txt.appendChild(el("p", "concepto-parrafo", p.texto));
+    txt.appendChild(el("p", "nota", "Avanza con «Siguiente». En los pasos marcados como práctica tendrás que resolver un ejercicio para continuar. No se califican: son para aprender."));
+    caja.appendChild(txt);
+    art.appendChild(caja);
+  }
+
+  function pintarVisual(v) {
+    var cont = el("div", "visual visual-" + v.tipo);
+    if (v.tipo === "flujo") {
+      v.pasos.forEach(function (paso, i) {
+        if (i > 0) cont.appendChild(el("span", "flecha", "➜"));
+        var caja = el("div", "flujo-paso");
+        caja.appendChild(el("span", "icono", paso.i));
+        caja.appendChild(el("span", "flujo-texto", paso.t));
+        cont.appendChild(caja);
+      });
+    } else if (v.tipo === "tarjetas") {
+      v.items.forEach(function (it) {
+        var t = el("div", "tarjeta");
+        t.appendChild(el("span", "icono", it.i));
+        t.appendChild(el("p", "tarjeta-titulo", it.t));
+        t.appendChild(el("p", "tarjeta-texto", it.d));
+        cont.appendChild(t);
+      });
+    } else if (v.tipo === "comparar") {
+      [v.izq, v.der].forEach(function (lado, i) {
+        var col = el("div", "columna " + (i === 0 ? "columna-a" : "columna-b"));
+        col.appendChild(el("p", "columna-titulo", lado.titulo));
+        var ul = el("ul");
+        lado.items.forEach(function (x) { ul.appendChild(el("li", null, x)); });
+        col.appendChild(ul);
+        cont.appendChild(col);
+      });
+    } else if (v.tipo === "chat") {
+      v.mensajes.forEach(function (m) {
+        var b = el("div", "burbuja burbuja-" + m.de);
+        b.appendChild(el("span", "burbuja-quien", m.de === "tu" ? "Tú" : (m.de === "claude" ? "Claude" : "Documento")));
+        b.appendChild(el("span", "burbuja-texto", m.t));
+        cont.appendChild(b);
+      });
+    }
+    return cont;
+  }
+
+  function pintarConcepto(art, p) {
+    titulo(art, p.titulo, "Concepto");
+    p.texto.forEach(function (t) { art.appendChild(el("p", "concepto-parrafo", t)); });
+    if (p.visual) art.appendChild(pintarVisual(p.visual));
+    var notas = el("div", "notas");
+    if (p.simple) {
+      var s = el("div", "nota-caja nota-simple");
+      s.appendChild(el("p", "nota-caja-titulo", "💡 En palabras simples"));
+      s.appendChild(el("p", null, p.simple));
+      notas.appendChild(s);
+    }
+    if (p.ejemplo) {
+      var e = el("div", "nota-caja nota-ejemplo");
+      e.appendChild(el("p", "nota-caja-titulo", "⚖️ En la firma"));
+      e.appendChild(el("p", null, p.ejemplo));
+      notas.appendChild(e);
+    }
+    art.appendChild(notas);
+  }
+
+  function pintarElige(art, p) {
+    var indice = pasoActual;
+    titulo(art, p.titulo, "Práctica");
+    art.appendChild(el("p", "situacion", p.situacion));
+    var lista = el("div", "practica-opciones");
+    var retro = el("p", "practica-retro");
+    retro.setAttribute("role", "status");
+    p.opciones.forEach(function (o) {
+      var b = el("button", "opcion opcion-practica");
+      b.type = "button";
+      b.appendChild(el("span", "opcion-texto", o.t));
+      b.addEventListener("click", function () {
+        if (pasoResuelto[indice] && !o.ok) return;
+        b.classList.add(o.ok ? "correcta" : "incorrecta");
+        retro.className = "practica-retro " + (o.ok ? "bien" : "mal");
+        retro.textContent = (o.ok ? "✔ ¡Bien! " : "✘ Intenta de nuevo. ") + o.r;
+        if (o.ok) {
+          pasoResuelto[indice] = true;
+          lista.querySelectorAll("button").forEach(function (x) { x.disabled = true; });
+          actualizarNav();
+          $("concepto-siguiente").focus({ preventScroll: true });
+        } else {
+          b.disabled = true;
+        }
+      });
+      lista.appendChild(b);
+    });
+    art.appendChild(lista);
+    art.appendChild(retro);
+  }
+
+  function pintarClasifica(art, p) {
+    var indice = pasoActual;
+    titulo(art, p.titulo, "Práctica");
+    art.appendChild(el("p", "situacion", p.instruccion));
+    var elegidas = p.items.map(function () { return null; });
+    var tabla = el("div", "clasifica");
+    var filas = [];
+    p.items.forEach(function (it, i) {
+      var fila = el("div", "clasifica-fila");
+      fila.appendChild(el("p", "clasifica-item", it.t));
+      var grupo = el("div", "clasifica-botones");
+      grupo.setAttribute("role", "group");
+      grupo.setAttribute("aria-label", it.t);
+      p.categorias.forEach(function (cat, c) {
+        var b = el("button", "boton-cat", cat);
+        b.type = "button";
+        b.setAttribute("aria-pressed", "false");
+        b.addEventListener("click", function () {
+          if (pasoResuelto[indice]) return;
+          elegidas[i] = c;
+          grupo.querySelectorAll("button").forEach(function (x, k) {
+            x.setAttribute("aria-pressed", String(k === c));
+            x.classList.toggle("elegida", k === c);
+          });
+          fila.classList.remove("mal", "bien");
+          fila.querySelector(".clasifica-nota").textContent = "";
+        });
+        grupo.appendChild(b);
+      });
+      fila.appendChild(grupo);
+      fila.appendChild(el("p", "clasifica-nota"));
+      tabla.appendChild(fila);
+      filas.push(fila);
+    });
+    art.appendChild(tabla);
+    var revisar = el("button", "boton", "Revisar mis respuestas");
+    revisar.type = "button";
+    var retro = el("p", "practica-retro");
+    retro.setAttribute("role", "status");
+    revisar.addEventListener("click", function () {
+      if (elegidas.some(function (x) { return x === null; })) {
+        retro.className = "practica-retro mal";
+        retro.textContent = "Clasifica todas las opciones antes de revisar.";
+        return;
+      }
+      var errores = 0;
+      p.items.forEach(function (it, i) {
+        var ok = elegidas[i] === it.c;
+        if (!ok) errores++;
+        filas[i].classList.toggle("bien", ok);
+        filas[i].classList.toggle("mal", !ok);
+        filas[i].querySelector(".clasifica-nota").textContent = ok
+          ? (it.r ? "✔ " + it.r : "")
+          : "✘ Revisa esta" + (it.r ? ": " + it.r : ".");
+      });
+      if (!errores) {
+        pasoResuelto[indice] = true;
+        revisar.disabled = true;
+        retro.className = "practica-retro bien";
+        retro.textContent = "✔ ¡Todo correcto! Puedes continuar.";
+        actualizarNav();
+        $("concepto-siguiente").focus({ preventScroll: true });
+      } else {
+        retro.className = "practica-retro mal";
+        retro.textContent = "Tienes " + errores + " por corregir. Cambia las marcadas en rojo y revisa de nuevo.";
+      }
+    });
+    var pie = el("div", "acciones");
+    pie.appendChild(revisar);
+    art.appendChild(pie);
+    art.appendChild(retro);
+  }
+
+  function pintarResumen(art, p) {
+    titulo(art, p.titulo, repasoActual ? "Repaso" : "Resumen");
+    var ul = el("ul", "lista-leccion");
+    p.puntos.forEach(function (t) { ul.appendChild(el("li", null, t)); });
+    art.appendChild(ul);
+    if (!repasoActual) {
+      if (!conceptoCompleto(moduloActual)) {
+        usuario.progreso.conceptos = usuario.progreso.conceptos || {};
+        usuario.progreso.conceptos[moduloActual.id] = new Date().toISOString();
+      }
+      art.appendChild(el("p", "practica-retro bien", "✔ Completaste la conceptualización. Ahora, la práctica: enfrenta a " + moduloActual.jefe + "."));
+    }
+  }
+
+  $("concepto-anterior").addEventListener("click", function () {
+    if (pasoActual > 0) { pasoActual--; pintarPaso(); }
+  });
+  $("concepto-siguiente").addEventListener("click", function () {
+    if (pasoResuelto[pasoActual] && pasoActual < pasos.length - 1) { pasoActual++; pintarPaso(); }
+  });
+  $("concepto-saltar").addEventListener("click", function () { iniciarBatalla(); });
   $("boton-batalla").addEventListener("click", function () { iniciarBatalla(); });
 
   /* ---------------- Batalla ---------------- */
@@ -371,11 +629,20 @@
       participante: { nombre: usuario.nombre, correo: usuario.correo },
       modulo: moduloActual,
       batalla: batalla,
-      correoTI: CORREO_TI
+      correoTI: CORREO_TI,
+      conceptoFecha: usuario.progreso.conceptos ? usuario.progreso.conceptos[moduloActual.id] : null
     };
   }
 
+  // La constancia exige conceptualización completa y práctica terminada (ganada o
+  // perdida, no abandonada). El repaso no genera constancia.
+  function constanciaPermitida() {
+    var practicaTerminada = batalla && (batalla.gano || batalla.corazones <= 0);
+    return !repasoActual && conceptoCompleto(moduloActual) && practicaTerminada && batalla.historial.length > 0;
+  }
+
   function descargarConstancia() {
+    if (!constanciaPermitida()) return;
     try {
       var c = K.generar(datosConstancia());
       c.doc.save(c.nombre);
@@ -396,7 +663,7 @@
       $("texto-fin").textContent = "Lo que acertaste quedó como aprendido en esta sesión.";
     } else {
       $("titulo-fin").textContent = b.corazones <= 0 ? "Esta vez ganó el jefe" : "Te retiraste de la batalla";
-      $("texto-fin").textContent = "Lo que fallaste aparece en el jefe de repaso. Lee de nuevo la lección e inténtalo otra vez.";
+      $("texto-fin").textContent = "Lo que fallaste aparece en el jefe de repaso. Repasa la conceptualización e inténtalo otra vez.";
     }
     var r = K.resumen(b);
     var dl = $("resumen-fin");
@@ -407,13 +674,17 @@
       div.appendChild(el("dd", null, String(d[1])));
       dl.appendChild(div);
     });
-    $("bloque-constancia").hidden = r.total === 0;
+    var permitida = constanciaPermitida();
+    $("bloque-constancia").hidden = !permitida;
     $("nota-enviar").textContent = CORREO_TI
       ? "Se abre un correo a " + CORREO_TI + ": adjunta el PDF y envíalo."
       : "Se abre un correo ya redactado: escribe la dirección de TI, adjunta el PDF y envíalo.";
+    if (!permitida && !repasoActual) {
+      $("texto-fin").textContent += " No se generó constancia: para obtenerla hay que terminar la práctica sin retirarse.";
+    }
     $("boton-fin-reintentar").hidden = b.gano && !repasoActual;
     abrir("capa-fin");
-    if (r.total > 0) descargarConstancia();
+    if (permitida) descargarConstancia();
     else $("texto-constancia").textContent = "";
   }
 
@@ -449,9 +720,15 @@
       document.querySelectorAll(".capa").forEach(function (c) { if (c.id !== "capa-fin") c.hidden = true; });
       return;
     }
-    if ($("pantalla-batalla").hidden || document.querySelector(".capa:not([hidden])")) return;
+    if (document.querySelector(".capa:not([hidden])")) return;
     var tag = (ev.target && ev.target.tagName) || "";
     if (tag === "INPUT" || tag === "TEXTAREA") return;
+    if (!$("pantalla-leccion").hidden) {
+      if (ev.key === "ArrowRight" && !$("concepto-siguiente").hidden && !$("concepto-siguiente").disabled) $("concepto-siguiente").click();
+      if (ev.key === "ArrowLeft" && !$("concepto-anterior").disabled) $("concepto-anterior").click();
+      return;
+    }
+    if ($("pantalla-batalla").hidden) return;
     if (/^[1-4]$/.test(ev.key) && !esperandoSiguiente) {
       var b = $("opciones").querySelectorAll(".opcion")[Number(ev.key) - 1];
       if (b && !b.disabled) b.click();
