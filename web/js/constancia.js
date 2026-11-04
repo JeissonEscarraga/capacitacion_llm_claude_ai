@@ -96,7 +96,9 @@
     var modulo = opciones.modulo;
     var b = opciones.batalla;
     var correoTI = opciones.correoTI || "";
-    var fecha = b.terminada || new Date().toISOString();
+    var generada = new Date().toISOString();        // cuándo se crea este PDF
+    var fecha = b.terminada || generada;             // cuándo terminó la práctica
+    var conceptoFecha = opciones.conceptoFecha || null;
     var r = resumen(b);
     var resultado = resultadoTexto(b);
     var tono = b.gano
@@ -165,14 +167,18 @@
     doc.text("LEX BOSS · CLAUDE E IA PARA ABOGADOS", M, 12, { charSpace: 0.5 });
     fuente(22, "bold"); tinta(C.blanco);
     doc.text("Constancia de módulo", M, 24);
-    fuente(9, "normal"); tinta([205, 214, 208]);
-    doc.text(limpiar(fechaBonita(fecha)), ANCHO - M, 24, { align: "right" });
+    fuente(9.5, "normal"); tinta([205, 214, 208]);
+    doc.text(limpiar("Generada el " + fechaBonita(generada)), M, 31.5);
     y = 48;
 
     etiqueta("Módulo", M, y);
     y += 5.5;
     y = escribir(lineas(modulo.tema, 15, "bold", W), M, y, 15, "bold", C.texto);
     y = escribir(lineas("Jefe: " + modulo.jefe, 9.5, "normal", W), M, y + 0.5, 9.5, "normal", C.tenue);
+    if (conceptoFecha) {
+      y = escribir(lineas("Conceptualización completada el " + fechaBonita(conceptoFecha) +
+        " · Práctica terminada el " + fechaBonita(fecha), 9.5, "normal", W), M, y + 0.5, 9.5, "normal", C.tenue);
+    }
     y += 5;
 
     /* ---------- 2. Tarjetas: participante y resultado ---------- */
@@ -187,7 +193,7 @@
     etiqueta("Participante", M + 6, top + 8);
     escribir([lineas(p.nombre, 12, "bold", wIzq - 12)[0]], M + 6, top + 14, 12, "bold", C.texto);
     escribir([lineas(p.correo, 9.5, "normal", wIzq - 12)[0]], M + 6, top + 19.5, 9.5, "normal", C.texto);
-    etiqueta("Fecha", M + 6, top + 27.5);
+    etiqueta("Práctica terminada", M + 6, top + 27.5);
     escribir([limpiar(fechaBonita(fecha))], M + 6, top + 32.5, 9.5, "normal", C.texto);
 
     relleno(tono.claro); doc.roundedRect(xDer, top, wDer, hTarjeta, 3, 3, "F");

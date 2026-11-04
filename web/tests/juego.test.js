@@ -101,3 +101,37 @@ test("la batalla registra cada respuesta para la constancia", () => {
   assert.ok(b.terminada, "fecha de cierre para el PDF");
   assert.strictEqual(prog.modulos[m.id].superado, false);
 });
+
+test("cada módulo tiene conceptualización completa y bien formada", () => {
+  const K = require("../js/conceptos.js").CONCEPTOS;
+  const VISUALES = ["flujo", "tarjetas", "comparar", "chat"];
+  C.TODOS.forEach((m) => {
+    const c = K[m.id];
+    assert.ok(c, "falta conceptualización de " + m.id);
+    assert.ok(c.intro && c.intro.length > 20, "intro en " + m.id);
+    const conceptos = c.pasos.filter((p) => p.tipo === "concepto");
+    const practicas = c.pasos.filter((p) => p.tipo === "elige" || p.tipo === "clasifica");
+    assert.ok(conceptos.length >= 3, "al menos 3 conceptos en " + m.id);
+    assert.ok(practicas.length >= 2, "al menos 2 prácticas en " + m.id);
+    c.pasos.forEach((p, i) => {
+      const donde = m.id + " paso " + (i + 1);
+      assert.ok(p.titulo, "título en " + donde);
+      if (p.tipo === "concepto") {
+        assert.ok(Array.isArray(p.texto) && p.texto.length, "texto en " + donde);
+        assert.ok(p.visual && VISUALES.includes(p.visual.tipo), "visual válido en " + donde);
+        assert.ok(p.simple && p.ejemplo, "analogía y ejemplo en " + donde);
+      } else if (p.tipo === "elige") {
+        assert.ok(p.situacion, donde);
+        assert.strictEqual(p.opciones.filter((o) => o.ok).length, 1, "una sola correcta en " + donde);
+        assert.ok(p.opciones.every((o) => o.t && o.r), "retroalimentación en " + donde);
+      } else if (p.tipo === "clasifica") {
+        assert.strictEqual(p.categorias.length, 2, donde);
+        assert.ok(p.items.length >= 4, "al menos 4 elementos en " + donde);
+        assert.ok(p.items.every((it) => it.c === 0 || it.c === 1), "categoría válida en " + donde);
+        assert.ok(p.items.some((it) => it.c === 0) && p.items.some((it) => it.c === 1), "ambas categorías usadas en " + donde);
+      } else {
+        assert.fail("tipo desconocido en " + donde);
+      }
+    });
+  });
+});

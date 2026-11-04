@@ -42,7 +42,7 @@
 
   <!-- 1. Acceso -->
   <main id="pantalla-acceso" class="pantalla">
-    <p class="lema">Vence a 12 jefes respondiendo preguntas sobre el uso empresarial de Claude, la protección de datos y la propiedad intelectual. Cada respuesta te enseña algo. Al terminar cada módulo descargas una constancia en PDF para enviarla a TI.</p>
+    <p class="lema">Aprende desde cero el uso empresarial de Claude, la protección de datos y la propiedad intelectual. Cada módulo empieza con una explicación paso a paso y termina con una batalla contra un jefe. Al completar ambas partes descargas una constancia en PDF para enviarla a TI.</p>
 
     <section class="bloque" aria-labelledby="titulo-acceso">
       <h2 id="titulo-acceso" class="subtitulo"><span class="paso">1</span> Identifícate</h2>
@@ -91,42 +91,52 @@
     <section class="resumen-mapa" id="resumen-mapa" aria-live="polite"></section>
     <section aria-labelledby="titulo-mapa">
       <h2 id="titulo-mapa" class="subtitulo">Elige a qué jefe enfrentar</h2>
-      <p class="nota">Puedes ir en cualquier orden. Al terminar cada módulo, ganes o no, descargas tu constancia en PDF y la envías a TI. El avance de esta sesión se pierde al cerrar o recargar la página.</p>
+      <p class="nota">Puedes ir en cualquier orden. Cada módulo tiene dos partes: la conceptualización (aprende) y la práctica (la batalla). Al terminar ambas descargas tu constancia en PDF y la envías a TI. El avance de esta sesión se pierde al cerrar o recargar la página.</p>
       <ol class="mapa" id="mapa"></ol>
     </section>
     <details class="bloque instrucciones">
       <summary class="subtitulo subtitulo-chico">Cómo se juega</summary>
       <ul>
-        <li>Antes de cada jefe verás una lección corta con lo esencial del tema.</li>
+        <li>Antes de cada jefe hay una <b>conceptualización</b> paso a paso, con esquemas, ejemplos y ejercicios. Al completarla se abre la práctica.</li>
         <li>Si respondes bien, atacas al jefe. Si respondes mal, pierdes un punto de credibilidad (corazón).</li>
         <li>Siempre verás la explicación de la respuesta correcta: así aprendes aunque falles.</li>
         <li>Con varios aciertos seguidos haces un <b>golpe crítico</b>.</li>
         <li>La <b>consulta al expediente</b> descarta dos opciones incorrectas.</li>
         <li>Lo que fallas aparece en el <b>jefe de repaso</b> mientras dure la sesión.</li>
-        <li>Al terminar un módulo se descarga tu <b>constancia en PDF</b>. Envíala a TI con el botón del final.</li>
+        <li>Al completar la conceptualización y terminar la práctica (ganes o no) se descarga tu <b>constancia en PDF</b>. Si te retiras de la práctica, no hay constancia. Envíala a TI con el botón del final.</li>
         <li>En el computador puedes responder con las teclas 1 a 4 y seguir con Enter.</li>
       </ul>
     </details>
   </main>
 
-  <!-- 4. Lección -->
+  <!-- 4. Conceptualización -->
   <main id="pantalla-leccion" class="pantalla" hidden>
-    <section class="leccion">
-      <div class="leccion-jefe">
-        <div class="sprite sprite-grande" id="leccion-sprite"></div>
-        <p class="bocadillo" id="leccion-frase"></p>
-      </div>
-      <div class="leccion-texto">
+    <section class="concepto-cabecera">
+      <div class="sprite sprite-mini" id="leccion-sprite"></div>
+      <div class="concepto-cabecera-texto">
         <p class="etiqueta" id="leccion-etiqueta"></p>
         <h2 class="subtitulo" id="leccion-titulo"></h2>
         <p class="nota" id="leccion-jefe"></p>
-        <ul class="lista-leccion" id="leccion-lista"></ul>
-        <div class="acciones">
-          <button type="button" class="boton" id="boton-batalla">¡A la batalla!</button>
-          <button type="button" class="boton boton-secundario" data-ir="mapa">Volver al mapa</button>
-        </div>
       </div>
     </section>
+
+    <div class="concepto-progreso">
+      <p class="cifras" id="concepto-contador"></p>
+      <ol class="puntos-progreso" id="concepto-puntos" aria-hidden="true"></ol>
+    </div>
+
+    <article class="concepto" id="concepto" aria-live="polite"></article>
+
+    <div class="concepto-nav">
+      <button type="button" class="boton boton-secundario" id="concepto-anterior">← Anterior</button>
+      <p class="nota" id="concepto-aviso"></p>
+      <button type="button" class="boton" id="concepto-siguiente">Siguiente →</button>
+      <button type="button" class="boton" id="boton-batalla" hidden>¡A la práctica!</button>
+    </div>
+    <div class="acciones">
+      <button type="button" class="boton boton-secundario boton-chico" data-ir="mapa">Volver al mapa</button>
+      <button type="button" class="boton boton-secundario boton-chico" id="concepto-saltar" hidden>Ya la completé: ir a la práctica</button>
+    </div>
   </main>
 
   <!-- 5. Batalla -->
@@ -198,7 +208,7 @@
   <div class="capa" id="capa-rendirse" hidden>
     <div class="ventana" role="dialog" aria-modal="true" aria-labelledby="titulo-rendirse">
       <h2 id="titulo-rendirse" class="subtitulo">¿Retirarte de esta batalla?</h2>
-      <p>Este jefe no contará como vencido. Igual podrás descargar la constancia con lo que alcanzaste a responder.</p>
+      <p>Este jefe no contará como vencido y no se generará constancia: para obtenerla hay que terminar la práctica.</p>
       <div class="acciones">
         <button type="button" class="boton boton-secundario" data-cerrar>Seguir</button>
         <button type="button" class="boton" id="boton-confirmar-rendirse">Retirarme</button>
@@ -229,6 +239,7 @@
 <script src="config.js"></script>
 <script src="vendor/jspdf.umd.min.js"></script>
 <script src="js/contenido.js"></script>
+<script src="js/conceptos.js"></script>
 <script src="js/logica.js"></script>
 <script src="js/dibujos.js"></script>
 <script src="js/constancia.js"></script>

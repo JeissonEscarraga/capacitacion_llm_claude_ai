@@ -24,13 +24,18 @@ La mecánica se inspira en la versión web de [Logic Boss Game](https://github.c
 | 12 | El Leviatán de los Tokens | API de Anthropic: claves, costos, caché de prompts, lotes, tool use, workspaces |
 | Final | El Comité de Riesgo Supremo | Casos integrales (se abre al vencer a los 12) |
 
-Son 83 preguntas, cada una con su concepto y su explicación. Antes de cada jefe hay una lección corta. Lo que se falla aparece luego en un **jefe de repaso**. Al terminar cada módulo se descarga la constancia en PDF.
+Son 83 preguntas, cada una con su concepto y su explicación. Cada módulo tiene dos partes:
+
+1. **Conceptualización** (para personas sin conocimientos previos): pasos con explicación en lenguaje sencillo, un esquema visual, una analogía («En palabras simples»), un ejemplo de la firma y ejercicios prácticos que hay que resolver para avanzar. El contenido está en `web/js/conceptos.js`.
+2. **Práctica:** la batalla contra el jefe.
+
+Lo que se falla aparece luego en un **jefe de repaso**. Al completar la conceptualización y terminar la práctica se descarga la constancia en PDF.
 
 ## Cómo funciona
 
 1. **Entrada con nombre y correo**, más el aviso de privacidad. No hay clave ni cuenta.
-2. **Juego:** antes de cada jefe hay una lección; en la batalla, cada respuesta muestra la explicación. Lo que se falla vuelve en el jefe de repaso. El jefe final está siempre abierto.
-3. **Constancia en PDF:** al terminar un módulo (vencido, perdido o con retiro) se descarga sola. Incluye participante, correo, módulo, fecha, resultado, puntaje y cada pregunta: lo que eligió, la respuesta correcta y la explicación de las falladas. Se genera en el navegador con [jsPDF](https://github.com/parallax/jsPDF) (MIT), copiado en `web/vendor/`, así que no se envía nada a terceros.
+2. **Juego:** antes de cada jefe hay una conceptualización paso a paso (no se puede saltar la primera vez); en la batalla, cada respuesta muestra la explicación. Lo que se falla vuelve en el jefe de repaso. El jefe final está siempre abierto.
+3. **Constancia en PDF:** se descarga sola solo si se completó la conceptualización y se terminó la práctica (ganada o perdida; si la persona se retira, no hay constancia; el repaso tampoco genera). Al inicio muestra la fecha y hora en que se generó; incluye participante, correo, módulo, fechas de conceptualización y práctica, resultado, puntaje y cada pregunta: lo que eligió, la respuesta correcta y la explicación de las falladas. Se genera en el navegador con [jsPDF](https://github.com/parallax/jsPDF) (MIT), copiado en `web/vendor/`, así que no se envía nada a terceros.
 4. **Envío a TI:** el botón «Enviar a TI» abre un correo ya redactado dirigido al buzón de TI configurado en `web/config.js` (`correoTI`, hoy `admon_sistemas@cavelier.com`). La persona adjunta el PDF y lo envía desde su cuenta de la firma, así que el remitente queda verificado por Microsoft 365.
 5. **Nada se guarda:** el avance vive en memoria mientras la página está abierta. Al recargar o salir se pierde; las constancias descargadas son el registro.
 
@@ -78,7 +83,8 @@ web/
   index.html          pantallas del juego
   config.js           configuración (buzón de TI; sin secretos)
   css/estilos.css     estilo de pizarra
-  js/contenido.js     temas, lecciones y preguntas  ← aquí se edita el contenido
+  js/contenido.js     temas, resúmenes y preguntas de la batalla  ← contenido
+  js/conceptos.js     conceptualización de cada módulo (pasos, visuales, prácticas)  ← contenido
   js/logica.js        batalla, progreso, niveles (sin interfaz)
   js/constancia.js    constancia en PDF y correo para TI
   vendor/jspdf.umd.min.js  jsPDF 2.5.1 (MIT)
@@ -90,7 +96,7 @@ scripts/servir.js     servidor estático sin dependencias
 
 ### Agregar o corregir preguntas
 
-Editar `web/js/contenido.js`. Cada pregunta tiene `id` (no cambiarlo: el progreso guardado depende de él), `concepto`, `p` (enunciado), `ok` (respuesta correcta), `no` (tres incorrectas) y `e` (explicación). Luego correr `npm test`.
+Las preguntas de la batalla están en `web/js/contenido.js`; la conceptualización, en `web/js/conceptos.js` (el comentario del inicio explica los tipos de paso y de visual). Cada pregunta tiene `id` (no cambiarlo: el progreso guardado depende de él), `concepto`, `p` (enunciado), `ok` (respuesta correcta), `no` (tres incorrectas) y `e` (explicación). Luego correr `npm test`.
 
 ## Seguridad y privacidad
 
