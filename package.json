@@ -1,0 +1,14 @@
+{
+  "name": "lex-boss-capacitacion-claude",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Juego de capacitación para abogados sobre el uso empresarial de Claude, datos personales y propiedad intelectual.",
+  "license": "MIT",
+  "scripts": {
+    "start": "node scripts/servir.js",
+    "test": "node --test web/tests/juego.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
