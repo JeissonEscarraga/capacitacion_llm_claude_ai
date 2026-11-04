@@ -31,7 +31,7 @@ Son 83 preguntas, cada una con su concepto y su explicación. Antes de cada jefe
 1. **Entrada con nombre y correo**, más el aviso de privacidad. No hay clave ni cuenta.
 2. **Juego:** antes de cada jefe hay una lección; en la batalla, cada respuesta muestra la explicación. Lo que se falla vuelve en el jefe de repaso. El jefe final está siempre abierto.
 3. **Constancia en PDF:** al terminar un módulo (vencido, perdido o con retiro) se descarga sola. Incluye participante, correo, módulo, fecha, resultado, puntaje y cada pregunta: lo que eligió, la respuesta correcta y la explicación de las falladas. Se genera en el navegador con [jsPDF](https://github.com/parallax/jsPDF) (MIT), copiado en `web/vendor/`, así que no se envía nada a terceros.
-4. **Envío a TI:** el botón «Enviar a TI» abre un correo ya redactado dirigido al buzón configurado en `web/config.js` (`correoTI`). La persona adjunta el PDF y lo envía desde su cuenta de la firma, así que el remitente queda verificado por Microsoft 365.
+4. **Envío a TI:** el botón «Enviar a TI» abre un correo ya redactado dirigido al buzón de TI configurado en `web/config.js` (`correoTI`, hoy `admon_sistemas@cavelier.com`). La persona adjunta el PDF y lo envía desde su cuenta de la firma, así que el remitente queda verificado por Microsoft 365.
 5. **Nada se guarda:** el avance vive en memoria mientras la página está abierta. Al recargar o salir se pierde; las constancias descargadas son el registro.
 
 ### Límites que conviene conocer
