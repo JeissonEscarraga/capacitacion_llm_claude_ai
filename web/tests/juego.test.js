@@ -213,15 +213,15 @@ test("el correo para TI lleva el PDF adjunto y se abre como borrador", () => {
     participante: { nombre: "María Prueba", correo: "maria@ejemplo.test" },
     modulo: C.MODULOS[0],
     batalla: { historial: [{ acierto: true }, { acierto: false }], gano: true, corazones: 2 },
-    correoTI: "admon_sistemas@cavelier.com"
+    correoTI: "capacitacionai@cavelier.com"
   };
   const eml = K.correoEml(opciones, "AIBoss_fundamentos_maria_20261104-1200.pdf", pdf);
-  assert.ok(eml.startsWith("To: admon_sistemas@cavelier.com\r\n"));
+  assert.ok(eml.startsWith("To: capacitacionai@cavelier.com\r\n"));
   assert.ok(eml.includes("\r\nX-Unsent: 1\r\n"), "Outlook lo abre como borrador");
   assert.ok(eml.includes('Content-Disposition: attachment; filename="AIBoss_fundamentos_maria_20261104-1200.pdf"'));
   assert.ok(eml.includes(pdf), "el PDF va dentro del correo");
   const asunto = eml.match(/Subject: =\?UTF-8\?B\?(.+)\?=/)[1];
   assert.ok(Buffer.from(asunto, "base64").toString("utf8").startsWith("Constancia AI BOSS - Fundamentos"));
   assert.ok(eml.trimEnd().endsWith("--"), "cierre del multipart");
-  assert.ok(K.enlaceCorreo(opciones, "x.pdf").startsWith("mailto:admon_sistemas@cavelier.com?subject="));
+  assert.ok(K.enlaceCorreo(opciones, "x.pdf").startsWith("mailto:capacitacionai@cavelier.com?subject="));
 });
