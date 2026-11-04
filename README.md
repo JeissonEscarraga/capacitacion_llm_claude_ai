@@ -1,6 +1,6 @@
 # Lex Boss: Claude e IA para abogados
 
-Juego web de capacitación para los abogados de la firma. Cada tema es un **jefe** que se vence respondiendo preguntas: si aciertas, lo atacas; si fallas, pierdes credibilidad, pero siempre ves la explicación correcta. El juego guarda quién lo usó, qué aprendió, qué debe repasar y qué no ha visto.
+Juego web de capacitación para los abogados de la firma. Cada tema es un **jefe** que se vence respondiendo preguntas: si aciertas, lo atacas; si fallas, pierdes credibilidad, pero siempre ves la explicación correcta. Al terminar cada módulo, la persona descarga una **constancia en PDF** con su nombre, correo, puntaje y respuestas correctas e incorrectas, y la envía a TI para su control. El juego no guarda datos en ningún servidor.
 
 **Jugar:** https://jeissonescarraga.github.io/capacitacion_llm_claude_ai/
 
@@ -24,26 +24,29 @@ La mecánica se inspira en la versión web de [Logic Boss Game](https://github.c
 | 12 | El Leviatán de los Tokens | API de Anthropic: claves, costos, caché de prompts, lotes, tool use, workspaces |
 | Final | El Comité de Riesgo Supremo | Casos integrales (se abre al vencer a los 12) |
 
-Son 83 preguntas, cada una con su concepto y su explicación. Antes de cada jefe hay una lección corta. Lo que se falla aparece luego en un **jefe de repaso**. Al terminar, la persona puede imprimir una constancia.
+Son 83 preguntas, cada una con su concepto y su explicación. Antes de cada jefe hay una lección corta. Lo que se falla aparece luego en un **jefe de repaso**. Al terminar cada módulo se descarga la constancia en PDF.
 
 ## Cómo funciona
 
-1. **Acceso con nombre, correo y clave personal.** La persona inventa una clave solo para el juego (mínimo 10 caracteres). La clave **no se guarda**: se guarda un verificador derivado con PBKDF2‑SHA‑256 (150.000 iteraciones). Para crear el registro se pide aceptar el aviso de privacidad (Ley 1581 de 2012).
-2. **Progreso por concepto.** Cada pregunta queda como *aprendida* (la última respuesta fue correcta), *por repasar* (la última fue incorrecta) o *no vista*. «Mi avance» muestra todo por tema, deja descargar un CSV y borrar los datos.
-3. **Dónde se guarda:**
-   - **Por defecto, en el navegador** de cada persona (`localStorage`). No sale nada a internet.
-   - **Código de continuación:** botón «Código». Genera un texto cifrado (AES‑GCM con la clave) para seguir en otro equipo o navegador. Se pega en la pantalla de inicio junto con la clave.
-   - **Registro central (opcional):** si en `web/config.js` se pone la URL de un flujo de la firma (por ejemplo, Power Automate + lista de SharePoint), el progreso de todos queda consolidado y cualquiera retoma desde cualquier equipo con correo y clave. Ver [docs/registro-central.md](docs/registro-central.md).
-4. **Participantes en este navegador:** desde «Mi avance» se ve y se descarga en CSV quién ha jugado en ese equipo (útil para un equipo compartido o una sala de capacitación).
+1. **Entrada con nombre y correo**, más el aviso de privacidad. No hay clave ni cuenta.
+2. **Juego:** antes de cada jefe hay una lección; en la batalla, cada respuesta muestra la explicación. Lo que se falla vuelve en el jefe de repaso. El jefe final está siempre abierto.
+3. **Constancia en PDF:** al terminar un módulo (vencido, perdido o con retiro) se descarga sola. Incluye participante, correo, módulo, fecha, resultado, puntaje y cada pregunta: lo que eligió, la respuesta correcta y la explicación de las falladas. Se genera en el navegador con [jsPDF](https://github.com/parallax/jsPDF) (MIT), copiado en `web/vendor/`, así que no se envía nada a terceros.
+4. **Envío a TI:** el botón «Enviar a TI» abre un correo ya redactado dirigido al buzón configurado en `web/config.js` (`correoTI`). La persona adjunta el PDF y lo envía desde su cuenta de la firma, así que el remitente queda verificado por Microsoft 365.
+5. **Nada se guarda:** el avance vive en memoria mientras la página está abierta. Al recargar o salir se pierde; las constancias descargadas son el registro.
+
+### Límites que conviene conocer
+
+- El PDF lo genera el navegador de la persona: técnicamente se puede alterar. Para una capacitación suele bastar; si hiciera falta un control a prueba de manipulación, habría que usar un servicio corporativo autenticado (por ejemplo, Microsoft Forms con inicio de sesión).
+- El envío depende de que la persona adjunte el PDF y pulse «Enviar».
+- El buzón de TI que se configure queda visible en el sitio público.
 
 ### Qué hacer si falla
 
 | Situación | Qué hacer |
 |-----------|-----------|
-| «La clave no coincide» | Es la clave del juego, no la del correo. Si se olvidó, no se puede recuperar: se borran los datos del sitio en ese navegador y se empieza de nuevo. |
-| Cambió de equipo y no ve su avance | Usar el código de continuación (o activar el registro central). |
-| Borró los datos del navegador | Sin código ni registro central, el avance se pierde. Por eso conviene guardar el código. |
-| «Este navegador no permite cifrado» | Abrir el juego por `https://` o `localhost`, en un navegador actualizado. |
+| No se descargó el PDF | Botón «Descargar PDF» en la ventana de resultado. Revisa que el navegador permita descargas del sitio. |
+| «Enviar a TI» no abre nada | No hay una aplicación de correo predeterminada en el equipo. Escribe a TI desde Outlook y adjunta el PDF. |
+| Se perdió el avance | Es normal al recargar: el juego no guarda nada. Las constancias ya descargadas siguen siendo válidas. |
 
 ## Publicar en GitHub Pages
 
@@ -73,16 +76,16 @@ y abrir http://localhost:8080.
 ```
 web/
   index.html          pantallas del juego
-  config.js           configuración (URL del registro central; sin secretos)
+  config.js           configuración (buzón de TI; sin secretos)
   css/estilos.css     estilo de pizarra
   js/contenido.js     temas, lecciones y preguntas  ← aquí se edita el contenido
   js/logica.js        batalla, progreso, niveles (sin interfaz)
-  js/almacen.js       guardado local, cifrado, código de continuación, registro central
+  js/constancia.js    constancia en PDF y correo para TI
+  vendor/jspdf.umd.min.js  jsPDF 2.5.1 (MIT)
   js/dibujos.js       jefes y personajes en SVG
   js/interfaz.js      pantallas y eventos
-  tests/juego.test.js pruebas (contenido, lógica y guardado)
+  tests/juego.test.js pruebas (contenido y lógica)
 scripts/servir.js     servidor estático sin dependencias
-docs/registro-central.md
 ```
 
 ### Agregar o corregir preguntas
@@ -92,7 +95,7 @@ Editar `web/js/contenido.js`. Cada pregunta tiene `id` (no cambiarlo: el progres
 ## Seguridad y privacidad
 
 - Este repositorio y el sitio de Pages son **públicos**: no se ponen claves, tokens, contraseñas ni datos de clientes en ningún archivo, incluido `config.js`.
-- El juego no pide datos sensibles. El aviso de privacidad está en la pantalla de inicio.
+- El juego no guarda datos personales ni pide datos sensibles. El aviso de privacidad está en la pantalla de inicio. Las constancias que llegan a TI sí contienen nombre, correo y resultados: hay que definir quién accede a ese buzón y cuánto tiempo se conservan.
 - Las referencias normativas y de producto son orientativas y deben revisarse periódicamente (normas, términos de Anthropic y funciones de los productos cambian).
 
 ## Licencia

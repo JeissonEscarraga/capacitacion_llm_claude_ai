@@ -173,6 +173,8 @@
     this.gano = false;
     this.actual = null;
     this.falladasAqui = [];
+    this.historial = []; // cada respuesta de esta batalla, para la constancia en PDF
+    this.inicio = new Date().toISOString();
     this.cola = this._ordenar(this.modulo.preguntas);
   }
 
@@ -231,6 +233,15 @@
       xp: 0
     };
     registrarRespuesta(this.progreso, a.pregunta.id, acierto, fecha);
+    this.historial.push({
+      id: a.pregunta.id,
+      concepto: a.pregunta.concepto,
+      pregunta: a.pregunta.p,
+      elegida: a.opciones[indice] !== undefined ? a.opciones[indice] : "",
+      correcta: a.pregunta.ok,
+      acierto: acierto,
+      explicacion: a.pregunta.e
+    });
 
     if (acierto) {
       this.aciertos++;
@@ -283,6 +294,7 @@
   };
 
   Batalla.prototype._cerrar = function (fecha) {
+    this.terminada = fecha || new Date().toISOString();
     this.progreso.partidas = (this.progreso.partidas || 0) + 1;
     if (this.repaso) return;
     var m = this.progreso.modulos[this.modulo.id] || { superado: false, victorias: 0, derrotas: 0, mejorRacha: 0 };

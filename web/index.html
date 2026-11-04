@@ -34,8 +34,7 @@
       </div>
       <div class="acciones-usuario">
         <button type="button" class="boton boton-chico boton-secundario" data-ir="mapa">Mapa</button>
-        <button type="button" class="boton boton-chico boton-secundario" data-ir="avance">Mi avance</button>
-        <button type="button" class="boton boton-chico boton-secundario" id="boton-codigo">Código</button>
+        <button type="button" class="boton boton-chico boton-secundario" id="boton-personaje">Personaje</button>
         <button type="button" class="boton boton-chico boton-secundario" id="boton-salir">Salir</button>
       </div>
     </div>
@@ -43,7 +42,7 @@
 
   <!-- 1. Acceso -->
   <main id="pantalla-acceso" class="pantalla">
-    <p class="lema">Vence a 12 jefes respondiendo preguntas sobre el uso empresarial de Claude, la protección de datos y la propiedad intelectual. Cada respuesta te enseña algo, y tu avance queda guardado para que sigas donde ibas.</p>
+    <p class="lema">Vence a 12 jefes respondiendo preguntas sobre el uso empresarial de Claude, la protección de datos y la propiedad intelectual. Cada respuesta te enseña algo. Al terminar cada módulo descargas una constancia en PDF para enviarla a TI.</p>
 
     <section class="bloque" aria-labelledby="titulo-acceso">
       <h2 id="titulo-acceso" class="subtitulo"><span class="paso">1</span> Identifícate</h2>
@@ -53,49 +52,26 @@
           <input id="acceso-nombre" type="text" autocomplete="name" required maxlength="80">
         </div>
         <div class="campo">
-          <label for="acceso-correo" class="etiqueta">Correo</label>
+          <label for="acceso-correo" class="etiqueta">Correo de la firma</label>
           <input id="acceso-correo" type="email" autocomplete="email" required maxlength="120" spellcheck="false" autocapitalize="off">
-        </div>
-        <div class="campo">
-          <label for="acceso-clave" class="etiqueta">Clave personal (mínimo 10 caracteres)</label>
-          <div class="fila">
-            <input id="acceso-clave" type="password" autocomplete="current-password" required minlength="10" maxlength="128">
-            <button type="button" class="boton boton-chico boton-secundario" id="ver-clave" aria-pressed="false">Ver</button>
-          </div>
-          <p class="nota">Inventa una clave solo para este juego, de al menos 10 caracteres (por ejemplo, una frase corta). No uses la de tu correo. Con ella retomas tu avance. No la guardamos, así que si la olvidas no se puede recuperar.</p>
+          <p class="nota">Aparecerá en tus constancias. No se guarda en ningún lado.</p>
         </div>
         <div class="campo campo-check" id="campo-consentimiento">
           <input id="acceso-consentimiento" type="checkbox">
-          <label for="acceso-consentimiento">Leí el <a href="#aviso-privacidad">aviso de privacidad</a> y autorizo el tratamiento de mi nombre, correo y resultados para el seguimiento de esta capacitación.</label>
+          <label for="acceso-consentimiento">Leí el <a href="#aviso-privacidad">aviso de privacidad</a> y autorizo que mi nombre, correo y resultados se incluyan en las constancias que enviaré a TI para el control de esta capacitación.</label>
         </div>
-        <button type="submit" class="boton" id="boton-entrar">Entrar o continuar</button>
+        <button type="submit" class="boton" id="boton-entrar">Empezar</button>
         <p class="mensaje" id="mensaje-acceso" role="status"></p>
       </form>
     </section>
 
-    <details class="bloque">
-      <summary class="subtitulo subtitulo-chico">¿Vienes de otro equipo o navegador? Usa tu código de continuación</summary>
-      <form id="form-importar" class="formulario" autocomplete="off" method="post" action="#" onsubmit="return false">
-        <div class="campo">
-          <label for="importar-codigo" class="etiqueta">Código de continuación</label>
-          <textarea id="importar-codigo" rows="3" spellcheck="false" placeholder="LEXBOSS1...."></textarea>
-        </div>
-        <div class="campo">
-          <label for="importar-clave" class="etiqueta">Tu clave personal</label>
-          <input id="importar-clave" type="password" autocomplete="current-password">
-        </div>
-        <button type="submit" class="boton boton-secundario">Recuperar avance</button>
-        <p class="mensaje" id="mensaje-importar" role="status"></p>
-      </form>
-    </details>
-
     <details class="bloque" id="aviso-privacidad">
       <summary class="subtitulo subtitulo-chico">Aviso de privacidad</summary>
       <div class="texto-largo">
-        <p><b>Qué datos se tratan:</b> tu nombre, tu correo, la fecha de tus visitas y tus resultados en el juego (preguntas vistas, acertadas y por repasar).</p>
-        <p><b>Para qué:</b> identificarte para que retomes tu avance y hacer seguimiento de la capacitación sobre el uso de inteligencia artificial en la firma.</p>
-        <p id="aviso-donde"><b>Dónde se guardan:</b> en el almacenamiento de este navegador. Tu clave no se guarda: solo un valor derivado que permite comprobarla.</p>
-        <p><b>Tus derechos:</b> puedes conocer, actualizar y suprimir tus datos y revocar esta autorización (Ley 1581 de 2012). Desde «Mi avance» puedes descargar tus datos o borrarlos. Para cualquier solicitud adicional, escribe al área responsable de la capacitación o al canal de protección de datos de la firma.</p>
+        <p><b>Qué datos se tratan:</b> tu nombre, tu correo y los resultados de cada módulo (puntaje y respuestas correctas e incorrectas).</p>
+        <p><b>Dónde quedan:</b> en ningún servidor. El juego no guarda nada: tus datos solo están en la página mientras juegas y en los PDF que descargas. Al cerrar o recargar la página se borran.</p>
+        <p><b>Para qué:</b> tú envías cada constancia a TI, que la usa solo para controlar el avance de la capacitación sobre el uso de inteligencia artificial en la firma.</p>
+        <p><b>Tus derechos:</b> puedes conocer, actualizar y suprimir tus datos y revocar esta autorización (Ley 1581 de 2012), escribiendo a TI o al canal de protección de datos de la firma.</p>
         <p><b>Datos sensibles:</b> el juego no pide ni necesita datos sensibles. No escribas información de clientes en ningún campo.</p>
       </div>
     </details>
@@ -105,7 +81,7 @@
   <main id="pantalla-perfil" class="pantalla" hidden>
     <section class="bloque" aria-labelledby="titulo-perfil">
       <h2 id="titulo-perfil" class="subtitulo"><span class="paso">2</span> Elige tu personaje</h2>
-      <p class="nota">Cada personaje tiene una ventaja distinta en las batallas. Puedes cambiarlo después desde «Mi avance».</p>
+      <p class="nota">Cada personaje tiene una ventaja distinta en las batallas. Puedes cambiarlo en cualquier momento con el botón «Personaje».</p>
       <div class="personajes" id="lista-perfiles"></div>
     </section>
   </main>
@@ -115,7 +91,7 @@
     <section class="resumen-mapa" id="resumen-mapa" aria-live="polite"></section>
     <section aria-labelledby="titulo-mapa">
       <h2 id="titulo-mapa" class="subtitulo">Elige a qué jefe enfrentar</h2>
-      <p class="nota">Puedes ir en cualquier orden. Al vencer a los 12 se abre el jefe final.</p>
+      <p class="nota">Puedes ir en cualquier orden. Al terminar cada módulo, ganes o no, descargas tu constancia en PDF y la envías a TI. El avance de esta sesión se pierde al cerrar o recargar la página.</p>
       <ol class="mapa" id="mapa"></ol>
     </section>
     <details class="bloque instrucciones">
@@ -126,7 +102,8 @@
         <li>Siempre verás la explicación de la respuesta correcta: así aprendes aunque falles.</li>
         <li>Con varios aciertos seguidos haces un <b>golpe crítico</b>.</li>
         <li>La <b>consulta al expediente</b> descarta dos opciones incorrectas.</li>
-        <li>Lo que fallas queda <b>por repasar</b>; cuando acumules varias, aparece el jefe de repaso.</li>
+        <li>Lo que fallas aparece en el <b>jefe de repaso</b> mientras dure la sesión.</li>
+        <li>Al terminar un módulo se descarga tu <b>constancia en PDF</b>. Envíala a TI con el botón del final.</li>
         <li>En el computador puedes responder con las teclas 1 a 4 y seguir con Enter.</li>
       </ul>
     </details>
@@ -195,29 +172,21 @@
     </div>
   </main>
 
-  <!-- 6. Avance -->
-  <main id="pantalla-avance" class="pantalla" hidden>
-    <section class="bloque">
-      <h2 class="subtitulo">Mi avance</h2>
-      <div id="avance-resumen" class="avance-resumen"></div>
-      <div class="acciones">
-        <button type="button" class="boton boton-secundario" id="boton-certificado" hidden>Ver constancia</button>
-        <button type="button" class="boton boton-secundario" id="boton-csv">Descargar mi avance (CSV)</button>
-        <button type="button" class="boton boton-secundario" id="boton-cambiar-perfil">Cambiar personaje</button>
-        <button type="button" class="boton boton-secundario" id="boton-participantes">Participantes en este navegador</button>
-        <button type="button" class="boton boton-peligro" id="boton-borrar">Borrar mis datos</button>
-      </div>
-    </section>
-    <div id="avance-modulos" class="avance-modulos"></div>
-  </main>
-
-  <!-- Fin de batalla -->
+  <!-- Fin de módulo -->
   <div class="capa" id="capa-fin" hidden>
     <div class="ventana" role="dialog" aria-modal="true" aria-labelledby="titulo-fin">
       <div class="sprite sprite-fin" id="sprite-fin"></div>
       <h2 id="titulo-fin" class="subtitulo"></h2>
       <p id="texto-fin"></p>
       <dl class="resumen" id="resumen-fin"></dl>
+      <div class="constancia" id="bloque-constancia">
+        <p class="etiqueta">Tu constancia</p>
+        <p id="texto-constancia"></p>
+        <ol class="pasos-constancia">
+          <li><button type="button" class="boton boton-chico" id="boton-pdf">Descargar PDF</button></li>
+          <li><button type="button" class="boton boton-chico boton-secundario" id="boton-enviar-ti">Enviar a TI</button> <span class="nota" id="nota-enviar"></span></li>
+        </ol>
+      </div>
       <div class="acciones">
         <button type="button" class="boton" id="boton-fin-mapa">Volver al mapa</button>
         <button type="button" class="boton boton-secundario" id="boton-fin-reintentar">Intentar de nuevo</button>
@@ -229,7 +198,7 @@
   <div class="capa" id="capa-rendirse" hidden>
     <div class="ventana" role="dialog" aria-modal="true" aria-labelledby="titulo-rendirse">
       <h2 id="titulo-rendirse" class="subtitulo">¿Retirarte de esta batalla?</h2>
-      <p>Lo que ya respondiste queda guardado, pero este jefe no contará como vencido.</p>
+      <p>Este jefe no contará como vencido. Igual podrás descargar la constancia con lo que alcanzaste a responder.</p>
       <div class="acciones">
         <button type="button" class="boton boton-secundario" data-cerrar>Seguir</button>
         <button type="button" class="boton" id="boton-confirmar-rendirse">Retirarme</button>
@@ -237,62 +206,14 @@
     </div>
   </div>
 
-  <!-- Código de continuación -->
-  <div class="capa" id="capa-codigo" hidden>
-    <div class="ventana" role="dialog" aria-modal="true" aria-labelledby="titulo-codigo">
-      <h2 id="titulo-codigo" class="subtitulo">Tu código de continuación</h2>
-      <p>Guárdalo (por ejemplo, en un correo a ti mismo). En otro equipo o navegador, pégalo en la pantalla de inicio junto con tu clave y seguirás donde ibas. Está cifrado con tu clave.</p>
-      <textarea id="codigo-texto" rows="5" readonly spellcheck="false"></textarea>
+  <!-- Salir -->
+  <div class="capa" id="capa-salir" hidden>
+    <div class="ventana" role="dialog" aria-modal="true" aria-labelledby="titulo-salir">
+      <h2 id="titulo-salir" class="subtitulo">¿Salir?</h2>
+      <p>Se borrará el avance de esta sesión. Tus constancias ya descargadas no se ven afectadas.</p>
       <div class="acciones">
-        <button type="button" class="boton" id="boton-copiar">Copiar</button>
-        <button type="button" class="boton boton-secundario" data-cerrar>Cerrar</button>
-      </div>
-      <p class="mensaje" id="mensaje-codigo" role="status"></p>
-    </div>
-  </div>
-
-  <!-- Participantes -->
-  <div class="capa" id="capa-participantes" hidden>
-    <div class="ventana ventana-ancha" role="dialog" aria-modal="true" aria-labelledby="titulo-participantes">
-      <h2 id="titulo-participantes" class="subtitulo">Participantes en este navegador</h2>
-      <p class="nota" id="nota-participantes"></p>
-      <div class="tabla-envoltura"><table class="tabla" id="tabla-participantes"></table></div>
-      <div class="acciones">
-        <button type="button" class="boton" id="boton-csv-participantes">Descargar CSV</button>
-        <button type="button" class="boton boton-secundario" data-cerrar>Cerrar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Borrar -->
-  <div class="capa" id="capa-borrar" hidden>
-    <div class="ventana" role="dialog" aria-modal="true" aria-labelledby="titulo-borrar">
-      <h2 id="titulo-borrar" class="subtitulo">Borrar mis datos</h2>
-      <p>Se eliminará tu registro y tu avance de este navegador<span id="borrar-central"></span>. No se puede deshacer.</p>
-      <form id="form-borrar" class="formulario" method="post" action="#" onsubmit="return false">
-        <div class="campo">
-          <label for="borrar-clave" class="etiqueta">Confirma con tu clave</label>
-          <input id="borrar-clave" type="password" autocomplete="current-password">
-        </div>
-        <div class="acciones">
-          <button type="button" class="boton boton-secundario" data-cerrar>Cancelar</button>
-          <button type="submit" class="boton boton-peligro">Borrar</button>
-        </div>
-        <p class="mensaje" id="mensaje-borrar" role="status"></p>
-      </form>
-    </div>
-  </div>
-
-  <!-- Constancia -->
-  <div class="capa" id="capa-certificado" hidden>
-    <div class="ventana ventana-ancha certificado" role="dialog" aria-modal="true" aria-labelledby="titulo-certificado">
-      <p class="etiqueta">Constancia de participación</p>
-      <h2 id="titulo-certificado" class="subtitulo">Lex Boss: Claude e IA para abogados</h2>
-      <p id="certificado-texto"></p>
-      <ul id="certificado-temas" class="certificado-temas"></ul>
-      <div class="acciones no-imprimir">
-        <button type="button" class="boton" id="boton-imprimir">Imprimir o guardar en PDF</button>
-        <button type="button" class="boton boton-secundario" data-cerrar>Cerrar</button>
+        <button type="button" class="boton boton-secundario" data-cerrar>Seguir jugando</button>
+        <button type="button" class="boton" id="boton-confirmar-salir">Salir</button>
       </div>
     </div>
   </div>
@@ -301,15 +222,16 @@
 
   <footer class="pie">
     Material de capacitación interna. Las referencias normativas y de producto son orientativas: verifica siempre la norma vigente y los términos actuales de cada servicio.
-    Mecánica inspirada en <a href="https://github.com/As-Yung/Logic-Boss-Game" rel="noopener">Logic Boss Game</a> (licencia MIT).
+    Mecánica inspirada en <a href="https://github.com/As-Yung/Logic-Boss-Game" rel="noopener">Logic Boss Game</a> (licencia MIT). PDF generado con <a href="https://github.com/parallax/jsPDF" rel="noopener">jsPDF</a> (MIT).
   </footer>
 </div>
 
 <script src="config.js"></script>
+<script src="vendor/jspdf.umd.min.js"></script>
 <script src="js/contenido.js"></script>
 <script src="js/logica.js"></script>
-<script src="js/almacen.js"></script>
 <script src="js/dibujos.js"></script>
+<script src="js/constancia.js"></script>
 <script src="js/interfaz.js"></script>
 </body>
 </html>

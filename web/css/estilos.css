@@ -401,6 +401,12 @@ details.modulo-avance > summary::before { content: none; }
 .resumen dt { font-size: 0.8rem; color: var(--tiza-tenue); }
 .resumen dd { margin: 0; font-size: 1.3rem; font-weight: 700; color: var(--tiza-amarilla); }
 
+.constancia { border: 2px dashed var(--tiza-amarilla); border-radius: 12px; padding: 10px 14px; display: flex; flex-direction: column; gap: 6px; }
+.constancia p { margin: 0; }
+.pasos-constancia { margin: 0; padding-left: 1.3em; display: flex; flex-direction: column; gap: 8px; }
+.pasos-constancia li::marker { color: var(--tiza-amarilla); font-weight: 700; }
+.pasos-constancia .nota { display: block; margin-top: 4px; font-size: 0.88rem; }
+
 .tabla-envoltura { overflow-x: auto; }
 .tabla { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
 .tabla th, .tabla td { padding: 6px 8px; border-bottom: 1px solid var(--linea); text-align: left; white-space: nowrap; }
