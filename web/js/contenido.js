@@ -644,6 +644,101 @@
       ]
     },
     {
+      id: "riesgos-legales",
+      tema: "Implicaciones legales de subir información al chat de IA",
+      jefe: "El Juez de lo Filtrado",
+      forma: "balanza",
+      color: "roja",
+      frase: "Solo era un correo... ¿qué podría pasar?",
+      leccion: [
+        "Subir información a un chat de IA es entregarla a un tercero y sacarla de los controles de la firma. Por eso, en la firma, los documentos no se suben: se trabajan con Claude Code en local, con la cuenta corporativa y lo mínimo necesario.",
+        "Correos: traen datos personales de terceros, información del cliente protegida por el secreto profesional (Ley 1123 de 2007) y comunicaciones privadas, que la Constitución protege (art. 15).",
+        "Patentes: una invención no radicada debe mantenerse en reserva. Su difusión puede afectar la novedad (Decisión 486, art. 16) y su protección como secreto empresarial (art. 260). El período de gracia (art. 17) es limitado y no conviene depender de él.",
+        "Marcas: el registro se concede a quien solicita primero; si un signo o una estrategia de lanzamiento se filtra antes de radicar, un tercero podría adelantarse.",
+        "Contratos con nombres y datos: implican la Ley 1581 (y datos sensibles, si los hay), las cláusulas de confidencialidad y el secreto profesional.",
+        "Consecuencias posibles: multas de la SIC de hasta 2.000 salarios mínimos mensuales (Ley 1581, art. 23), sanciones disciplinarias, delitos como la violación de datos personales (art. 269F del Código Penal) o de reserva industrial o comercial (art. 308), indemnizaciones, pérdida de derechos y de la confianza del cliente."
+      ],
+      preguntas: [
+        {
+          id: "rl-1", concepto: "Correos electrónicos en un chat",
+          p: "Quieres que la IA resuma una cadena de correos con un cliente. ¿Qué implica pegarla en un chat?",
+          ok: "Tratar datos personales de terceros y revelar comunicaciones privadas protegidas por el secreto profesional, fuera de los controles de la firma",
+          no: [
+            "Nada: los correos no son documentos",
+            "Solo un riesgo técnico de formato",
+            "Que el cliente quede notificado automáticamente"
+          ],
+          e: "Los correos traen nombres, direcciones y firmas de varias personas, además de información del cliente. La Constitución protege la correspondencia privada (art. 15) y la Ley 1123 de 2007 exige guardar el secreto profesional."
+        },
+        {
+          id: "rl-2", concepto: "Invenciones no radicadas",
+          p: "Un inventor te envía la descripción de una invención que aún no se ha radicado. ¿Cuál es el principal riesgo de subirla a un chat de IA?",
+          ok: "Comprometer la reserva de la que dependen su novedad y su protección como secreto empresarial antes de radicar la solicitud",
+          no: [
+            "Ninguno: la IA no entiende las patentes",
+            "Que la solicitud se apruebe más rápido",
+            "Que la IA quede como coinventora"
+          ],
+          e: "Una patente exige novedad: lo que llega al público antes de la solicitud entra en el estado de la técnica (Decisión 486, art. 16). Sacar la información de los controles de la firma también debilita su protección como secreto empresarial (art. 260)."
+        },
+        {
+          id: "rl-3", concepto: "Marcas antes de radicar",
+          p: "Un cliente planea lanzar una marca el próximo año y aún no la ha radicado. ¿Por qué no debe ir a un chat?",
+          ok: "Porque el registro se concede a quien solicita primero: si el nombre o la estrategia se filtran, un tercero podría radicarlo antes",
+          no: [
+            "Porque los chats no aceptan nombres de marcas",
+            "Porque la IA registra la marca a su nombre",
+            "No hay ningún problema, porque una marca no es confidencial"
+          ],
+          e: "Antes de la solicitud, el signo, el logo y los planes de lanzamiento son información confidencial del cliente. Revelarlos antes de tiempo puede costarle la marca."
+        },
+        {
+          id: "rl-4", concepto: "Sanciones de la SIC",
+          p: "¿Qué puede imponer la SIC por incumplir la ley de protección de datos personales?",
+          ok: "Multas de hasta 2.000 salarios mínimos mensuales, además de otras sanciones como la suspensión o el cierre de las actividades de tratamiento",
+          no: [
+            "Solo una llamada de atención sin consecuencias",
+            "Nada, si el error fue de una herramienta de IA",
+            "Únicamente la eliminación del chat"
+          ],
+          e: "El art. 23 de la Ley 1581 de 2012 prevé multas de hasta 2.000 SMMLV, suspensión de actividades, cierre temporal y cierre definitivo de las operaciones de tratamiento."
+        },
+        {
+          id: "rl-5", concepto: "Consecuencias penales",
+          p: "Revelar información industrial o comercial reservada que conociste por tu trabajo, ¿puede tener consecuencias penales?",
+          ok: "Sí: el Código Penal tipifica la violación de reserva industrial o comercial (art. 308)",
+          no: [
+            "No, solo hay consecuencias laborales",
+            "Solo si la información estaba en papel",
+            "Solo si el cliente es extranjero"
+          ],
+          e: "Además del art. 308, el art. 269F (Ley 1273 de 2009) sanciona la violación de datos personales. Que el medio sea una herramienta de IA no cambia la responsabilidad."
+        },
+        {
+          id: "rl-6", concepto: "Contratos con nombres y datos",
+          p: "Se pega en un chat gratuito un contrato con nombres, cédulas y salarios de empleados. ¿Qué normas y deberes se ven comprometidos?",
+          ok: "La Ley 1581 (datos personales), la confidencialidad pactada en el contrato y el secreto profesional (Ley 1123 de 2007)",
+          no: [
+            "Ninguno, porque el contrato ya está firmado",
+            "Solo las normas de derechos de autor",
+            "Solo las del proveedor del chat"
+          ],
+          e: "Un mismo documento puede comprometer varias capas a la vez. Si además trae datos de salud, hay datos sensibles con protección reforzada."
+        },
+        {
+          id: "rl-7", concepto: "Cómo trabajar sin estos riesgos",
+          p: "Necesitas apoyo de la IA para revisar el borrador de una solicitud de patente. ¿Qué es lo correcto?",
+          ok: "Usar Claude Code con la cuenta de la firma, con aprobación del área y sobre lo mínimo necesario, sin subir nada a un chat",
+          no: [
+            "Subirlo a un chat gratuito, que es más rápido",
+            "Enviarlo por correo a una herramienta externa",
+            "Pegarlo en el chat de la cuenta corporativa"
+          ],
+          e: "La regla de la firma aplica con más fuerza a la información más sensible: lectura local con Claude Code, cuenta corporativa, minimización y aprobación del área."
+        }
+      ]
+    },
+    {
       id: "rag",
       tema: "RAG: que Claude responda con tus documentos",
       jefe: "El Bibliotecario Perdido",
@@ -1277,6 +1372,7 @@
     "agentes": "Un agente planifica y usa herramientas en ciclos; si los pasos son fijos, mejor un flujo. Persona en el ciclo y registro de lo que hizo.",
     "claude-code": "Claude Code trabaja sobre tus carpetas sin subir archivos; CLAUDE.md fija reglas, el modo plan y los permisos te dan control, y git permite deshacer.",
     "api": "La API integra a Claude en los sistemas; la clave va en un gestor de secretos, se paga por tokens y la caché y los lotes reducen costos.",
+    "riesgos-legales": "Subir correos, documentos de patentes o marcas no radicadas, secretos de innovación o contratos con datos a un chat puede violar la privacidad, el secreto profesional y la confidencialidad, hacer perder derechos y acarrear multas, sanciones y hasta delitos.",
     "aplicativos": "Un aplicativo corporativo tiene aprobación, inicio de sesión de la firma, permisos, registro y responsable; uno personal sirve para explorar; preguntar sobre archivos es puntual. Siempre revisa un experto, y los tiempos van de minutos a meses.",
     "final": "Elige la herramienta según la necesidad y aplica dos chequeos: antes de darle información a la IA y antes de usar lo que produjo."
   };

@@ -118,6 +118,18 @@
         g("c-amarilla", p("M44 30l6-14l10 10l10-10l6 14z")) +
         g("c-amarilla sin-relleno fino brillo", p("M60 8v-4M44 10l-3-3M76 10l3-3"));
     },
+    balanza: function (k) {
+      // Balanza con ojos: el juez que pesa lo que se filtró.
+      return g(k, p("M58 22h4v66h-4z")) +
+        g(k, p("M40 102h40l-6-14H46z")) +
+        g(k + " sin-relleno", p("M22 34h76")) +
+        g("c-blanca sin-relleno fino", p("M26 34l-10 26M26 34l10 26M94 34l-10 26M94 34l10 26")) +
+        g("c-amarilla", p("M12 60q14 12 28 0z")) +
+        g("c-tenue", p("M80 60q14 12 28 0z")) +
+        g("c-blanca", c(60, 20, 10)) + ojos(56, 65, 19, 3) +
+        g("c-blanca sin-relleno fino", p("M50 12l7 3M70 12l-7 3")) +
+        g("c-azul sin-relleno fino", p("M84 54h20M88 50h12"));
+    },
     arquitecto: function (k) {
       // Casco de obra y un plano a medio hacer: construye sin revisar.
       return g(k, p("M26 64q0-34 34-34t34 34z")) +

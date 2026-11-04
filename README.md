@@ -17,16 +17,17 @@ La mecánica se inspira en la versión web de [Logic Boss Game](https://github.c
 | 5 | El Guardián del Hábeas Data | Ley 1581 de 2012, datos sensibles, transferencia/transmisión, SIC e IA |
 | 6 | El Dragón del Copyright | Propiedad intelectual: obras de terceros, outputs, términos de fuentes, secreto empresarial, marcas |
 | 7 | La Sombra de la Fuga | Secreto profesional, prompt injection, manejo de claves, IA no aprobada, incidentes |
-| 8 | El Bibliotecario Perdido | RAG: embeddings, chunking, permisos, cuándo basta Claude Code en la carpeta |
-| 9 | El Alquimista de las Recetas | Skills: SKILL.md, divulgación progresiva, seguridad |
-| 10 | La Medusa de los Mil Cables | MCP y conectores prediseñados, mínimo privilegio, confirmación humana |
-| 11 | El Gólem Autónomo | Agentes, flujos fijos, subagentes, Agent SDK, trazabilidad |
-| 12 | El Titán de la Terminal | Claude Code: CLAUDE.md, permisos, modo plan, hooks, git |
-| 13 | El Leviatán de los Tokens | API de Anthropic: claves, costos, caché de prompts, lotes, tool use, workspaces |
+| 8 | El Juez de lo Filtrado | Implicaciones legales de subir correos, documentos de patentes o marcas no radicadas, secretos de innovación y contratos con datos: privacidad, secreto profesional, confidencialidad, novedad, prioridad y consecuencias |
+| 9 | El Bibliotecario Perdido | RAG: embeddings, chunking, permisos, cuándo basta Claude Code en la carpeta |
+| 10 | El Alquimista de las Recetas | Skills: SKILL.md, divulgación progresiva, seguridad |
+| 11 | La Medusa de los Mil Cables | MCP y conectores prediseñados, mínimo privilegio, confirmación humana |
+| 12 | El Gólem Autónomo | Agentes, flujos fijos, subagentes, Agent SDK, trazabilidad |
+| 13 | El Titán de la Terminal | Claude Code: CLAUDE.md, permisos, modo plan, hooks, git |
+| 14 | El Leviatán de los Tokens | API de Anthropic: claves, costos, caché de prompts, lotes, tool use, workspaces |
 | Final | El Comité de Riesgo Supremo | Casos integrales |
 | Cierre | El Gran Examinador | Resumen general del curso y evaluación: una pregunta al azar de cada tema; el PDF incluye el resultado por tema y la idea clave de cada lección |
 
-Son 91 preguntas, cada una con su concepto y su explicación. Cada módulo tiene dos partes:
+Son 98 preguntas, cada una con su concepto y su explicación. Cada módulo tiene dos partes:
 
 1. **Conceptualización** (para personas sin conocimientos previos): pasos con explicación en lenguaje sencillo, un esquema visual, una analogía («En palabras simples»), un ejemplo de la firma y ejercicios prácticos que hay que resolver para avanzar. El contenido está en `web/js/conceptos.js`.
 2. **Práctica:** la batalla contra el jefe.
@@ -35,7 +36,7 @@ Lo que se falla aparece luego en un **jefe de repaso**. Al completar la conceptu
 
 ## Personajes y áreas
 
-Al empezar, cada persona elige el personaje más cercano a su trabajo. Los **ejemplos de la conceptualización se adaptan a su área** (`web/js/ejemplos-areas.js`), y cada personaje tiene una ventaja distinta en las batallas:
+Al empezar, cada persona elige el personaje más cercano a su trabajo. La **introducción y el ejemplo de cada paso de la conceptualización se adaptan al personaje** según lo que hace (`web/js/ejemplos-perfiles.js`): el socio decide y aprueba, el asociado redacta rápido, el paralegal verifica, el analista cruza datos, IT configura y protege, etc., y cada personaje tiene una ventaja distinta en las batallas:
 
 | Personaje | Área | Ventaja |
 |---|---|---|
@@ -106,7 +107,7 @@ web/
   css/estilos.css     estilo de pizarra
   js/contenido.js     temas, resúmenes y preguntas de la batalla  ← contenido
   js/conceptos.js     conceptualización de cada módulo (pasos, visuales, prácticas)  ← contenido
-  js/ejemplos-areas.js  ejemplos e introducciones adaptados por área  ← contenido
+  js/ejemplos-perfiles.js  ejemplos e introducciones adaptados a cada personaje  ← contenido
   js/logica.js        batalla, progreso, niveles (sin interfaz)
   js/constancia.js    constancia en PDF y correo para TI
   vendor/jspdf.umd.min.js  jsPDF 2.5.1 (MIT)
