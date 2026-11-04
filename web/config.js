@@ -9,5 +9,5 @@
  * contraseñas.
  */
 window.LEXBOSS_CONFIG = {
-  correoTI: ""
+  correoTI: "admon_sistemas@cavelier.com"
 };
