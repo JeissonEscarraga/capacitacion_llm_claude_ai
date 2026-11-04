@@ -1,5 +1,5 @@
 /*
- * Lex Boss — dibujos en tiza (SVG 120x120).
+ * AI BOSS — dibujos en tiza (SVG 120x120).
  * Las clases c-* dan el color de la tiza y están en estilos.css.
  */
 (function (global) {
@@ -117,6 +117,17 @@
         silla(28) + silla(60) + silla(92) +
         g("c-amarilla", p("M44 30l6-14l10 10l10-10l6 14z")) +
         g("c-amarilla sin-relleno fino brillo", p("M60 8v-4M44 10l-3-3M76 10l3-3"));
+    },
+    arquitecto: function (k) {
+      // Casco de obra y un plano a medio hacer: construye sin revisar.
+      return g(k, p("M26 64q0-34 34-34t34 34z")) +
+        g(k, p("M18 64h84v8H18z")) +
+        g("c-blanca sin-relleno fino", p("M60 30v-6M50 34v30M70 34v30")) +
+        g("c-blanca", p("M34 72h52v16q-26 16-52 0z")) +
+        ojos(48, 72, 80, 5) + ceño(48, 72, 80) +
+        g("c-azul", p("M76 94l28-6v20l-28 6z")) +
+        g("c-blanca sin-relleno fino", p("M80 98l20-4M80 104l12-2M88 96v12")) +
+        g("c-roja sin-relleno", p("M14 106l10-12M18 94l6 6"));
     },
     libro: function (k) {
       // Gran libro abierto con ojos y birrete: el examinador.

@@ -1,5 +1,5 @@
 /*
- * Lex Boss — constancia en PDF de cada módulo.
+ * AI BOSS — constancia en PDF de cada módulo.
  *
  * Se genera en el navegador con jsPDF (web/vendor, licencia MIT): no se envía
  * nada a ningún servidor. La persona descarga el PDF y lo envía a TI.
@@ -70,7 +70,7 @@
     var d = new Date(iso);
     var usuario = String(correo || "participante").split("@")[0].replace(/[^a-z0-9._-]/gi, "").slice(0, 40) || "participante";
     var sello = d.getFullYear() + dosDigitos(d.getMonth() + 1) + dosDigitos(d.getDate()) + "-" + dosDigitos(d.getHours()) + dosDigitos(d.getMinutes());
-    return "LexBoss_" + modulo.id + "_" + usuario + "_" + sello + ".pdf";
+    return "AIBoss_" + modulo.id + "_" + usuario + "_" + sello + ".pdf";
   }
 
   function resultadoTexto(batalla) {
@@ -86,7 +86,7 @@
   }
 
   function asuntoCorreo(modulo, nombre) {
-    return "Constancia Lex Boss - " + modulo.tema + " - " + nombre;
+    return "Constancia AI BOSS - " + modulo.tema + " - " + nombre;
   }
 
   function generar(opciones) {
@@ -106,7 +106,7 @@
       : (b.corazones <= 0 ? { fuerte: C.rojo, claro: C.rojoClaro } : { fuerte: C.ambar, claro: C.ambarClaro });
 
     var doc = new jsPDF({ unit: "mm", format: "a4" });
-    doc.setProperties({ title: limpiar("Constancia Lex Boss - " + modulo.tema), subject: "Constancia de módulo", creator: "Lex Boss" });
+    doc.setProperties({ title: limpiar("Constancia AI BOSS - " + modulo.tema), subject: "Constancia de módulo", creator: "AI BOSS" });
     var y = 0;
 
     /* ---------- utilidades de dibujo ---------- */
@@ -134,7 +134,7 @@
       doc.addPage();
       // Encabezado corto en las páginas siguientes
       fuente(8, "normal"); tinta(C.tenue);
-      var corto = doc.splitTextToSize(limpiar("Lex Boss · Constancia de " + p.nombre + " · " + modulo.tema), W)[0];
+      var corto = doc.splitTextToSize(limpiar("AI BOSS · Constancia de " + p.nombre + " · " + modulo.tema), W)[0];
       doc.text(corto, M, 12);
       trazo(C.linea); doc.setLineWidth(0.3); doc.line(M, 14.5, ANCHO - M, 14.5);
       y = 22;
@@ -164,7 +164,7 @@
     relleno(C.pizarra); doc.rect(0, 0, ANCHO, 36, "F");
     relleno(C.marco); doc.rect(0, 36, ANCHO, 1.4, "F");
     fuente(8, "bold"); tinta(C.amarillo);
-    doc.text("LEX BOSS · CLAUDE E IA PARA ABOGADOS", M, 12, { charSpace: 0.5 });
+    doc.text("AI BOSS · CLAUDE E IA PARA ABOGADOS", M, 12, { charSpace: 0.5 });
     fuente(22, "bold"); tinta(C.blanco);
     doc.text("Constancia de módulo", M, 24);
     fuente(9.5, "normal"); tinta([205, 214, 208]);
@@ -220,9 +220,9 @@
 
     var destino = correoTI || "TI";
     var pasos = [
-      "1.  Guarda este PDF (ya quedó en tu carpeta de descargas).",
-      "2.  Envíalo a " + destino + " desde tu correo de la firma.",
-      "3.  Asunto sugerido: «" + asuntoCorreo(modulo, p.nombre) + "»."
+      "1.  En la ventana de resultado, pulsa «Preparar correo a TI»: se descarga un correo listo con este PDF adjunto.",
+      "2.  Ábrelo (doble clic): se abre en Outlook como borrador dirigido a " + destino + ". Revisa y pulsa «Enviar».",
+      "3.  Si no se abre en Outlook, escribe a " + destino + " desde tu correo de la firma con el asunto «" + asuntoCorreo(modulo, p.nombre) + "» y adjunta este PDF."
     ];
     var lsPasos = [];
     pasos.forEach(function (t) { lsPasos = lsPasos.concat(lineas(t, 9.5, "normal", W - 14)); });
@@ -351,26 +351,73 @@
     return { doc: doc, nombre: nombreArchivo(modulo, p.correo, fecha), resumen: r, resultado: resultado };
   }
 
-  // Correo para TI ya redactado. El PDF se adjunta a mano: una página web no puede adjuntar archivos.
-  function enlaceCorreo(opciones, archivo) {
+  function cuerpoCorreo(opciones, archivo, conAdjunto) {
     var p = opciones.participante;
     var b = opciones.batalla;
     var r = resumen(b);
-    var cuerpo = [
+    return [
       "Hola, equipo de TI:",
       "",
-      "Adjunto mi constancia del módulo «" + opciones.modulo.tema + "» del juego de capacitación Lex Boss.",
+      "Adjunto mi constancia del módulo «" + opciones.modulo.tema + "» del juego de capacitación AI BOSS.",
       "",
       "Participante: " + p.nombre + " (" + p.correo + ")",
       "Resultado: " + resultadoTexto(b),
       "Puntaje: " + r.buenas + " de " + r.total + " respuestas correctas (" + r.porcentaje + " %)",
-      "Archivo: " + archivo,
-      "",
-      "(Recuerda adjuntar el PDF descargado antes de enviar.)"
-    ].join("\r\n");
-    return "mailto:" + encodeURIComponent(opciones.correoTI || "").replace(/%40/g, "@") +
-      "?subject=" + encodeURIComponent(asuntoCorreo(opciones.modulo, p.nombre)) + "&body=" + encodeURIComponent(cuerpo);
+      "Archivo: " + archivo
+    ].concat(conAdjunto ? [] : ["", "(Recuerda adjuntar el PDF descargado antes de enviar.)"]).join("\r\n");
   }
 
-  global.Constancia = { generar: generar, enlaceCorreo: enlaceCorreo, limpiar: limpiar, resumen: resumen };
-})(window);
+  // Respaldo: abre el programa de correo sin adjunto (un enlace mailto no puede adjuntar archivos).
+  function enlaceCorreo(opciones, archivo) {
+    return "mailto:" + encodeURIComponent(opciones.correoTI || "").replace(/%40/g, "@") +
+      "?subject=" + encodeURIComponent(asuntoCorreo(opciones.modulo, opciones.participante.nombre)) +
+      "&body=" + encodeURIComponent(cuerpoCorreo(opciones, archivo, false));
+  }
+
+  function base64Utf8(texto) {
+    var bytes = new TextEncoder().encode(texto);
+    var bin = "";
+    for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin);
+  }
+
+  function enLineas(b64) {
+    return b64.replace(/(.{76})/g, "$1\r\n").replace(/\r\n$/, "");
+  }
+
+  // Correo listo para enviar (.eml) con el PDF ya adjunto. La cabecera
+  // «X-Unsent: 1» hace que Outlook lo abra como borrador con el botón Enviar.
+  // Una página web no puede enviar correos sola: la persona lo abre y lo envía.
+  function correoEml(opciones, archivo, pdfBase64) {
+    var limite = "AIBOSS_" + Date.now().toString(36);
+    var asunto = asuntoCorreo(opciones.modulo, opciones.participante.nombre);
+    var lineas = [
+      "To: " + (opciones.correoTI || ""),
+      "Subject: =?UTF-8?B?" + base64Utf8(asunto) + "?=",
+      "X-Unsent: 1",
+      "MIME-Version: 1.0",
+      "Content-Type: multipart/mixed; boundary=\"" + limite + "\"",
+      "",
+      "--" + limite,
+      "Content-Type: text/plain; charset=\"utf-8\"",
+      "Content-Transfer-Encoding: base64",
+      "",
+      enLineas(base64Utf8(cuerpoCorreo(opciones, archivo, true))),
+      "",
+      "--" + limite,
+      "Content-Type: application/pdf; name=\"" + archivo + "\"",
+      "Content-Disposition: attachment; filename=\"" + archivo + "\"",
+      "Content-Transfer-Encoding: base64",
+      "",
+      enLineas(pdfBase64),
+      "",
+      "--" + limite + "--",
+      ""
+    ];
+    return lineas.join("\r\n");
+  }
+
+  var api = { generar: generar, enlaceCorreo: enlaceCorreo, correoEml: correoEml, limpiar: limpiar, resumen: resumen };
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+  else global.Constancia = api;
+})(typeof window !== "undefined" ? window : globalThis);

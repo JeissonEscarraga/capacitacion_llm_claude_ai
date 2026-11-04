@@ -1,5 +1,5 @@
 /*
- * Lex Boss — interfaz.
+ * AI BOSS — interfaz.
  * La mecánica está en logica.js, el contenido en contenido.js, los dibujos en
  * dibujos.js y la constancia en PDF en constancia.js. Aquí solo se pinta y se
  * reacciona. No se guarda nada: el avance vive en memoria mientras la página
@@ -9,10 +9,10 @@
   "use strict";
 
   var C = window.Contenido;
-  var L = window.LexBoss;
+  var L = window.AIBoss;
   var D = window.Dibujos;
   var K = window.Constancia;
-  var CONFIG = window.LEXBOSS_CONFIG || {};
+  var CONFIG = window.AIBOSS_CONFIG || {};
   var CORREO_TI = String(CONFIG.correoTI || "").trim();
   var $ = function (id) { return document.getElementById(id); };
 
@@ -747,9 +747,8 @@
     });
     var permitida = constanciaPermitida();
     $("bloque-constancia").hidden = !permitida;
-    $("nota-enviar").textContent = CORREO_TI
-      ? "Se abre un correo a " + CORREO_TI + ": adjunta el PDF y envíalo."
-      : "Se abre un correo ya redactado: escribe la dirección de TI, adjunta el PDF y envíalo.";
+    $("nota-enviar").textContent = "Se descarga un correo para " + (CORREO_TI || "TI") +
+      " que ya trae el PDF adjunto. Ábrelo con doble clic: Outlook lo muestra como borrador. Revisa y pulsa «Enviar».";
     if (!permitida && !repasoActual) {
       $("texto-fin").textContent += " No se generó constancia: para obtenerla hay que terminar la práctica sin retirarse.";
     }
@@ -761,7 +760,26 @@
 
   $("boton-pdf").addEventListener("click", descargarConstancia);
 
+  // Correo listo con el PDF adjunto (.eml). Una página web no puede enviar
+  // correos ni adjuntar archivos a un mailto: por eso se descarga el borrador.
   $("boton-enviar-ti").addEventListener("click", function () {
+    if (!ultimaConstancia) descargarConstancia();
+    if (!ultimaConstancia) return;
+    var pdf64 = ultimaConstancia.doc.output("datauristring").split(",")[1];
+    var eml = K.correoEml(datosConstancia(), ultimaConstancia.nombre, pdf64);
+    var nombreEml = ultimaConstancia.nombre.replace(/\.pdf$/, "") + "_correo_TI.eml";
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([eml], { type: "message/rfc822" }));
+    a.download = nombreEml;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    $("texto-constancia").textContent = "Se descargaron «" + ultimaConstancia.nombre + "» y «" + nombreEml +
+      "». Abre el correo con doble clic, revisa y pulsa «Enviar».";
+    avisar("Correo para TI listo, con el PDF adjunto.");
+  });
+
+  $("boton-correo-simple").addEventListener("click", function () {
     var nombre = ultimaConstancia ? ultimaConstancia.nombre : "(constancia en PDF)";
     abriendoCorreo = true; // abrir el correo no es salir de la página
     setTimeout(function () { abriendoCorreo = false; }, 1500);

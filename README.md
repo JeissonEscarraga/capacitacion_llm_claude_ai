@@ -1,4 +1,4 @@
-# Lex Boss: Claude e IA para abogados
+# AI BOSS: Claude e IA para abogados
 
 Juego web de capacitación para los abogados de la firma. Cada tema es un **jefe** que se vence respondiendo preguntas: si aciertas, lo atacas; si fallas, pierdes credibilidad, pero siempre ves la explicación correcta. Al terminar cada módulo, la persona descarga una **constancia en PDF** con su nombre, correo, puntaje y respuestas correctas e incorrectas, y la envía a TI para su control. El juego no guarda datos en ningún servidor.
 
@@ -12,20 +12,21 @@ La mecánica se inspira en la versión web de [Logic Boss Game](https://github.c
 |---|------|------|
 | 1 | El Oráculo Alucinante | Fundamentos de Claude y de los LLM (modelos, tokens, contexto, alucinaciones, responsabilidad) |
 | 2 | La Gárgola del Escritorio | Claude en el trabajo: cuenta corporativa, proyectos, artifacts, búsqueda web |
-| 3 | El Hechicero de los Prompts Vagos | Cómo pedirle las cosas a Claude (prompting) |
-| 4 | El Guardián del Hábeas Data | Ley 1581 de 2012, datos sensibles, transferencia/transmisión, SIC e IA |
-| 5 | El Dragón del Copyright | Propiedad intelectual: obras de terceros, outputs, términos de fuentes, secreto empresarial, marcas |
-| 6 | La Sombra de la Fuga | Secreto profesional, prompt injection, manejo de claves, IA no aprobada, incidentes |
-| 7 | El Bibliotecario Perdido | RAG: embeddings, chunking, permisos, cuándo basta un Proyecto |
-| 8 | El Alquimista de las Recetas | Skills: SKILL.md, divulgación progresiva, seguridad |
-| 9 | La Medusa de los Mil Cables | MCP y conectores prediseñados, mínimo privilegio, confirmación humana |
-| 10 | El Gólem Autónomo | Agentes, flujos fijos, subagentes, Agent SDK, trazabilidad |
-| 11 | El Titán de la Terminal | Claude Code: CLAUDE.md, permisos, modo plan, hooks, git |
-| 12 | El Leviatán de los Tokens | API de Anthropic: claves, costos, caché de prompts, lotes, tool use, workspaces |
+| 3 | El Arquitecto Improvisado | Aplicativo corporativo vs. aplicativo personal vs. subir archivos y preguntar; revisión del experto y tiempos orientativos |
+| 4 | El Hechicero de los Prompts Vagos | Cómo pedirle las cosas a Claude (prompting) |
+| 5 | El Guardián del Hábeas Data | Ley 1581 de 2012, datos sensibles, transferencia/transmisión, SIC e IA |
+| 6 | El Dragón del Copyright | Propiedad intelectual: obras de terceros, outputs, términos de fuentes, secreto empresarial, marcas |
+| 7 | La Sombra de la Fuga | Secreto profesional, prompt injection, manejo de claves, IA no aprobada, incidentes |
+| 8 | El Bibliotecario Perdido | RAG: embeddings, chunking, permisos, cuándo basta Claude Code en la carpeta |
+| 9 | El Alquimista de las Recetas | Skills: SKILL.md, divulgación progresiva, seguridad |
+| 10 | La Medusa de los Mil Cables | MCP y conectores prediseñados, mínimo privilegio, confirmación humana |
+| 11 | El Gólem Autónomo | Agentes, flujos fijos, subagentes, Agent SDK, trazabilidad |
+| 12 | El Titán de la Terminal | Claude Code: CLAUDE.md, permisos, modo plan, hooks, git |
+| 13 | El Leviatán de los Tokens | API de Anthropic: claves, costos, caché de prompts, lotes, tool use, workspaces |
 | Final | El Comité de Riesgo Supremo | Casos integrales |
 | Cierre | El Gran Examinador | Resumen general del curso y evaluación: una pregunta al azar de cada tema; el PDF incluye el resultado por tema y la idea clave de cada lección |
 
-Son 83 preguntas, cada una con su concepto y su explicación. Cada módulo tiene dos partes:
+Son 91 preguntas, cada una con su concepto y su explicación. Cada módulo tiene dos partes:
 
 1. **Conceptualización** (para personas sin conocimientos previos): pasos con explicación en lenguaje sencillo, un esquema visual, una analogía («En palabras simples»), un ejemplo de la firma y ejercicios prácticos que hay que resolver para avanzar. El contenido está en `web/js/conceptos.js`.
 2. **Práctica:** la batalla contra el jefe.
@@ -56,7 +57,7 @@ Los documentos de clientes y de la firma **no se suben ni se adjuntan** a chats 
 1. **Entrada con nombre y correo**, más el aviso de privacidad. No hay clave ni cuenta.
 2. **Juego:** antes de cada jefe hay una conceptualización paso a paso (no se puede saltar la primera vez). En la batalla, el jefe tiene tantos puntos como preguntas el módulo: hay que responder bien **todas** (las falladas vuelven al final de la fila), así que «vencido» significa 100 % aprendido. El golpe crítico devuelve un punto de credibilidad. En el mapa, cada módulo muestra sus tres pasos: Aprende, Practica y PDF.
 3. **Constancia en PDF:** se descarga sola solo si se completó la conceptualización y se terminó la práctica (ganada o perdida; si la persona se retira, no hay constancia; el repaso tampoco genera). Al inicio muestra la fecha y hora en que se generó; incluye participante, correo, módulo, fechas de conceptualización y práctica, resultado, puntaje y cada pregunta: lo que eligió, la respuesta correcta y la explicación de las falladas. Se genera en el navegador con [jsPDF](https://github.com/parallax/jsPDF) (MIT), copiado en `web/vendor/`, así que no se envía nada a terceros.
-4. **Envío a TI:** el botón «Enviar a TI» abre un correo ya redactado dirigido al buzón de TI configurado en `web/config.js` (`correoTI`, hoy `admon_sistemas@cavelier.com`). La persona adjunta el PDF y lo envía desde su cuenta de la firma, así que el remitente queda verificado por Microsoft 365.
+4. **Envío a TI (con el PDF adjunto):** el botón «Preparar correo a TI» descarga un correo (.eml) dirigido al buzón `correoTI` de `web/config.js` (hoy `admon_sistemas@cavelier.com`) que **ya trae el PDF adjunto**. Al abrirlo con doble clic, Outlook lo muestra como borrador (cabecera `X-Unsent: 1`); la persona revisa y pulsa «Enviar», desde su cuenta de la firma. Una página web no puede enviar correos sola ni adjuntar archivos a un enlace `mailto:`, por eso se usa este borrador. Si no se abre en Outlook (por ejemplo, en Outlook web), hay un enlace de respaldo que abre un correo sin adjunto.
 5. **Nada se guarda:** el avance vive en memoria mientras la página está abierta. Al recargar o salir se pierde; las constancias descargadas son el registro.
 
 ### Límites que conviene conocer

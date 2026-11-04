@@ -11,7 +11,7 @@ function rndFijo(semilla) {
 
 test("el contenido está completo y bien formado", () => {
   const ids = new Set();
-  assert.strictEqual(C.MODULOS.length, 12, "deben ser 12 jefes antes del final");
+  assert.strictEqual(C.MODULOS.length, 13, "deben ser 13 jefes antes del final");
   C.TODOS.forEach((m) => {
     assert.ok(m.id && m.tema && m.jefe && m.forma && m.frase, m.id);
     assert.ok(m.leccion.length >= 3, "lección corta en " + m.id);
@@ -200,4 +200,24 @@ test("la evaluación general toma una pregunta de cada módulo y tiene resumen d
   while (!b.fin) { b.siguiente(); b.responder(b.actual.correcta); }
   assert.ok(b.gano && prog.modulos["resumen-general"].superado);
   assert.ok(b.historial.every((h) => h.tema), "cada respuesta trae su tema");
+});
+
+test("el correo para TI lleva el PDF adjunto y se abre como borrador", () => {
+  const K = require("../js/constancia.js");
+  const pdf = Buffer.from("%PDF-1.3 prueba").toString("base64");
+  const opciones = {
+    participante: { nombre: "María Prueba", correo: "maria@ejemplo.test" },
+    modulo: C.MODULOS[0],
+    batalla: { historial: [{ acierto: true }, { acierto: false }], gano: true, corazones: 2 },
+    correoTI: "admon_sistemas@cavelier.com"
+  };
+  const eml = K.correoEml(opciones, "AIBoss_fundamentos_maria_20261104-1200.pdf", pdf);
+  assert.ok(eml.startsWith("To: admon_sistemas@cavelier.com\r\n"));
+  assert.ok(eml.includes("\r\nX-Unsent: 1\r\n"), "Outlook lo abre como borrador");
+  assert.ok(eml.includes('Content-Disposition: attachment; filename="AIBoss_fundamentos_maria_20261104-1200.pdf"'));
+  assert.ok(eml.includes(pdf), "el PDF va dentro del correo");
+  const asunto = eml.match(/Subject: =\?UTF-8\?B\?(.+)\?=/)[1];
+  assert.ok(Buffer.from(asunto, "base64").toString("utf8").startsWith("Constancia AI BOSS - Fundamentos"));
+  assert.ok(eml.trimEnd().endsWith("--"), "cierre del multipart");
+  assert.ok(K.enlaceCorreo(opciones, "x.pdf").startsWith("mailto:admon_sistemas@cavelier.com?subject="));
 });

@@ -1,10 +1,10 @@
 {
-  "name": "Lex Boss",
+  "name": "AI BOSS",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bookworm",
   "forwardPorts": [8080],
   "portsAttributes": {
     "8080": {
-      "label": "Juego Lex Boss",
+      "label": "Juego AI BOSS",
       "onAutoForward": "openPreview"
     }
   },

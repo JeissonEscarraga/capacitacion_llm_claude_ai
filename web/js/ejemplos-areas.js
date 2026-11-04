@@ -1,5 +1,5 @@
 /*
- * Lex Boss — ejemplos de la conceptualización adaptados a cada área.
+ * AI BOSS — ejemplos de la conceptualización adaptados a cada área.
  * EjemplosArea[area][modulo] = { intro, ejemplos: { "<título del paso>": "..." } }
  * El área jurídica usa los ejemplos de conceptos.js. Generado a partir de
  * borradores revisados; para corregir un ejemplo, edítalo aquí.
@@ -143,6 +143,17 @@
         "De la tarea al resultado, en seis pasos": "Corregir un script de carga: qué debe hacer → Claude Code en el repositorio → copia de datos sin información innecesaria → pedido con rol y formato → probar y revisar el cambio → entregar con tu revisión y registro en git.",
         "Las reglas de oro de la firma": "Antes de cada uso, repásalas mentalmente: toma menos de un minuto, incluso cuando estás apagando un incendio en producción."
       }
+    },
+    "aplicativos": {
+      "intro": "En tecnología se construyen y mantienen aplicativos; aquí está el criterio para distinguir un prototipo personal de algo listo para la firma.",
+      "ejemplos": {
+        "Tres formas de usar la IA con documentos": "Preguntarle a Claude Code qué hace una consulta SQL es una consulta; tu script que limpia un CSV es personal; el tablero de Power BI publicado para el área es corporativo.",
+        "¿Qué hace corporativo a un aplicativo?": "Un aplicativo interno con inicio de sesión de Entra ID, roles, registro de auditoría, secretos fuera del código y repositorio privado de la organización es corporativo.",
+        "El aplicativo personal: útil, pero con límites": "Tu notebook de Python que cruza dos bases sirve para explorar; antes de que otros lo usen, pasa por revisión, repositorio privado y documentación.",
+        "Subir archivos y preguntar vs. un aplicativo": "Pedirle a Claude Code que revise hoy un export de NetSuite es una consulta; generar ese informe cada mes, con el mismo cálculo y permisos, es un aplicativo.",
+        "La revisión del experto no es opcional": "Antes de publicar un modelo de clasificación, el área usuaria valida una muestra de resultados y TI revisa permisos, secretos y registros.",
+        "¿Cuánto tiempo toma cada uno?": "Un script de limpieza puede tomar una tarde; un aplicativo con inicio de sesión, roles, pruebas y revisión de seguridad suele tomar semanas."
+      }
     }
   },
   "administrativo": {
@@ -280,6 +291,17 @@
         "El mapa del curso": "Cada vez que uses IA para una agenda, un correo o un archivo pasarás por las tres preguntas, aunque sea en segundos.",
         "De la tarea al resultado, en seis pasos": "Consolidar la correspondencia del mes: lista de recibidos con vencimientos → Claude Code en la carpeta → copia sin datos innecesarios → pedido con rol y formato → verificar fechas contra los originales → entregar con tu revisión.",
         "Las reglas de oro de la firma": "Antes de cada uso, repásalas mentalmente: toma menos de un minuto."
+      }
+    },
+    "aplicativos": {
+      "intro": "Muchas tareas administrativas se pueden automatizar; aquí verás cuándo basta una consulta, cuándo es un apoyo personal y cuándo hace falta un aplicativo de la firma.",
+      "ejemplos": {
+        "Tres formas de usar la IA con documentos": "Preguntar qué documentos llegaron hoy a la carpeta de correspondencia es una consulta; una plantilla tuya que arma tu agenda es personal; el sistema de radicación de la firma es corporativo.",
+        "¿Qué hace corporativo a un aplicativo?": "El sistema de control de correspondencia que usa toda la firma, con usuarios, permisos y registro de quién radicó qué, es corporativo.",
+        "El aplicativo personal: útil, pero con límites": "Una hoja que automatizaste para tu control de vencimientos te ayuda a ti; si otros la van a usar, se revisa y se formaliza con TI.",
+        "Subir archivos y preguntar vs. un aplicativo": "Pedirle a Claude Code un resumen de la correspondencia de hoy es una consulta; generar ese resumen todos los días para el área, con el mismo formato y responsables, es un aplicativo.",
+        "La revisión del experto no es opcional": "Si un aplicativo asigna la correspondencia a los abogados, el coordinador del área revisa las asignaciones al empezar y cada cierto tiempo.",
+        "¿Cuánto tiempo toma cada uno?": "Ordenar los documentos de una carpeta con Claude Code toma minutos; un sistema de radicación para toda la firma toma semanas o meses."
       }
     }
   },
@@ -419,6 +441,17 @@
         "De la tarea al resultado, en seis pasos": "Evaluar novedad: reivindicación 1 frente a D1 → Claude Code en la carpeta → copia sin datos de inventores → pedido con rol y tabla → verificar en bases oficiales → entregar al abogado con tu revisión.",
         "Las reglas de oro de la firma": "Antes de cada uso, repásalas mentalmente: solicitudes nunca en el chat, cuenta corporativa y toda anterioridad verificada en la fuente oficial."
       }
+    },
+    "aplicativos": {
+      "intro": "En validación de patentes la IA ayuda a buscar y comparar; aquí verás la diferencia entre una consulta, una herramienta propia y un aplicativo de la firma, y por qué tu criterio experto sigue siendo indispensable.",
+      "ejemplos": {
+        "Tres formas de usar la IA con documentos": "Preguntarle a Claude Code qué diferencia hay entre una reivindicación y el documento D1 es una consulta; tu script que extrae reivindicaciones es personal; un aplicativo de la firma para buscar anterioridades es corporativo.",
+        "¿Qué hace corporativo a un aplicativo?": "Una herramienta de la firma para comparar reivindicaciones, con acceso por usuario, registro de uso y bases de patentes contratadas, mantenida por TI, es corporativa.",
+        "El aplicativo personal: útil, pero con límites": "Tu plantilla para comparar los elementos de una reivindicación sirve para tu trabajo; no se usa con solicitudes no publicadas de otros clientes sin aprobación.",
+        "Subir archivos y preguntar vs. un aplicativo": "Comparar hoy la solicitud A con D1 es una consulta; aplicar el mismo análisis de novedad a todas las solicitudes del área, con registro, es un aplicativo.",
+        "La revisión del experto no es opcional": "Solo un experto de la disciplina detecta si la IA confundió un compuesto o un mecanismo; toda anterioridad sugerida se verifica en la base oficial.",
+        "¿Cuánto tiempo toma cada uno?": "Una comparación puntual toma minutos más tu revisión técnica; un aplicativo de búsqueda para el área toma semanas, incluidas las pruebas con casos reales."
+      }
     }
   },
   "finanzas": {
@@ -556,6 +589,17 @@
         "El mapa del curso": "Cada vez que uses IA con facturas, pagos o informes pasarás por las tres preguntas, aunque sea en segundos.",
         "De la tarea al resultado, en seis pasos": "Conciliar una cuenta: partidas sin cruzar → Claude Code en la carpeta → copia sin datos innecesarios → pedido con rol y formato → verificar cifras contra el extracto → entregar con tu revisión.",
         "Las reglas de oro de la firma": "Antes de cada uso, repásalas mentalmente, sobre todo si hay pagos, nómina o cifras para gerencia: toma menos de un minuto."
+      }
+    },
+    "aplicativos": {
+      "intro": "En finanzas un error se convierte en dinero; aquí verás cuándo basta una consulta, cuándo es un apoyo personal y cuándo se necesita un aplicativo de la firma con controles.",
+      "ejemplos": {
+        "Tres formas de usar la IA con documentos": "Preguntar cuánto suma la cartera vencida de un archivo es una consulta; tu hoja que proyecta tus pagos es personal; el informe de cartera en NetSuite o Power BI para la gerencia es corporativo.",
+        "¿Qué hace corporativo a un aplicativo?": "Un aplicativo de conciliación con usuarios de la firma, permisos por rol, registro de cambios y un responsable en TI es corporativo.",
+        "El aplicativo personal: útil, pero con límites": "Tu macro para conciliar tus cuentas te ahorra tiempo; antes de usarla para cifras que van a la gerencia, se revisa y se formaliza.",
+        "Subir archivos y preguntar vs. un aplicativo": "Pedirle a Claude Code que agrupe hoy la cartera por días de mora es una consulta; producir ese informe cada mes con el mismo cálculo y controles es un aplicativo.",
+        "La revisión del experto no es opcional": "Antes de usar un aplicativo que calcula pagos a corresponsales, el área revisa una muestra de cálculos contra los soportes, y lo repite cada cierto tiempo.",
+        "¿Cuánto tiempo toma cada uno?": "Revisar un archivo de cartera toma minutos; un aplicativo de conciliación con pruebas y revisiones de seguridad toma semanas o meses."
       }
     }
   }
