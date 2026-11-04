@@ -3,25 +3,10 @@ const test = require("node:test");
 const assert = require("node:assert");
 const C = require("../js/contenido.js");
 const L = require("../js/logica.js");
-const A = require("../js/almacen.js");
 
 function rndFijo(semilla) {
   let s = semilla;
   return () => { s = (s * 1103515245 + 12345) % 2147483648; return s / 2147483648; };
-}
-
-// Claves de prueba generadas al azar en cada corrida (no hay claves fijas en el código).
-function claveAzar() {
-  return "k" + Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 6);
-}
-
-function almacenEnMemoria(opciones) {
-  const datos = {};
-  const storage = {
-    getItem: (k) => (k in datos ? datos[k] : null),
-    setItem: (k, v) => { datos[k] = String(v); }
-  };
-  return A.crearAlmacen(Object.assign({ storage, crypto: globalThis.crypto }, opciones || {}));
 }
 
 test("el contenido está completo y bien formado", () => {
@@ -97,90 +82,22 @@ test("el final se desbloquea al vencer a los 12 jefes", () => {
   assert.strictEqual(L.finalDesbloqueado(prog, C.MODULOS), true);
 });
 
-test("registro, clave incorrecta y continuación en el mismo navegador", async () => {
-  const K1 = claveAzar();
-  const al = almacenEnMemoria();
-  await assert.rejects(al.entrar({ nombre: "Ana", correo: "ana@firma.com", clave: K1 }), (e) => e.codigo === "consentimiento");
-  const r = await al.entrar({ nombre: "Ana Pérez", correo: " Ana@Firma.com ", clave: K1, consentimiento: true });
-  assert.ok(r.nuevo);
-  assert.strictEqual(r.usuario.correo, "ana@firma.com");
-  assert.ok(!JSON.stringify(r.usuario).includes(K1), "la clave no se guarda");
-  r.usuario.progreso = L.progresoVacio();
-  r.usuario.progreso.xp = 50;
-  await al.guardar(r.usuario);
-  await assert.rejects(al.entrar({ nombre: "Ana", correo: "ana@firma.com", clave: K1 + "x" }), (e) => e.codigo === "clave");
-  const r2 = await al.entrar({ nombre: "Ana Pérez", correo: "ana@firma.com", clave: K1 });
-  assert.strictEqual(r2.nuevo, false);
-  assert.strictEqual(r2.usuario.progreso.xp, 50);
-  assert.strictEqual(al.listar().length, 1);
-});
-
-test("el código de continuación lleva el avance a otro navegador y exige la clave", async () => {
-  const K2 = claveAzar();
-  const pc1 = almacenEnMemoria();
-  const r = await pc1.entrar({ nombre: "Luis", correo: "luis@firma.com", clave: K2, consentimiento: true });
-  r.usuario.progreso = L.progresoVacio();
-  L.registrarRespuesta(r.usuario.progreso, "fun-1", true);
-  await pc1.guardar(r.usuario);
-  const codigo = await pc1.exportarCodigo(r.usuario, K2);
-  assert.ok(codigo.startsWith("LEXBOSS1."));
-  assert.ok(!codigo.includes("luis@firma.com"), "el código va cifrado");
-
-  const pc2 = almacenEnMemoria();
-  await assert.rejects(pc2.importarCodigo(codigo, K2 + "x"), (e) => e.codigo === "clave");
-  await pc2.importarCodigo(codigo, K2);
-  const r2 = await pc2.entrar({ nombre: "Luis", correo: "luis@firma.com", clave: K2 });
-  assert.strictEqual(r2.nuevo, false);
-  assert.strictEqual(L.estadoPregunta(r2.usuario.progreso, "fun-1"), "aprendida");
-});
-
-test("borrar exige la clave", async () => {
-  const K3 = claveAzar();
-  const al = almacenEnMemoria();
-  await al.entrar({ nombre: "Eva", correo: "eva@firma.com", clave: K3, consentimiento: true });
-  await assert.rejects(al.borrar("eva@firma.com", K3 + "x"));
-  await al.borrar("eva@firma.com", K3);
-  assert.strictEqual(al.listar().length, 0);
-});
-
-test("con registro central, recupera el avance más reciente y no envía la clave", async () => {
-  const K4 = claveAzar();
-  const servidor = {};
-  const enviados = [];
-  const fetchFalso = async (url, op) => {
-    const c = JSON.parse(op.body);
-    enviados.push(op.body);
-    const fila = servidor[c.correo];
-    if (fila && fila.verificador !== c.verificador) return { ok: true, json: async () => ({ ok: false, error: "clave" }) };
-    if (c.accion === "guardar") servidor[c.correo] = { verificador: c.verificador, registro: c.registro };
-    if (c.accion === "cargar") return { ok: true, json: async () => ({ ok: true, registro: fila ? fila.registro : null }) };
-    return { ok: true, json: async () => ({ ok: true }) };
-  };
-  const config = { registroCentral: { url: "https://ejemplo.invalid/flujo" } };
-  const pc1 = almacenEnMemoria({ fetch: fetchFalso, config });
-  const r = await pc1.entrar({ nombre: "Sol", correo: "sol@firma.com", clave: K4, consentimiento: true });
-  r.usuario.progreso = L.progresoVacio();
-  r.usuario.progreso.xp = 99;
-  await pc1.guardar(r.usuario);
-
-  const pc2 = almacenEnMemoria({ fetch: fetchFalso, config });
-  const r2 = await pc2.entrar({ nombre: "Sol", correo: "sol@firma.com", clave: K4 });
-  assert.strictEqual(r2.origen, "central");
-  assert.strictEqual(r2.usuario.progreso.xp, 99);
-  await assert.rejects(pc2.entrar({ nombre: "Sol", correo: "sol@firma.com", clave: K4 + "x" }));
-  assert.ok(enviados.every((b) => !b.includes(K4)), "la clave nunca viaja");
-});
-
-test("las claves nuevas exigen 10 caracteres y los correos raros se rechazan", async () => {
-  const al = almacenEnMemoria();
-  await assert.rejects(al.entrar({ nombre: "Ana", correo: "ana@firma.com", clave: claveAzar().slice(0, 8), consentimiento: true }), (e) => e.codigo === "clave");
-  await assert.rejects(al.entrar({ nombre: "Ana", correo: "x' or Title ne '@firma.com", clave: claveAzar(), consentimiento: true }), (e) => e.codigo === "correo");
-  assert.strictEqual(A.correoValido("ana.perez+ia@firma.com.co"), true);
-  assert.strictEqual(A.correoValido("ana'@firma.com"), false);
-});
-
-test("el bloqueo del registro central se informa a la persona", async () => {
-  const fetchBloqueado = async () => ({ ok: true, json: async () => ({ ok: false, error: "bloqueado" }) });
-  const al = almacenEnMemoria({ fetch: fetchBloqueado, config: { registroCentral: { url: "https://ejemplo.invalid/flujo" } } });
-  await assert.rejects(al.entrar({ nombre: "Leo", correo: "leo@firma.com", clave: claveAzar(), consentimiento: true }), (e) => e.codigo === "bloqueado");
+test("la batalla registra cada respuesta para la constancia", () => {
+  const prog = L.progresoVacio();
+  const m = C.MODULOS[4];
+  const b = new L.Batalla({ modulo: m, perfil: "socio", progreso: prog, rnd: rndFijo(9) });
+  b.siguiente();
+  b.responder(b.actual.correcta);
+  b.siguiente();
+  const mala = (b.actual.correcta + 1) % 4;
+  const elegida = b.actual.opciones[mala];
+  b.responder(mala);
+  b.rendirse();
+  assert.strictEqual(b.historial.length, 2);
+  assert.strictEqual(b.historial[0].acierto, true);
+  assert.strictEqual(b.historial[1].acierto, false);
+  assert.strictEqual(b.historial[1].elegida, elegida);
+  assert.ok(b.historial[1].correcta && b.historial[1].explicacion && b.historial[1].pregunta);
+  assert.ok(b.terminada, "fecha de cierre para el PDF");
+  assert.strictEqual(prog.modulos[m.id].superado, false);
 });

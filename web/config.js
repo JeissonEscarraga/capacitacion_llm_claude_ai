@@ -1,16 +1,13 @@
 /*
  * Configuración de Lex Boss.
  *
- * registroCentral.url: dirección de un flujo (por ejemplo, Power Automate con
- * disparador HTTP que guarda en una lista de SharePoint) para centralizar el
- * progreso de todos. Vacío = el progreso solo se guarda en el navegador de cada
- * persona (y viaja con el código de continuación).
+ * correoTI: buzón de TI que recibe las constancias en PDF para el control de
+ * la capacitación. Aparece en el PDF y en el botón «Enviar a TI», que abre el
+ * correo ya redactado (la persona adjunta el PDF y lo envía desde su cuenta).
  *
  * Este archivo se publica en GitHub Pages: NO pongas aquí claves, tokens ni
- * contraseñas. Ver docs/registro-central.md.
+ * contraseñas.
  */
 window.LEXBOSS_CONFIG = {
-  registroCentral: {
-    url: ""
-  }
+  correoTI: ""
 };
