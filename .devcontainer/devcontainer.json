@@ -1,0 +1,18 @@
+{
+  "name": "Lex Boss",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bookworm",
+  "forwardPorts": [8080],
+  "portsAttributes": {
+    "8080": {
+      "label": "Juego Lex Boss",
+      "onAutoForward": "openPreview"
+    }
+  },
+  "postCreateCommand": "npm test",
+  "postAttachCommand": "npm start",
+  "customizations": {
+    "codespaces": {
+      "openFiles": ["README.md"]
+    }
+  }
+}

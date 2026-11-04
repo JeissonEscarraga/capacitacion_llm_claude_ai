@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lex Boss: Claude para abogados</title>
+<meta name="description" content="Juego de capacitación para abogados: uso empresarial de Claude, Claude Code, datos personales, propiedad intelectual, RAG, skills, agentes, MCP, conectores y la API de Anthropic.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<svg class="defs" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="tiza" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="4" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<div class="pizarra">
+  <header class="cabecera">
+    <div>
+      <h1 class="titulo">Lex Boss</h1>
+      <p class="subtitulo-juego">Claude e IA para abogados</p>
+    </div>
+    <div class="barra-usuario" id="barra-usuario" hidden>
+      <div class="usuario-info">
+        <p class="usuario-nombre" id="usuario-nombre"></p>
+        <p class="usuario-titulo"><span id="usuario-titulo"></span> · Nv. <span id="usuario-nivel"></span></p>
+        <div class="barra barra-exp" role="meter" aria-label="Experiencia" aria-valuemin="0" id="barra-exp"><span></span></div>
+      </div>
+      <div class="acciones-usuario">
+        <button type="button" class="boton boton-chico boton-secundario" data-ir="mapa">Mapa</button>
+        <button type="button" class="boton boton-chico boton-secundario" data-ir="avance">Mi avance</button>
+        <button type="button" class="boton boton-chico boton-secundario" id="boton-codigo">Código</button>
+        <button type="button" class="boton boton-chico boton-secundario" id="boton-salir">Salir</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. Acceso -->
+  <main id="pantalla-acceso" class="pantalla">
+    <p class="lema">Vence a 12 jefes respondiendo preguntas sobre el uso empresarial de Claude, la protección de datos y la propiedad intelectual. Cada respuesta te enseña algo, y tu avance queda guardado para que sigas donde ibas.</p>
+
+    <section class="bloque" aria-labelledby="titulo-acceso">
+      <h2 id="titulo-acceso" class="subtitulo"><span class="paso">1</span> Identifícate</h2>
+      <form id="form-acceso" class="formulario" autocomplete="on" novalidate method="post" action="#" onsubmit="return false">
+        <div class="campo">
+          <label for="acceso-nombre" class="etiqueta">Nombre</label>
+          <input id="acceso-nombre" type="text" autocomplete="name" required maxlength="80">
+        </div>
+        <div class="campo">
+          <label for="acceso-correo" class="etiqueta">Correo</label>
+          <input id="acceso-correo" type="email" autocomplete="email" required maxlength="120" spellcheck="false" autocapitalize="off">
+        </div>
+        <div class="campo">
+          <label for="acceso-clave" class="etiqueta">Clave personal (mínimo 6 caracteres)</label>
+          <div class="fila">
+            <input id="acceso-clave" type="password" autocomplete="current-password" required minlength="6" maxlength="128">
+            <button type="button" class="boton boton-chico boton-secundario" id="ver-clave" aria-pressed="false">Ver</button>
+          </div>
+          <p class="nota">Inventa una clave solo para este juego (no uses la de tu correo). Con ella retomas tu avance. No la guardamos, así que si la olvidas no se puede recuperar.</p>
+        </div>
+        <div class="campo campo-check" id="campo-consentimiento">
+          <input id="acceso-consentimiento" type="checkbox">
+          <label for="acceso-consentimiento">Leí el <a href="#aviso-privacidad">aviso de privacidad</a> y autorizo el tratamiento de mi nombre, correo y resultados para el seguimiento de esta capacitación.</label>
+        </div>
+        <button type="submit" class="boton" id="boton-entrar">Entrar o continuar</button>
+        <p class="mensaje" id="mensaje-acceso" role="status"></p>
+      </form>
+    </section>
+
+    <details class="bloque">
+      <summary class="subtitulo subtitulo-chico">¿Vienes de otro equipo o navegador? Usa tu código de continuación</summary>
+      <form id="form-importar" class="formulario" autocomplete="off" method="post" action="#" onsubmit="return false">
+        <div class="campo">
+          <label for="importar-codigo" class="etiqueta">Código de continuación</label>
+          <textarea id="importar-codigo" rows="3" spellcheck="false" placeholder="LEXBOSS1...."></textarea>
+        </div>
+        <div class="campo">
+          <label for="importar-clave" class="etiqueta">Tu clave personal</label>
+          <input id="importar-clave" type="password" autocomplete="current-password">
+        </div>
+        <button type="submit" class="boton boton-secundario">Recuperar avance</button>
+        <p class="mensaje" id="mensaje-importar" role="status"></p>
+      </form>
+    </details>
+
+    <details class="bloque" id="aviso-privacidad">
+      <summary class="subtitulo subtitulo-chico">Aviso de privacidad</summary>
+      <div class="texto-largo">
+        <p><b>Qué datos se tratan:</b> tu nombre, tu correo, la fecha de tus visitas y tus resultados en el juego (preguntas vistas, acertadas y por repasar).</p>
+        <p><b>Para qué:</b> identificarte para que retomes tu avance y hacer seguimiento de la capacitación sobre el uso de inteligencia artificial en la firma.</p>
+        <p id="aviso-donde"><b>Dónde se guardan:</b> en el almacenamiento de este navegador. Tu clave no se guarda: solo un valor derivado que permite comprobarla.</p>
+        <p><b>Tus derechos:</b> puedes conocer, actualizar y suprimir tus datos y revocar esta autorización (Ley 1581 de 2012). Desde «Mi avance» puedes descargar tus datos o borrarlos. Para cualquier solicitud adicional, escribe al área responsable de la capacitación o al canal de protección de datos de la firma.</p>
+        <p><b>Datos sensibles:</b> el juego no pide ni necesita datos sensibles. No escribas información de clientes en ningún campo.</p>
+      </div>
+    </details>
+  </main>
+
+  <!-- 2. Perfil -->
+  <main id="pantalla-perfil" class="pantalla" hidden>
+    <section class="bloque" aria-labelledby="titulo-perfil">
+      <h2 id="titulo-perfil" class="subtitulo"><span class="paso">2</span> Elige tu personaje</h2>
+      <p class="nota">Cada personaje tiene una ventaja distinta en las batallas. Puedes cambiarlo después desde «Mi avance».</p>
+      <div class="personajes" id="lista-perfiles"></div>
+    </section>
+  </main>
+
+  <!-- 3. Mapa -->
+  <main id="pantalla-mapa" class="pantalla" hidden>
+    <section class="resumen-mapa" id="resumen-mapa" aria-live="polite"></section>
+    <section aria-labelledby="titulo-mapa">
+      <h2 id="titulo-mapa" class="subtitulo">Elige a qué jefe enfrentar</h2>
+      <p class="nota">Puedes ir en cualquier orden. Al vencer a los 12 se abre el jefe final.</p>
+      <ol class="mapa" id="mapa"></ol>
+    </section>
+    <details class="bloque instrucciones">
+      <summary class="subtitulo subtitulo-chico">Cómo se juega</summary>
+      <ul>
+        <li>Antes de cada jefe verás una lección corta con lo esencial del tema.</li>
+        <li>Si respondes bien, atacas al jefe. Si respondes mal, pierdes un punto de credibilidad (corazón).</li>
+        <li>Siempre verás la explicación de la respuesta correcta: así aprendes aunque falles.</li>
+        <li>Con varios aciertos seguidos haces un <b>golpe crítico</b>.</li>
+        <li>La <b>consulta al expediente</b> descarta dos opciones incorrectas.</li>
+        <li>Lo que fallas queda <b>por repasar</b>; cuando acumules varias, aparece el jefe de repaso.</li>
+        <li>En el computador puedes responder con las teclas 1 a 4 y seguir con Enter.</li>
+      </ul>
+    </details>
+  </main>
+
+  <!-- 4. Lección -->
+  <main id="pantalla-leccion" class="pantalla" hidden>
+    <section class="leccion">
+      <div class="leccion-jefe">
+        <div class="sprite sprite-grande" id="leccion-sprite"></div>
+        <p class="bocadillo" id="leccion-frase"></p>
+      </div>
+      <div class="leccion-texto">
+        <p class="etiqueta" id="leccion-etiqueta"></p>
+        <h2 class="subtitulo" id="leccion-titulo"></h2>
+        <p class="nota" id="leccion-jefe"></p>
+        <ul class="lista-leccion" id="leccion-lista"></ul>
+        <div class="acciones">
+          <button type="button" class="boton" id="boton-batalla">¡A la batalla!</button>
+          <button type="button" class="boton boton-secundario" data-ir="mapa">Volver al mapa</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 5. Batalla -->
+  <main id="pantalla-batalla" class="pantalla" hidden>
+    <section class="escenario" id="escenario" aria-label="Combate">
+      <div class="luchador jugador">
+        <div class="sprite" id="sprite-jugador"></div>
+        <div class="placa">
+          <p class="nombre" id="nombre-jugador"></p>
+          <div class="corazones" id="corazones" aria-live="polite"></div>
+          <p class="cifras" id="estado-jugador"></p>
+        </div>
+      </div>
+      <div class="luchador jefe">
+        <div class="sprite" id="sprite-jefe"></div>
+        <div class="placa">
+          <p class="nombre" id="nombre-jefe"></p>
+          <div class="barra barra-vida" role="meter" aria-label="Resistencia del jefe" aria-valuemin="0" id="barra-jefe"><span></span></div>
+          <p class="cifras" id="vida-jefe"></p>
+        </div>
+      </div>
+      <p class="anuncio" id="anuncio" aria-live="assertive"></p>
+    </section>
+
+    <section class="pregunta" aria-labelledby="texto-pregunta">
+      <div class="pregunta-cabecera">
+        <p class="etiqueta" id="tema-pregunta"></p>
+        <p class="racha" id="racha" aria-live="polite"></p>
+      </div>
+      <p class="texto-pregunta" id="texto-pregunta"></p>
+      <div class="opciones" id="opciones"></div>
+      <div class="retro" id="retro" hidden>
+        <p class="retro-titulo" id="retro-titulo"></p>
+        <p class="retro-correcta" id="retro-correcta"></p>
+        <p class="retro-explicacion" id="retro-explicacion"></p>
+        <button type="button" class="boton" id="boton-siguiente">Siguiente</button>
+      </div>
+    </section>
+
+    <div class="pie-batalla">
+      <button type="button" class="boton boton-secundario" id="boton-comodin">Consultar el expediente</button>
+      <button type="button" class="boton boton-secundario" id="boton-rendirse">Retirarse</button>
+    </div>
+  </main>
+
+  <!-- 6. Avance -->
+  <main id="pantalla-avance" class="pantalla" hidden>
+    <section class="bloque">
+      <h2 class="subtitulo">Mi avance</h2>
+      <div id="avance-resumen" class="avance-resumen"></div>
+      <div class="acciones">
+        <button type="button" class="boton boton-secundario" id="boton-certificado" hidden>Ver constancia</button>
+        <button type="button" class="boton boton-secundario" id="boton-csv">Descargar mi avance (CSV)</button>
+        <button type="button" class="boton boton-secundario" id="boton-cambiar-perfil">Cambiar personaje</button>
+        <button type="button" class="boton boton-secundario" id="boton-participantes">Participantes en este navegador</button>
+        <button type="button" class="boton boton-peligro" id="boton-borrar">Borrar mis datos</button>
+      </div>
+    </section>
+    <div id="avance-modulos" class="avance-modulos"></div>
+  </main>
+
+  <!-- Fin de batalla -->
+  <div class="capa" id="capa-fin" hidden>
+    <div class="ventana" role="dialog" aria-modal="true" aria-labelledby="titulo-fin">
+      <div class="sprite sprite-fin" id="sprite-fin"></div>
+      <h2 id="titulo-fin" class="subtitulo"></h2>
+      <p id="texto-fin"></p>
+      <dl class="resumen" id="resumen-fin"></dl>
+      <div class="acciones">
+        <button type="button" class="boton" id="boton-fin-mapa">Volver al mapa</button>
+        <button type="button" class="boton boton-secundario" id="boton-fin-reintentar">Intentar de nuevo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Retirarse -->
+  <div class="capa" id="capa-rendirse" hidden>
+    <div class="ventana" role="dialog" aria-modal="true" aria-labelledby="titulo-rendirse">
+      <h2 id="titulo-rendirse" class="subtitulo">¿Retirarte de esta batalla?</h2>
+      <p>Lo que ya respondiste queda guardado, pero este jefe no contará como vencido.</p>
+      <div class="acciones">
+        <button type="button" class="boton boton-secundario" data-cerrar>Seguir</button>
+        <button type="button" class="boton" id="boton-confirmar-rendirse">Retirarme</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Código de continuación -->
+  <div class="capa" id="capa-codigo" hidden>
+    <div class="ventana" role="dialog" aria-modal="true" aria-labelledby="titulo-codigo">
+      <h2 id="titulo-codigo" class="subtitulo">Tu código de continuación</h2>
+      <p>Guárdalo (por ejemplo, en un correo a ti mismo). En otro equipo o navegador, pégalo en la pantalla de inicio junto con tu clave y seguirás donde ibas. Está cifrado con tu clave.</p>
+      <textarea id="codigo-texto" rows="5" readonly spellcheck="false"></textarea>
+      <div class="acciones">
+        <button type="button" class="boton" id="boton-copiar">Copiar</button>
+        <button type="button" class="boton boton-secundario" data-cerrar>Cerrar</button>
+      </div>
+      <p class="mensaje" id="mensaje-codigo" role="status"></p>
+    </div>
+  </div>
+
+  <!-- Participantes -->
+  <div class="capa" id="capa-participantes" hidden>
+    <div class="ventana ventana-ancha" role="dialog" aria-modal="true" aria-labelledby="titulo-participantes">
+      <h2 id="titulo-participantes" class="subtitulo">Participantes en este navegador</h2>
+      <p class="nota" id="nota-participantes"></p>
+      <div class="tabla-envoltura"><table class="tabla" id="tabla-participantes"></table></div>
+      <div class="acciones">
+        <button type="button" class="boton" id="boton-csv-participantes">Descargar CSV</button>
+        <button type="button" class="boton boton-secundario" data-cerrar>Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Borrar -->
+  <div class="capa" id="capa-borrar" hidden>
+    <div class="ventana" role="dialog" aria-modal="true" aria-labelledby="titulo-borrar">
+      <h2 id="titulo-borrar" class="subtitulo">Borrar mis datos</h2>
+      <p>Se eliminará tu registro y tu avance de este navegador<span id="borrar-central"></span>. No se puede deshacer.</p>
+      <form id="form-borrar" class="formulario" method="post" action="#" onsubmit="return false">
+        <div class="campo">
+          <label for="borrar-clave" class="etiqueta">Confirma con tu clave</label>
+          <input id="borrar-clave" type="password" autocomplete="current-password">
+        </div>
+        <div class="acciones">
+          <button type="button" class="boton boton-secundario" data-cerrar>Cancelar</button>
+          <button type="submit" class="boton boton-peligro">Borrar</button>
+        </div>
+        <p class="mensaje" id="mensaje-borrar" role="status"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Constancia -->
+  <div class="capa" id="capa-certificado" hidden>
+    <div class="ventana ventana-ancha certificado" role="dialog" aria-modal="true" aria-labelledby="titulo-certificado">
+      <p class="etiqueta">Constancia de participación</p>
+      <h2 id="titulo-certificado" class="subtitulo">Lex Boss: Claude e IA para abogados</h2>
+      <p id="certificado-texto"></p>
+      <ul id="certificado-temas" class="certificado-temas"></ul>
+      <div class="acciones no-imprimir">
+        <button type="button" class="boton" id="boton-imprimir">Imprimir o guardar en PDF</button>
+        <button type="button" class="boton boton-secundario" data-cerrar>Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <p class="aviso-guardado" id="aviso-guardado" role="status" aria-live="polite"></p>
+
+  <footer class="pie">
+    Material de capacitación interna. Las referencias normativas y de producto son orientativas: verifica siempre la norma vigente y los términos actuales de cada servicio.
+    Mecánica inspirada en <a href="https://github.com/As-Yung/Logic-Boss-Game" rel="noopener">Logic Boss Game</a> (licencia MIT).
+  </footer>
+</div>
+
+<script src="config.js"></script>
+<script src="js/contenido.js"></script>
+<script src="js/logica.js"></script>
+<script src="js/almacen.js"></script>
+<script src="js/dibujos.js"></script>
+<script src="js/interfaz.js"></script>
+</body>
+</html>
