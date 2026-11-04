@@ -28,7 +28,7 @@ Son 83 preguntas, cada una con su concepto y su explicación. Antes de cada jefe
 
 ## Cómo funciona
 
-1. **Acceso con nombre, correo y clave personal.** La persona inventa una clave solo para el juego. La clave **no se guarda**: se guarda un verificador derivado con PBKDF2‑SHA‑256 (150.000 iteraciones). Para crear el registro se pide aceptar el aviso de privacidad (Ley 1581 de 2012).
+1. **Acceso con nombre, correo y clave personal.** La persona inventa una clave solo para el juego (mínimo 10 caracteres). La clave **no se guarda**: se guarda un verificador derivado con PBKDF2‑SHA‑256 (150.000 iteraciones). Para crear el registro se pide aceptar el aviso de privacidad (Ley 1581 de 2012).
 2. **Progreso por concepto.** Cada pregunta queda como *aprendida* (la última respuesta fue correcta), *por repasar* (la última fue incorrecta) o *no vista*. «Mi avance» muestra todo por tema, deja descargar un CSV y borrar los datos.
 3. **Dónde se guarda:**
    - **Por defecto, en el navegador** de cada persona (`localStorage`). No sale nada a internet.

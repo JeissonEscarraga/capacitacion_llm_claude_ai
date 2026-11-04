@@ -170,3 +170,17 @@ test("con registro central, recupera el avance más reciente y no envía la clav
   await assert.rejects(pc2.entrar({ nombre: "Sol", correo: "sol@firma.com", clave: K4 + "x" }));
   assert.ok(enviados.every((b) => !b.includes(K4)), "la clave nunca viaja");
 });
+
+test("las claves nuevas exigen 10 caracteres y los correos raros se rechazan", async () => {
+  const al = almacenEnMemoria();
+  await assert.rejects(al.entrar({ nombre: "Ana", correo: "ana@firma.com", clave: claveAzar().slice(0, 8), consentimiento: true }), (e) => e.codigo === "clave");
+  await assert.rejects(al.entrar({ nombre: "Ana", correo: "x' or Title ne '@firma.com", clave: claveAzar(), consentimiento: true }), (e) => e.codigo === "correo");
+  assert.strictEqual(A.correoValido("ana.perez+ia@firma.com.co"), true);
+  assert.strictEqual(A.correoValido("ana'@firma.com"), false);
+});
+
+test("el bloqueo del registro central se informa a la persona", async () => {
+  const fetchBloqueado = async () => ({ ok: true, json: async () => ({ ok: false, error: "bloqueado" }) });
+  const al = almacenEnMemoria({ fetch: fetchBloqueado, config: { registroCentral: { url: "https://ejemplo.invalid/flujo" } } });
+  await assert.rejects(al.entrar({ nombre: "Leo", correo: "leo@firma.com", clave: claveAzar(), consentimiento: true }), (e) => e.codigo === "bloqueado");
+});

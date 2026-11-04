@@ -17,6 +17,8 @@
   var ITERACIONES = 150000;
   var PREFIJO_CODIGO = "LEXBOSS1.";
   var VERSION_AVISO = "2026-11";
+  var CLAVE_MINIMA = 10;        // claves nuevas
+  var CLAVE_MINIMA_ANTIGUA = 6; // registros creados antes de subir el mínimo
 
   function ErrorAcceso(codigo, mensaje) {
     var e = new Error(mensaje);
@@ -29,7 +31,9 @@
   }
 
   function correoValido(correo) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(correo);
+    // Solo caracteres de correo comunes: sin comillas ni espacios (el registro
+    // central también lo valida, para que nadie pueda manipular su búsqueda).
+    return correo.length <= 120 && /^[a-z0-9._%+-]+@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/.test(correo);
   }
 
   /* ---------- Codificación ---------- */
@@ -158,12 +162,14 @@
     /* ---------- Operaciones públicas ---------- */
 
     function entrar(datos) {
-      var nombre = String(datos.nombre || "").trim().replace(/\s+/g, " ");
+      var nombre = String(datos.nombre || "").trim().replace(/\s+/g, " ").slice(0, 80);
       var correo = normalizarCorreo(datos.correo);
       var clave = String(datos.clave || "");
       if (nombre.length < 2) return Promise.reject(ErrorAcceso("nombre", "Escribe tu nombre."));
       if (!correoValido(correo)) return Promise.reject(ErrorAcceso("correo", "Escribe un correo válido."));
-      if (clave.length < 6) return Promise.reject(ErrorAcceso("clave", "La clave debe tener al menos 6 caracteres."));
+      if (clave.length < CLAVE_MINIMA_ANTIGUA) {
+        return Promise.reject(ErrorAcceso("clave", "La clave debe tener al menos " + CLAVE_MINIMA + " caracteres."));
+      }
 
       return verificador(correo, clave).then(function (verif) {
         var todos = leerTodos();
@@ -173,7 +179,13 @@
         }
         return remoto({ accion: "cargar", correo: correo, verificador: verif }).then(function (resp) {
           if (resp && resp.ok === false && resp.error === "clave") {
-            throw ErrorAcceso("clave", "La clave no coincide con la registrada en el registro central.");
+            throw ErrorAcceso("clave", "La clave no coincide con la registrada en el registro central. Tras 5 intentos fallidos, el registro se bloquea 15 minutos.");
+          }
+          if (resp && resp.ok === false && resp.error === "bloqueado") {
+            throw ErrorAcceso("bloqueado", "Hubo demasiados intentos fallidos con este correo. Por seguridad, el registro está bloqueado unos minutos; inténtalo más tarde.");
+          }
+          if (resp && resp.ok === false && resp.error === "invalido") {
+            throw ErrorAcceso("correo", "El registro central rechazó los datos. Revisa que el correo esté bien escrito.");
           }
           var central = resp && resp.ok && resp.registro ? resp.registro : null;
           var usuario = local;
@@ -183,6 +195,9 @@
             origen = "central";
           }
           var nuevo = !usuario;
+          if (nuevo && clave.length < CLAVE_MINIMA) {
+            throw ErrorAcceso("clave", "La clave debe tener al menos " + CLAVE_MINIMA + " caracteres.");
+          }
           if (nuevo) {
             if (!datos.consentimiento) {
               throw ErrorAcceso("consentimiento", "Para crear tu registro debes aceptar el aviso de privacidad.");
@@ -296,7 +311,8 @@
       exportarCodigo: exportarCodigo,
       importarCodigo: importarCodigo,
       centralActivo: function () { return !!urlCentral; },
-      VERSION_AVISO: VERSION_AVISO
+      VERSION_AVISO: VERSION_AVISO,
+      CLAVE_MINIMA: CLAVE_MINIMA
     };
   }
 
