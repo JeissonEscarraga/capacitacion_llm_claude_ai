@@ -1398,7 +1398,26 @@
     preguntas: [] // se llenan al iniciar: una pregunta al azar de cada módulo
   };
 
-  var api = { MODULOS: MODULOS, FINAL: FINAL, TODOS: TODOS, EVALUACION: EVALUACION, CLAVES: CLAVES };
+  // Taller final: construir paso a paso, sin batalla (contenido en taller.js).
+  var TALLER = {
+    id: "taller",
+    tema: "Taller: construye paso a paso con Claude",
+    jefe: "El Taller del Constructor",
+    forma: "taller",
+    color: "verde",
+    frase: "Hoy no hay batalla: hoy construimos.",
+    taller: true,
+    leccion: [
+      "Empieza siempre con la cuenta de la firma; el chat es para temas generales sin datos de clientes.",
+      "Un buen pedido tiene rol, tarea, material, formato y criterio, y permite el «no consta».",
+      "Los documentos se trabajan con Claude Code desde la carpeta, sin subirlos: lee, revisa los permisos que pide y verifica el resultado.",
+      "CLAUDE.md fija las reglas de la carpeta, el modo plan te muestra el plano antes de la obra y las Skills y subagentes guardan procedimientos y especialistas.",
+      "Conectores, hooks y API se hacen con TI; una idea se vuelve aplicativo corporativo con prototipo, pruebas, revisión experta y aprobación."
+    ],
+    preguntas: []
+  };
+
+  var api = { MODULOS: MODULOS, FINAL: FINAL, TODOS: TODOS, EVALUACION: EVALUACION, CLAVES: CLAVES, TALLER: TALLER };
 
   if (typeof module !== "undefined" && module.exports) {
     module.exports = api;

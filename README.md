@@ -26,6 +26,7 @@ La mecánica se inspira en la versión web de [Logic Boss Game](https://github.c
 | 14 | El Leviatán de los Tokens | API de Anthropic: claves, costos, caché de prompts, lotes, tool use, workspaces |
 | Final | El Comité de Riesgo Supremo | Casos integrales |
 | Cierre | El Gran Examinador | Resumen general del curso y evaluación: una pregunta al azar de cada tema; el PDF incluye el resultado por tema y la idea clave de cada lección |
+| Taller | El Taller del Constructor | **Sin batalla.** 16 recetas visuales paso a paso para construir lo aprendido: entrar con la cuenta de la firma, armar un pedido (juego interactivo), chat, Proyecto, Artifact, Claude Code, leer documentos sin subirlos, CLAUDE.md, modo plan, Skill, subagente, conectores/MCP, mini RAG, hook, API y de la idea al aplicativo. Datos técnicos verificados en la documentación oficial (noviembre de 2026) |
 
 Son 98 preguntas, cada una con su concepto y su explicación. Cada módulo tiene dos partes:
 
@@ -107,6 +108,7 @@ web/
   css/estilos.css     estilo de pizarra
   js/contenido.js     temas, resúmenes y preguntas de la batalla  ← contenido
   js/conceptos.js     conceptualización de cada módulo (pasos, visuales, prácticas)  ← contenido
+  js/taller.js        taller final: recetas paso a paso y constructor de pedidos  ← contenido
   js/ejemplos-perfiles.js  ejemplos e introducciones adaptados a cada personaje  ← contenido
   js/logica.js        batalla, progreso, niveles (sin interfaz)
   js/constancia.js    constancia en PDF y correo para TI

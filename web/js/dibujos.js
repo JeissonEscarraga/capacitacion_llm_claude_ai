@@ -118,6 +118,18 @@
         g("c-amarilla", p("M44 30l6-14l10 10l10-10l6 14z")) +
         g("c-amarilla sin-relleno fino brillo", p("M60 8v-4M44 10l-3-3M76 10l3-3"));
     },
+    taller: function (k) {
+      // Caja de herramientas sonriente con llave inglesa y destornillador.
+      return g("c-tenue sin-relleno", p("M44 40v-8h32v8")) +
+        g(k, p("M18 40h84v58H18z")) +
+        g(k + " sin-relleno", p("M18 58h84")) +
+        g("c-amarilla", p("M54 54h12v10H54z")) +
+        ojos(44, 76, 76, 6) +
+        g("c-blanca sin-relleno", p("M48 88q12 8 24 0")) +
+        g("c-naranja sin-relleno grueso", p("M86 10l14 22")) + g("c-naranja", c(84, 8, 5)) +
+        g("c-azul sin-relleno grueso", p("M30 30l-12-20")) + g("c-amarilla", p("M28 26l6 10l-4 2l-6-10z")) +
+        g("c-amarilla sin-relleno fino brillo", p("M8 50l6 2M106 50l-6 2"));
+    },
     balanza: function (k) {
       // Balanza con ojos: el juez que pesa lo que se filtró.
       return g(k, p("M58 22h4v66h-4z")) +

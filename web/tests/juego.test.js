@@ -225,3 +225,26 @@ test("el correo para TI lleva el PDF adjunto y se abre como borrador", () => {
   assert.ok(eml.trimEnd().endsWith("--"), "cierre del multipart");
   assert.ok(K.enlaceCorreo(opciones, "x.pdf").startsWith("mailto:capacitacionai@cavelier.com?subject="));
 });
+
+test("el taller final tiene recetas completas y no tiene batalla", () => {
+  const T = require("../js/taller.js");
+  assert.ok(C.TALLER.taller && C.TALLER.preguntas.length === 0, "sin batalla");
+  assert.ok(!C.TODOS.some((m) => m.id === "taller"), "no entra en la evaluación");
+  const recetas = T.pasos.filter((p) => p.tipo === "receta");
+  assert.ok(recetas.length >= 15, "al menos 15 recetas");
+  recetas.forEach((r) => {
+    assert.ok(r.titulo && r.construyes && r.nivel && r.quien && r.tiempo && r.resultado && r.cuidado, r.titulo);
+    assert.ok(r.pasos.length >= 3, "pasos en " + r.titulo);
+    r.pasos.forEach((p) => {
+      assert.ok(p.t, r.titulo);
+      if (p.bloque) {
+        assert.ok(["clic", "terminal", "archivo", "chat"].includes(p.bloque.tipo), r.titulo);
+        assert.ok(p.bloque.contenido || p.bloque.mensajes, r.titulo);
+        assert.ok(!/sk-ant-|ghp_|password\s*=/i.test(p.bloque.contenido || ""), "sin claves en " + r.titulo);
+      }
+    });
+  });
+  const c = T.pasos.find((p) => p.tipo === "constructor");
+  assert.ok(c && c.piezas.every((pz) => c.plantilla.includes("{" + pz.campo + "}") && pz.opciones.length >= 2));
+  assert.strictEqual(T.pasos.filter((p) => p.tipo === "elige").length, 1);
+});

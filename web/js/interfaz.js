@@ -244,6 +244,26 @@
     liEv.appendChild(bEv);
     mapa.appendChild(liEv);
 
+    // Taller final: construir paso a paso (sin batalla).
+    var tl = C.TALLER;
+    var hechoT = conceptoCompleto(tl);
+    var liT = el("li", "casilla casilla-final casilla-taller" + (hechoT ? " superado" : ""));
+    var bT = el("button", "casilla-boton");
+    bT.type = "button";
+    var sT = el("div", "sprite sprite-mapa");
+    sT.innerHTML = D.jefe(tl);
+    bT.appendChild(sT);
+    bT.appendChild(el("p", "etiqueta", "Taller final · Sin batalla"));
+    bT.appendChild(el("p", "casilla-tema", tl.tema));
+    bT.appendChild(el("p", "casilla-jefe", tl.jefe));
+    bT.appendChild(el("p", "casilla-estado", hechoT ? "Completado" : "Aprende a construir, paso a paso"));
+    var chipT = el("p", "casilla-pasos");
+    chipT.appendChild(el("span", "paso-chip" + (hechoT ? " hecho" : ""), "🛠️ Taller" + (hechoT ? " ✓" : "")));
+    bT.appendChild(chipT);
+    bT.addEventListener("click", function () { abrirLeccion(tl, false); });
+    liT.appendChild(bT);
+    mapa.appendChild(liT);
+
     var rep = moduloRepaso();
     if (rep.preguntas.length) {
       var li = el("li", "casilla casilla-repaso");
@@ -297,12 +317,13 @@
     pasoResuelto = pasos.map(function (p) { return completo || (p.tipo !== "elige" && p.tipo !== "clasifica"); });
     pasoActual = 0;
     $("leccion-sprite").innerHTML = D.jefe(modulo);
-    $("leccion-etiqueta").textContent = repaso ? "Repaso" : (modulo.evaluacion ? "Lección final · Conceptualización" : (modulo.final ? "Jefe final · Conceptualización" : "Conceptualización"));
+    $("leccion-etiqueta").textContent = repaso ? "Repaso" : modulo.taller ? "Taller final · Paso a paso" : (modulo.evaluacion ? "Lección final · Conceptualización" : (modulo.final ? "Jefe final · Conceptualización" : "Conceptualización"));
     $("leccion-titulo").textContent = modulo.tema;
     $("leccion-jefe").textContent = repaso
       ? "Vuelven las preguntas que fallaste en esta sesión."
+      : modulo.taller ? "Sin batalla: aprende construyendo, a tu ritmo. Marca cada paso a medida que lo hagas."
       : "Aprende paso a paso. Al terminar te enfrentas a " + modulo.jefe + ".";
-    $("concepto-saltar").hidden = !(completo && !repaso);
+    $("concepto-saltar").hidden = !(completo && !repaso) || !!modulo.taller;
     mostrar("leccion");
     pintarPaso();
   }
@@ -325,6 +346,8 @@
     else if (p.tipo === "concepto") pintarConcepto(art, p);
     else if (p.tipo === "elige") pintarElige(art, p);
     else if (p.tipo === "clasifica") pintarClasifica(art, p);
+    else if (p.tipo === "receta") pintarReceta(art, p);
+    else if (p.tipo === "constructor") pintarConstructor(art, p);
     else pintarResumen(art, p);
     actualizarNav();
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -335,7 +358,7 @@
     $("concepto-anterior").disabled = pasoActual === 0;
     $("concepto-siguiente").hidden = ultimo;
     $("concepto-siguiente").disabled = !pasoResuelto[pasoActual];
-    $("boton-batalla").hidden = !ultimo;
+    $("boton-batalla").hidden = !ultimo || !!moduloActual.taller;
     var tipo = pasos[pasoActual].tipo;
     $("concepto-aviso").textContent = !pasoResuelto[pasoActual] && (tipo === "elige" || tipo === "clasifica")
       ? "Resuelve el ejercicio para continuar."
@@ -530,6 +553,169 @@
     art.appendChild(retro);
   }
 
+  /* ---------- Taller: recetas paso a paso ---------- */
+
+  function botonCopiar(texto) {
+    var b = el("button", "boton-copiar", "Copiar");
+    b.type = "button";
+    b.addEventListener("click", function () {
+      var hecho = function () { b.textContent = "¡Copiado!"; setTimeout(function () { b.textContent = "Copiar"; }, 1500); };
+      var valor = typeof texto === "function" ? texto() : texto;
+      if (navigator.clipboard) navigator.clipboard.writeText(valor).then(hecho, hecho);
+      else hecho();
+    });
+    return b;
+  }
+
+  // bloque: { tipo: "terminal" | "archivo" | "clic" | "chat", titulo, contenido | mensajes }
+  function pintarBloque(bl) {
+    if (bl.tipo === "chat") return pintarVisual({ tipo: "chat", mensajes: bl.mensajes });
+    if (bl.tipo === "clic") {
+      var ruta = el("div", "ruta-clic");
+      bl.contenido.split(" › ").forEach(function (x, i) {
+        if (i > 0) ruta.appendChild(el("span", "ruta-flecha", "›"));
+        ruta.appendChild(el("span", "ruta-boton", x));
+      });
+      return ruta;
+    }
+    var caja = el("div", bl.tipo === "terminal" ? "terminal" : "archivo");
+    var cab = el("div", "bloque-cabecera");
+    cab.appendChild(el("span", "bloque-titulo", bl.tipo === "terminal" ? "⌨️ " + (bl.titulo || "Terminal") : "📄 " + (bl.titulo || "archivo")));
+    cab.appendChild(botonCopiar(bl.contenido));
+    caja.appendChild(cab);
+    var pre = el("pre", "bloque-codigo");
+    if (bl.tipo === "terminal") {
+      bl.contenido.split("\n").forEach(function (l) {
+        var linea = el("span", "linea");
+        if (l.indexOf("#") === 0) { linea.className = "linea comentario"; linea.textContent = l; }
+        else { linea.appendChild(el("span", "prompt", "> ")); linea.appendChild(document.createTextNode(l)); }
+        pre.appendChild(linea);
+      });
+    } else {
+      pre.textContent = bl.contenido;
+    }
+    caja.appendChild(pre);
+    return caja;
+  }
+
+  function pintarReceta(art, p) {
+    var cab = el("div", "receta-cabecera");
+    cab.appendChild(el("span", "receta-icono", p.icono || "🛠️"));
+    var ct = el("div");
+    ct.appendChild(el("p", "etiqueta concepto-tipo", "Receta"));
+    ct.appendChild(el("h3", "concepto-titulo", p.titulo));
+    cab.appendChild(ct);
+    art.appendChild(cab);
+    var chips = el("div", "receta-chips");
+    [["🎚️", p.nivel], ["👤", p.quien], ["⏱️", p.tiempo]].forEach(function (c) {
+      if (c[1]) chips.appendChild(el("span", "receta-chip", c[0] + " " + c[1]));
+    });
+    art.appendChild(chips);
+    var meta = el("div", "nota-caja nota-meta");
+    meta.appendChild(el("p", "nota-caja-titulo", "🎯 Vas a construir"));
+    meta.appendChild(el("p", null, p.construyes));
+    art.appendChild(meta);
+    if (p.simple) {
+      var s = el("div", "nota-caja nota-simple");
+      s.appendChild(el("p", "nota-caja-titulo", "💡 En palabras simples"));
+      s.appendChild(el("p", null, p.simple));
+      art.appendChild(s);
+    }
+    var avance = el("p", "receta-avance");
+    var barra = el("div", "barra barra-mini");
+    var relleno = el("span");
+    barra.appendChild(relleno);
+    var ol = el("ol", "receta-pasos");
+    var marcados = 0;
+    function actualizar() {
+      avance.textContent = marcados === p.pasos.length
+        ? "🎉 ¡Hiciste todos los pasos de esta receta!"
+        : "Pasos hechos: " + marcados + " de " + p.pasos.length;
+      relleno.style.width = (100 * marcados / p.pasos.length) + "%";
+    }
+    p.pasos.forEach(function (paso, i) {
+      var li = el("li", "receta-paso");
+      li.appendChild(el("span", "receta-numero", String(i + 1)));
+      var cuerpo = el("div", "receta-cuerpo");
+      cuerpo.appendChild(el("p", null, paso.t));
+      if (paso.bloque) cuerpo.appendChild(pintarBloque(paso.bloque));
+      var chk = el("label", "receta-check");
+      var input = document.createElement("input");
+      input.type = "checkbox";
+      input.addEventListener("change", function () {
+        marcados += input.checked ? 1 : -1;
+        li.classList.toggle("hecho", input.checked);
+        actualizar();
+      });
+      chk.appendChild(input);
+      chk.appendChild(document.createTextNode(" Hecho"));
+      cuerpo.appendChild(chk);
+      li.appendChild(cuerpo);
+      ol.appendChild(li);
+    });
+    art.appendChild(ol);
+    art.appendChild(barra);
+    art.appendChild(avance);
+    actualizar();
+    var notas = el("div", "notas");
+    if (p.resultado) {
+      var r = el("div", "nota-caja nota-resultado");
+      r.appendChild(el("p", "nota-caja-titulo", "✅ Lo que vas a ver"));
+      r.appendChild(el("p", null, p.resultado));
+      notas.appendChild(r);
+    }
+    if (p.cuidado) {
+      var c = el("div", "nota-caja nota-cuidado");
+      c.appendChild(el("p", "nota-caja-titulo", "⚠️ Cuidado"));
+      c.appendChild(el("p", null, p.cuidado));
+      notas.appendChild(c);
+    }
+    art.appendChild(notas);
+  }
+
+  // Constructor interactivo de pedidos: eliges piezas y se arma el texto.
+  function pintarConstructor(art, p) {
+    titulo(art, p.titulo, "Juega a construir");
+    art.appendChild(el("p", "concepto-parrafo", p.texto));
+    var form = el("div", "constructor");
+    var elegidos = {};
+    var vista = el("pre", "bloque-codigo constructor-vista");
+    function armar() {
+      var t = p.plantilla;
+      Object.keys(elegidos).forEach(function (k) { t = t.replace("{" + k + "}", elegidos[k]); });
+      vista.textContent = t;
+    }
+    p.piezas.forEach(function (pz) {
+      var fila = el("div", "constructor-fila");
+      fila.appendChild(el("p", "etiqueta", pz.icono + " " + pz.nombre));
+      var grupo = el("div", "clasifica-botones constructor-opciones");
+      pz.opciones.forEach(function (op, i) {
+        var b = el("button", "boton-cat" + (i === 0 ? " elegida" : ""), op);
+        b.type = "button";
+        b.addEventListener("click", function () {
+          grupo.querySelectorAll("button").forEach(function (x) { x.classList.remove("elegida"); });
+          b.classList.add("elegida");
+          elegidos[pz.campo] = op;
+          armar();
+        });
+        grupo.appendChild(b);
+      });
+      elegidos[pz.campo] = pz.opciones[0];
+      fila.appendChild(grupo);
+      form.appendChild(fila);
+    });
+    art.appendChild(form);
+    var caja = el("div", "archivo");
+    var cab = el("div", "bloque-cabecera");
+    cab.appendChild(el("span", "bloque-titulo", "📝 Tu pedido, listo para usar en Claude Code"));
+    cab.appendChild(botonCopiar(function () { return vista.textContent; }));
+    caja.appendChild(cab);
+    caja.appendChild(vista);
+    art.appendChild(caja);
+    armar();
+    if (p.nota) art.appendChild(el("p", "nota", p.nota));
+  }
+
   function pintarResumen(art, p) {
     titulo(art, p.titulo, repasoActual ? "Repaso" : "Resumen");
     var ul = el("ul", "lista-leccion");
@@ -540,7 +726,9 @@
         usuario.progreso.conceptos = usuario.progreso.conceptos || {};
         usuario.progreso.conceptos[moduloActual.id] = new Date().toISOString();
       }
-      art.appendChild(el("p", "practica-retro bien", "✔ Completaste la conceptualización. Ahora, la práctica: enfrenta a " + moduloActual.jefe + "."));
+      art.appendChild(el("p", "practica-retro bien", moduloActual.taller
+        ? "✔ ¡Completaste el taller! Ya sabes cómo se construye cada cosa. Vuelve a cualquier receta cuando la necesites."
+        : "✔ Completaste la conceptualización. Ahora, la práctica: enfrenta a " + moduloActual.jefe + "."));
     }
   }
 
