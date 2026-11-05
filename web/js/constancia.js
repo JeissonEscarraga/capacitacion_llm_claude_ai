@@ -174,7 +174,7 @@
     etiqueta("Módulo", M, y);
     y += 5.5;
     y = escribir(lineas(modulo.tema, 15, "bold", W), M, y, 15, "bold", C.texto);
-    y = escribir(lineas("Jefe: " + modulo.jefe, 9.5, "normal", W), M, y + 0.5, 9.5, "normal", C.tenue);
+    y = escribir(lineas("AI: " + modulo.jefe, 9.5, "normal", W), M, y + 0.5, 9.5, "normal", C.tenue);
     if (conceptoFecha) {
       y = escribir(lineas("Conceptualización completada el " + fechaBonita(conceptoFecha) +
         " · Práctica terminada el " + fechaBonita(fecha), 9.5, "normal", W), M, y + 0.5, 9.5, "normal", C.tenue);

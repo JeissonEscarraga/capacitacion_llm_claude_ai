@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
-<link rel="stylesheet" href="css/estilos.css?v=202611041506">
+<link rel="stylesheet" href="css/estilos.css?v=202611050817">
 </head>
 <body>
 <svg class="defs" aria-hidden="true" focusable="false">
@@ -42,7 +42,7 @@
 
   <!-- 1. Acceso -->
   <main id="pantalla-acceso" class="pantalla">
-    <p class="lema">Aprende desde cero el uso empresarial de Claude, la protección de datos y la propiedad intelectual. Cada módulo empieza con una explicación paso a paso y termina con una batalla contra un jefe. Al completar ambas partes descargas una constancia en PDF para enviarla a TI.</p>
+    <p class="lema">Aprende desde cero el uso empresarial de Claude, la protección de datos y la propiedad intelectual. Cada módulo empieza con una explicación paso a paso y termina con una batalla contra una AI. Al completar ambas partes descargas una constancia en PDF para enviarla a TI.</p>
 
     <section class="bloque" aria-labelledby="titulo-acceso">
       <h2 id="titulo-acceso" class="subtitulo"><span class="paso">1</span> Identifícate</h2>
@@ -90,21 +90,21 @@
   <main id="pantalla-mapa" class="pantalla" hidden>
     <section class="resumen-mapa" id="resumen-mapa" aria-live="polite"></section>
     <section aria-labelledby="titulo-mapa">
-      <h2 id="titulo-mapa" class="subtitulo">Elige a qué jefe enfrentar</h2>
+      <h2 id="titulo-mapa" class="subtitulo">Elige a qué AI enfrentar</h2>
       <p class="nota">Puedes ir en cualquier orden. Cada módulo tiene dos partes: la conceptualización (aprende) y la práctica (la batalla). Al terminar ambas descargas tu constancia en PDF y la envías a TI. El avance de esta sesión se pierde al cerrar o recargar la página.</p>
       <ol class="mapa" id="mapa"></ol>
     </section>
     <details class="bloque instrucciones">
       <summary class="subtitulo subtitulo-chico">Cómo se juega</summary>
       <ul>
-        <li>Antes de cada jefe hay una <b>conceptualización</b> paso a paso, con esquemas, ejemplos y ejercicios. Al completarla se abre la práctica.</li>
-        <li>Si respondes bien, atacas al jefe. Si respondes mal, pierdes un punto de credibilidad (corazón).</li>
+        <li>Antes de cada AI hay una <b>conceptualización</b> paso a paso, con esquemas, ejemplos y ejercicios. Al completarla se abre la práctica.</li>
+        <li>Si respondes bien, atacas a la AI. Si respondes mal, pierdes un punto de credibilidad (corazón).</li>
         <li>Siempre verás la explicación de la respuesta correcta: así aprendes aunque falles.</li>
-        <li>Para vencer al jefe debes responder bien <b>todas</b> las preguntas del módulo: las que falles vuelven al final de la fila. Así, «vencido» significa 100 % aprendido.</li>
+        <li>Para ganarle a la AI debes responder bien <b>todas</b> las preguntas del módulo: las que falles vuelven al final de la fila. Así, ganarle a la AI significa 100 % aprendido.</li>
         <li>Con varios aciertos seguidos haces un <b>golpe crítico</b>: recuperas un punto de credibilidad.</li>
         <li>Al final está la <b>lección de resumen general</b>: repasa todo el curso y te evalúa con una pregunta de cada tema.</li>
         <li>La <b>consulta al expediente</b> descarta dos opciones incorrectas.</li>
-        <li>Lo que fallas aparece en el <b>jefe de repaso</b> mientras dure la sesión.</li>
+        <li>Lo que fallas aparece en la <b>AI de repaso</b> mientras dure la sesión.</li>
         <li>Al completar la conceptualización y terminar la práctica (ganes o no) se descarga tu <b>constancia en PDF</b>. Si te retiras de la práctica, no hay constancia. Envíala a TI con el botón del final.</li>
         <li>En el computador puedes responder con las teclas 1 a 4 y seguir con Enter.</li>
       </ul>
@@ -156,7 +156,7 @@
         <div class="sprite" id="sprite-jefe"></div>
         <div class="placa">
           <p class="nombre" id="nombre-jefe"></p>
-          <div class="barra barra-vida" role="meter" aria-label="Resistencia del jefe" aria-valuemin="0" id="barra-jefe"><span></span></div>
+          <div class="barra barra-vida" role="meter" aria-label="Resistencia de la AI" aria-valuemin="0" id="barra-jefe"><span></span></div>
           <p class="cifras" id="vida-jefe"></p>
         </div>
       </div>
@@ -211,7 +211,7 @@
   <div class="capa" id="capa-rendirse" hidden>
     <div class="ventana" role="dialog" aria-modal="true" aria-labelledby="titulo-rendirse">
       <h2 id="titulo-rendirse" class="subtitulo">¿Retirarte de esta batalla?</h2>
-      <p>Este jefe no contará como vencido y no se generará constancia: para obtenerla hay que terminar la práctica.</p>
+      <p>Esta AI no contará como vencida y no se generará constancia: para obtenerla hay que terminar la práctica.</p>
       <div class="acciones">
         <button type="button" class="boton boton-secundario" data-cerrar>Seguir</button>
         <button type="button" class="boton" id="boton-confirmar-rendirse">Retirarme</button>
@@ -239,15 +239,15 @@
   </footer>
 </div>
 
-<script src="config.js?v=202611041506"></script>
-<script src="vendor/jspdf.umd.min.js?v=202611041506"></script>
-<script src="js/contenido.js?v=202611041506"></script>
-<script src="js/conceptos.js?v=202611041506"></script>
-<script src="js/taller.js?v=202611041506"></script>
-<script src="js/ejemplos-perfiles.js?v=202611041506"></script>
-<script src="js/logica.js?v=202611041506"></script>
-<script src="js/dibujos.js?v=202611041506"></script>
-<script src="js/constancia.js?v=202611041506"></script>
-<script src="js/interfaz.js?v=202611041506"></script>
+<script src="config.js?v=202611050817"></script>
+<script src="vendor/jspdf.umd.min.js?v=202611050817"></script>
+<script src="js/contenido.js?v=202611050817"></script>
+<script src="js/conceptos.js?v=202611050817"></script>
+<script src="js/taller.js?v=202611050817"></script>
+<script src="js/ejemplos-perfiles.js?v=202611050817"></script>
+<script src="js/logica.js?v=202611050817"></script>
+<script src="js/dibujos.js?v=202611050817"></script>
+<script src="js/constancia.js?v=202611050817"></script>
+<script src="js/interfaz.js?v=202611050817"></script>
 </body>
 </html>
