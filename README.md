@@ -1,6 +1,6 @@
 # AI BOSS: Claude e IA para abogados
 
-Juego web de capacitación para los abogados de la firma. Cada tema es un **jefe** que se vence respondiendo preguntas: si aciertas, lo atacas; si fallas, pierdes credibilidad, pero siempre ves la explicación correcta. Al terminar cada módulo, la persona descarga una **constancia en PDF** con su nombre, correo, puntaje y respuestas correctas e incorrectas, y la envía a TI para su control. El juego no guarda datos en ningún servidor.
+Juego web de capacitación para los abogados de la firma. Cada tema es una **AI** a la que se le gana respondiendo preguntas: si aciertas, lo atacas; si fallas, pierdes credibilidad, pero siempre ves la explicación correcta. Al terminar cada módulo, la persona descarga una **constancia en PDF** con su nombre, correo, puntaje y respuestas correctas e incorrectas, y la envía a TI para su control. El juego no guarda datos en ningún servidor.
 
 **Jugar:** https://jeissonescarraga.github.io/capacitacion_llm_claude_ai/
 
@@ -8,7 +8,7 @@ La mecánica se inspira en la versión web de [Logic Boss Game](https://github.c
 
 ## Qué enseña
 
-| # | Jefe | Tema |
+| # | AI | Tema |
 |---|------|------|
 | 1 | El Oráculo Alucinante | Fundamentos de Claude y de los LLM (modelos, tokens, contexto, alucinaciones, responsabilidad) |
 | 2 | La Gárgola del Escritorio | Claude en el trabajo: cuenta corporativa, proyectos, artifacts, búsqueda web |
@@ -31,9 +31,9 @@ La mecánica se inspira en la versión web de [Logic Boss Game](https://github.c
 Son 98 preguntas, cada una con su concepto y su explicación. Cada módulo tiene dos partes:
 
 1. **Conceptualización** (para personas sin conocimientos previos): pasos con explicación en lenguaje sencillo, un esquema visual, una analogía («En palabras simples»), un ejemplo de la firma y ejercicios prácticos que hay que resolver para avanzar. El contenido está en `web/js/conceptos.js`.
-2. **Práctica:** la batalla contra el jefe.
+2. **Práctica:** la batalla contra la AI.
 
-Lo que se falla aparece luego en un **jefe de repaso**. Al completar la conceptualización y terminar la práctica se descarga la constancia en PDF.
+Lo que se falla aparece luego en una **AI de repaso**. Al completar la conceptualización y terminar la práctica se descarga la constancia en PDF.
 
 ## Personajes y áreas
 
@@ -57,7 +57,7 @@ Los documentos de clientes y de la firma **no se suben ni se adjuntan** a chats 
 ## Cómo funciona
 
 1. **Entrada con nombre y correo**, más el aviso de privacidad. No hay clave ni cuenta.
-2. **Juego:** antes de cada jefe hay una conceptualización paso a paso (no se puede saltar la primera vez). En la batalla, el jefe tiene tantos puntos como preguntas el módulo: hay que responder bien **todas** (las falladas vuelven al final de la fila), así que «vencido» significa 100 % aprendido. El golpe crítico devuelve un punto de credibilidad. En el mapa, cada módulo muestra sus tres pasos: Aprende, Practica y PDF.
+2. **Juego:** antes de cada AI hay una conceptualización paso a paso (no se puede saltar la primera vez). En la batalla, la AI tiene tantos puntos como preguntas el módulo: hay que responder bien **todas** (las falladas vuelven al final de la fila), así que ganarle a la AI significa 100 % aprendido. El golpe crítico devuelve un punto de credibilidad. En el mapa, cada módulo muestra sus tres pasos: Aprende, Practica y PDF.
 3. **Constancia en PDF:** se descarga sola solo si se completó la conceptualización y se terminó la práctica (ganada o perdida; si la persona se retira, no hay constancia; el repaso tampoco genera). Al inicio muestra la fecha y hora en que se generó; incluye participante, correo, módulo, fechas de conceptualización y práctica, resultado, puntaje y cada pregunta: lo que eligió, la respuesta correcta y la explicación de las falladas. Se genera en el navegador con [jsPDF](https://github.com/parallax/jsPDF) (MIT), copiado en `web/vendor/`, así que no se envía nada a terceros.
 4. **Envío a TI (con el PDF adjunto):** el botón «Preparar correo a TI» descarga un correo (.eml) dirigido al buzón `correoTI` de `web/config.js` (hoy `capacitacionai@cavelier.com`) que **ya trae el PDF adjunto**. Al abrirlo con doble clic, Outlook lo muestra como borrador (cabecera `X-Unsent: 1`); la persona revisa y pulsa «Enviar», desde su cuenta de la firma. Una página web no puede enviar correos sola ni adjuntar archivos a un enlace `mailto:`, por eso se usa este borrador. Si no se abre en Outlook (por ejemplo, en Outlook web), hay un enlace de respaldo que abre un correo sin adjunto.
 5. **Nada se guarda:** el avance vive en memoria mientras la página está abierta. Al recargar o salir se pierde; las constancias descargadas son el registro.
@@ -113,7 +113,7 @@ web/
   js/logica.js        batalla, progreso, niveles (sin interfaz)
   js/constancia.js    constancia en PDF y correo para TI
   vendor/jspdf.umd.min.js  jsPDF 2.5.1 (MIT)
-  js/dibujos.js       jefes y personajes en SVG
+  js/dibujos.js       AI rivales y personajes en SVG
   js/interfaz.js      pantallas y eventos
   tests/juego.test.js pruebas (contenido y lógica)
 scripts/servir.js     servidor estático sin dependencias

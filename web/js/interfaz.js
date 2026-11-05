@@ -184,7 +184,7 @@
     var r = $("resumen-mapa");
     r.innerHTML = "";
     [
-      [g.superados + " / " + C.TODOS.length, "jefes vencidos hoy"],
+      [g.superados + " / " + C.TODOS.length, "AI vencidas hoy"],
       [g.porcentaje + " %", "conceptos aprendidos"],
       [g.repasar, "por repasar"],
       [g.noVistas, "sin ver todavía"]
@@ -205,11 +205,11 @@
       var s = el("div", "sprite sprite-mapa");
       s.innerHTML = D.jefe(m);
       b.appendChild(s);
-      b.appendChild(el("p", "etiqueta", m.final ? "Jefe final" : "Jefe " + (i + 1)));
+      b.appendChild(el("p", "etiqueta", m.final ? "AI final" : "AI " + (i + 1)));
       b.appendChild(el("p", "casilla-tema", m.tema));
       b.appendChild(el("p", "casilla-jefe", m.jefe));
       var estado = el("p", "casilla-estado");
-      if (res.superado) estado.textContent = "Vencido · " + res.porcentaje + " % aprendido";
+      if (res.superado) estado.textContent = "Le ganaste a la AI · " + res.porcentaje + " % aprendido";
       else if (res.noVistas === res.total && conceptoCompleto(m)) estado.textContent = "Conceptualización lista · falta la práctica";
       else if (res.noVistas === res.total) estado.textContent = m.final ? "Casos que mezclan todos los temas" : "Sin empezar";
       else estado.textContent = res.porcentaje + " % aprendido · " + res.repasar + " por repasar";
@@ -272,7 +272,7 @@
       var s = el("div", "sprite sprite-mapa");
       s.innerHTML = D.jefe(rep);
       b.appendChild(s);
-      b.appendChild(el("p", "etiqueta", "Jefe de repaso"));
+      b.appendChild(el("p", "etiqueta", "AI de repaso"));
       b.appendChild(el("p", "casilla-tema", rep.tema));
       b.appendChild(el("p", "casilla-estado", rep.preguntas.length + " pregunta(s) por repasar"));
       b.addEventListener("click", function () { abrirLeccion(rep, true); });
@@ -317,12 +317,12 @@
     pasoResuelto = pasos.map(function (p) { return completo || (p.tipo !== "elige" && p.tipo !== "clasifica"); });
     pasoActual = 0;
     $("leccion-sprite").innerHTML = D.jefe(modulo);
-    $("leccion-etiqueta").textContent = repaso ? "Repaso" : modulo.taller ? "Taller final · Paso a paso" : (modulo.evaluacion ? "Lección final · Conceptualización" : (modulo.final ? "Jefe final · Conceptualización" : "Conceptualización"));
+    $("leccion-etiqueta").textContent = repaso ? "Repaso" : modulo.taller ? "Taller final · Paso a paso" : (modulo.evaluacion ? "Lección final · Conceptualización" : (modulo.final ? "AI final · Conceptualización" : "Conceptualización"));
     $("leccion-titulo").textContent = modulo.tema;
     $("leccion-jefe").textContent = repaso
       ? "Vuelven las preguntas que fallaste en esta sesión."
       : modulo.taller ? "Sin batalla: aprende construyendo, a tu ritmo. Marca cada paso a medida que lo hagas."
-      : "Aprende paso a paso. Al terminar te enfrentas a " + modulo.jefe + ".";
+      : "Aprende paso a paso. Al terminar te enfrentas a la AI «" + modulo.jefe + "».";
     $("concepto-saltar").hidden = !(completo && !repaso) || !!modulo.taller;
     mostrar("leccion");
     pintarPaso();
@@ -728,7 +728,7 @@
       }
       art.appendChild(el("p", "practica-retro bien", moduloActual.taller
         ? "✔ ¡Completaste el taller! Ya sabes cómo se construye cada cosa. Vuelve a cualquier receta cuando la necesites."
-        : "✔ Completaste la conceptualización. Ahora, la práctica: enfrenta a " + moduloActual.jefe + "."));
+        : "✔ Completaste la conceptualización. Ahora, la práctica: gánale a la AI «" + moduloActual.jefe + "»."));
     }
   }
 
@@ -837,7 +837,7 @@
       $("retro").className = "retro acierto";
     } else {
       sacudir("sprite-jugador");
-      anuncio = ev.escudoUsado ? "Tu escudo absorbió el error" : "El jefe te golpea: −1 credibilidad";
+      anuncio = ev.escudoUsado ? "Tu escudo absorbió el error" : "La AI te golpea: −1 credibilidad";
       $("retro-titulo").textContent = (ev.escudoUsado ? "Incorrecto, pero tu escudo te protegió" : "Incorrecto") + ". Esta pregunta volverá más adelante.";
       $("retro").className = "retro error";
     }
@@ -916,13 +916,13 @@
     var m = moduloActual;
     $("sprite-fin").innerHTML = b.gano ? D.personaje(b.perfil.id, b.perfil.nombre) : D.jefe(m);
     if (b.gano) {
-      $("titulo-fin").textContent = repasoActual ? "¡Repaso superado!" : (m.evaluacion ? "¡Aprobaste la evaluación general!" : "¡Venciste a " + m.jefe + "!");
+      $("titulo-fin").textContent = repasoActual ? "¡Repaso superado!" : (m.evaluacion ? "¡Aprobaste la evaluación general!" : "¡Le ganaste a la AI «" + m.jefe + "»!");
       $("texto-fin").textContent = m.evaluacion
         ? "Respondiste bien una pregunta de cada tema. Tu constancia incluye el resumen de todas las lecciones."
         : "Respondiste bien todas las preguntas del módulo: 100 % aprendido.";
     } else {
-      $("titulo-fin").textContent = b.corazones <= 0 ? "Esta vez ganó el jefe" : "Te retiraste de la batalla";
-      $("texto-fin").textContent = "Lo que fallaste aparece en el jefe de repaso. Repasa la conceptualización e inténtalo otra vez.";
+      $("titulo-fin").textContent = b.corazones <= 0 ? "Esta vez ganó la AI" : "Te retiraste de la batalla";
+      $("texto-fin").textContent = "Lo que fallaste aparece en la AI de repaso. Repasa la conceptualización e inténtalo otra vez.";
     }
     var r = K.resumen(b);
     var dl = $("resumen-fin");

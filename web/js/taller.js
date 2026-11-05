@@ -21,7 +21,7 @@
   function L() { return Array.prototype.slice.call(arguments).join("\n"); }
 
   var TALLER = {
-    intro: "Bienvenido(a) al taller. Aquí no hay jefe ni puntaje: vas a aprender, paso a paso, cómo se construye cada cosa que viste en el curso. Cada receta te dice qué vas a construir, quién lo hace, cuánto tarda y qué cuidar. Marca cada paso cuando lo hagas. Si algo pide permisos de administrador, la receta te lo indica: en ese caso lo hace TI.",
+    intro: "Bienvenido(a) al taller. Aquí no hay AI que vencer ni puntaje: vas a aprender, paso a paso, cómo se construye cada cosa que viste en el curso. Cada receta te dice qué vas a construir, quién lo hace, cuánto tarda y qué cuidar. Marca cada paso cuando lo hagas. Si algo pide permisos de administrador, la receta te lo indica: en ese caso lo hace TI.",
     pasos: [
       {
         tipo: "concepto",

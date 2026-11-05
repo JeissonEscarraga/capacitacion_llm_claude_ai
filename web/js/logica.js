@@ -27,7 +27,7 @@
     socio: {
       id: "socio", nombre: "Socio(a) estratega", area: "juridico",
       corazones: 4, racha: 3, comodines: 1,
-      ventaja: "Un punto de credibilidad extra en cada jefe."
+      ventaja: "Un punto de credibilidad extra en cada AI."
     },
     asociado: {
       id: "asociado", nombre: "Asociado(a) ágil", area: "juridico",
@@ -37,17 +37,17 @@
     paralegal: {
       id: "paralegal", nombre: "Paralegal meticuloso(a)", area: "juridico",
       corazones: 3, racha: 3, comodines: 1, escudo: true,
-      ventaja: "Su primer error ante cada jefe no le quita credibilidad."
+      ventaja: "Su primer error ante cada AI no le quita credibilidad."
     },
     analista: {
       id: "analista", nombre: "Analista de datos", area: "tecnologia",
       corazones: 3, racha: 3, comodines: 2,
-      ventaja: "Dos consultas al expediente (descartan dos opciones) por jefe."
+      ventaja: "Dos consultas al expediente (descartan dos opciones) por AI."
     },
     it: {
       id: "it", nombre: "IT & Big Data", area: "tecnologia",
       corazones: 2, racha: 3, comodines: 3,
-      ventaja: "Tres consultas al expediente por jefe, pero solo 2 de credibilidad."
+      ventaja: "Tres consultas al expediente por AI, pero solo 2 de credibilidad."
     },
     administrativo: {
       id: "administrativo", nombre: "Administrativo(a) organizado(a)", area: "administrativo",
