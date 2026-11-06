@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
-<link rel="stylesheet" href="css/estilos.css?v=202611061830">
+<link rel="stylesheet" href="css/estilos.css?v=202611061900">
 </head>
 <body>
 <svg class="defs" aria-hidden="true" focusable="false">
@@ -247,7 +247,8 @@
           <input id="resp-responsable" type="checkbox">
           <label for="resp-responsable">Entiendo que soy responsable de la pérdida, filtración, robo o incumplimiento legal que se derive de lo que le entregue a Claude, ChatGPT u otra IA cuando ejecuto un prompt, salvo en los usos que mi jefe haya autorizado por escrito.</label>
         </div>
-        <button type="submit" class="boton" id="resp-firmar">Firmar y descargar PDF</button>
+        <button type="submit" class="boton" id="resp-firmar" disabled aria-describedby="resp-falta">Firmar y descargar PDF</button>
+        <p class="nota" id="resp-falta" aria-live="polite"></p>
         <p class="mensaje" id="resp-mensaje" role="status"></p>
       </form>
     </section>
@@ -322,19 +323,19 @@
   </footer>
 </div>
 
-<script src="config.js?v=202611061830"></script>
-<script src="vendor/jspdf.umd.min.js?v=202611061830"></script>
-<script src="js/contenido.js?v=202611061830"></script>
-<script src="js/conceptos.js?v=202611061830"></script>
-<script src="js/practicas.js?v=202611061830"></script>
-<script src="js/taller.js?v=202611061830"></script>
-<script src="js/taller-chatgpt.js?v=202611061830"></script>
-<script src="js/cuentas-gratuitas.js?v=202611061830"></script>
-<script src="js/ejemplos-perfiles.js?v=202611061830"></script>
-<script src="js/logica.js?v=202611061830"></script>
-<script src="js/dibujos.js?v=202611061830"></script>
-<script src="js/constancia.js?v=202611061830"></script>
-<script src="js/responsiva.js?v=202611061830"></script>
-<script src="js/interfaz.js?v=202611061830"></script>
+<script src="config.js?v=202611061900"></script>
+<script src="vendor/jspdf.umd.min.js?v=202611061900"></script>
+<script src="js/contenido.js?v=202611061900"></script>
+<script src="js/conceptos.js?v=202611061900"></script>
+<script src="js/practicas.js?v=202611061900"></script>
+<script src="js/taller.js?v=202611061900"></script>
+<script src="js/taller-chatgpt.js?v=202611061900"></script>
+<script src="js/cuentas-gratuitas.js?v=202611061900"></script>
+<script src="js/ejemplos-perfiles.js?v=202611061900"></script>
+<script src="js/logica.js?v=202611061900"></script>
+<script src="js/dibujos.js?v=202611061900"></script>
+<script src="js/constancia.js?v=202611061900"></script>
+<script src="js/responsiva.js?v=202611061900"></script>
+<script src="js/interfaz.js?v=202611061900"></script>
 </body>
 </html>
