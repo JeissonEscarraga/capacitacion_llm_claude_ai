@@ -739,6 +739,111 @@
       ]
     },
     {
+      id: "netsuite",
+      tema: "Claude y ChatGPT con NetSuite de Oracle",
+      jefe: "El Contador Indiscreto",
+      forma: "libroMayor",
+      color: "naranja",
+      frase: "Pásame el reporte de cartera... solo para echarle un vistazo.",
+      leccion: [
+        "NetSuite (el ERP de Oracle que usa la firma) guarda información de clientes, honorarios, cartera, proveedores, contabilidad y datos personales: es de las más sensibles de la firma.",
+        "Regla 1: no se suben archivos al chat de Claude, ChatGPT ni ninguna otra IA: ni exportaciones, ni reportes, ni facturas, ni capturas de pantalla de NetSuite.",
+        "Regla 2: no se le da información de forma directa: no se pegan datos, nombres de clientes, montos, cuentas ni identificadores. A la IA se le pide la forma (fórmula, búsqueda guardada, SuiteQL, script) con datos ficticios.",
+        "Todo se crea y se obtiene desde NetSuite, con tu rol y con autorización previa y por escrito de tu jefe inmediato. El resultado se queda en NetSuite.",
+        "Responsabilidad: si no hay autorización, la pérdida, el robo o la obtención de la información por otras firmas o clientes es responsabilidad de quien ejecuta el prompt; si el jefe la autorizó, responde el jefe por lo que autorizó."
+      ],
+      preguntas: [
+        {
+          id: "net-1", concepto: "No se suben archivos de NetSuite a un chat",
+          p: "Necesitas analizar el reporte de cartera vencida que exportaste de NetSuite a Excel. ¿Puedes adjuntarlo a un chat de Claude o ChatGPT para que lo resuma?",
+          ok: "No: los archivos de NetSuite no se suben a ningún chat de IA; se pide la fórmula o la búsqueda y se ejecuta dentro de NetSuite",
+          no: [
+            "Sí, si uso la cuenta corporativa",
+            "Sí, si borro el chat al terminar",
+            "Sí, si lo convierto antes a PDF"
+          ],
+          e: "La regla no tiene excepciones por cuenta, formato ni borrado: el archivo saldría de los sistemas de la firma. La IA ayuda a construir el análisis; los datos se consultan en NetSuite."
+        },
+        {
+          id: "net-2", concepto: "No se pegan datos de NetSuite en el prompt",
+          p: "¿Cuál de estos pedidos a la IA cumple la regla de no dar información de forma directa?",
+          ok: "«Dame una fórmula de búsqueda guardada que calcule los días de mora de una factura a partir de su fecha de vencimiento»",
+          no: [
+            "«Estas son las 40 facturas vencidas del Cliente A con sus montos: ordénalas por riesgo»",
+            "«El NIT 900.123.456 debe $85 millones: redacta el cobro»",
+            "«Te pego la lista de clientes con sus tarifas para que detectes inconsistencias»"
+          ],
+          e: "A la IA se le pide la forma (fórmula, criterio, estructura) con datos ficticios o solo con nombres de campos. Los datos reales se quedan en NetSuite."
+        },
+        {
+          id: "net-3", concepto: "Autorización previa y por escrito del jefe",
+          p: "Quieres usar la IA para construir una búsqueda guardada que extraiga información de honorarios por cliente. ¿Qué necesitas antes de ejecutarla en NetSuite?",
+          ok: "La autorización previa y por escrito de tu jefe inmediato (correo o ticket), además de un rol de NetSuite con permiso para esa información",
+          no: [
+            "Nada: si tengo acceso a NetSuite, puedo sacar lo que quiera",
+            "Solo que la IA me diga que es seguro",
+            "La aprobación verbal de un compañero de otra área"
+          ],
+          e: "Tener acceso técnico no es lo mismo que estar autorizado. La autorización escrita deja trazabilidad de quién decidió crear y obtener esa información."
+        },
+        {
+          id: "net-4", concepto: "Responsabilidad sin autorización",
+          p: "Sin autorización de su jefe, un analista pegó en ChatGPT datos de cartera de NetSuite y la información terminó en manos de otra firma. ¿Quién responde?",
+          ok: "La persona que ejecutó el prompt, porque actuó sin autorización",
+          no: [
+            "OpenAI, porque es dueña de la herramienta",
+            "El área de TI, porque no lo bloqueó",
+            "Nadie, porque fue un accidente"
+          ],
+          e: "Sin autorización, la pérdida, el robo o la obtención de la información por otras firmas o clientes es responsabilidad de quien ejecuta el prompt."
+        },
+        {
+          id: "net-5", concepto: "Responsabilidad con autorización",
+          p: "Una jefa autorizó por escrito a su equipo a usar la IA para construir un reporte de NetSuite, siguiendo las reglas. Si hay una pérdida de información derivada de ese uso autorizado, ¿quién responde?",
+          ok: "La jefa que dio la autorización, siempre que el equipo haya actuado dentro de lo autorizado",
+          no: [
+            "Siempre y solo el analista, aunque haya autorización",
+            "Oracle, porque NetSuite es su producto",
+            "El cliente, porque la información es suya"
+          ],
+          e: "Quien autoriza asume la responsabilidad por lo que autorizó. Si la persona se sale de lo autorizado (por ejemplo, sube un archivo), la responsabilidad vuelve a ser suya."
+        },
+        {
+          id: "net-6", concepto: "Las capturas de pantalla también son archivos",
+          p: "Un compañero dice: «No subo el reporte, solo le mando a la IA una captura de pantalla de NetSuite». ¿Qué le respondes?",
+          ok: "Que una captura también es un archivo con la información de NetSuite: está prohibida igual que el reporte",
+          no: [
+            "Que está bien porque la imagen no es un archivo de Excel",
+            "Que está bien si recorta el logo de la firma",
+            "Que está bien si la toma desde el celular"
+          ],
+          e: "Lo que importa es la información, no el formato. Imágenes, PDF, Excel o texto copiado: nada de NetSuite va al chat."
+        },
+        {
+          id: "net-7", concepto: "Scripts e integraciones: revisión, sandbox y credenciales",
+          p: "La IA te ayudó a escribir un SuiteScript que actualiza registros de clientes. ¿Qué sigue?",
+          ok: "Revisarlo, probarlo en el sandbox (entorno de pruebas) y que TI lo despliegue en producción con la autorización correspondiente",
+          no: [
+            "Pegarlo directamente en producción porque la IA ya lo probó",
+            "Pegar en el chat las credenciales de NetSuite para que la IA lo instale",
+            "Compartirlo con un proveedor externo para que lo ejecute"
+          ],
+          e: "Un script puede modificar o exponer miles de registros. Se revisa, se prueba en sandbox y lo despliega TI. Las credenciales y tokens nunca se escriben en un chat."
+        },
+        {
+          id: "net-8", concepto: "Conexiones directas de la IA con NetSuite",
+          p: "Encuentras en internet un conector gratuito que «conecta ChatGPT con tu NetSuite en un clic». ¿Qué haces?",
+          ok: "No lo instalo: solo se usan conexiones aprobadas por TI y autorizadas por el jefe, con permisos mínimos",
+          no: [
+            "Lo instalo con mi usuario: así ahorro tiempo",
+            "Lo instalo y le doy rol de administrador para que funcione mejor",
+            "Lo instalo y aviso a TI si algo sale mal"
+          ],
+          e: "Un conector le da a un tercero acceso a los datos de la firma. Debe pasar por TI, tener autorización y el mínimo privilegio necesario."
+        }
+      ]
+    },
+    {
       id: "rag",
       tema: "RAG: que Claude responda con tus documentos",
       jefe: "El Bibliotecario Perdido",
@@ -1372,6 +1477,7 @@
     "agentes": "Un agente planifica y usa herramientas en ciclos; si los pasos son fijos, mejor un flujo. Persona en el ciclo y registro de lo que hizo.",
     "claude-code": "Claude Code trabaja sobre tus carpetas sin subir archivos; CLAUDE.md fija reglas, el modo plan y los permisos te dan control, y git permite deshacer.",
     "api": "La API integra a Claude en los sistemas; la clave va en un gestor de secretos, se paga por tokens y la caché y los lotes reducen costos.",
+    "netsuite": "Con NetSuite no se suben archivos ni se pegan datos en Claude o ChatGPT: la IA ayuda a construir fórmulas, búsquedas o scripts con datos ficticios, y todo se obtiene dentro de NetSuite con autorización escrita del jefe. Sin autorización responde quien ejecuta el prompt; con ella, el jefe que autorizó.",
     "riesgos-legales": "Subir correos, documentos de patentes o marcas no radicadas, secretos de innovación o contratos con datos a un chat puede violar la privacidad, el secreto profesional y la confidencialidad, hacer perder derechos y acarrear multas, sanciones y hasta delitos.",
     "aplicativos": "Un aplicativo corporativo tiene aprobación, inicio de sesión de la firma, permisos, registro y responsable; uno personal sirve para explorar; preguntar sobre archivos es puntual. Siempre revisa un experto, y los tiempos van de minutos a meses.",
     "final": "Elige la herramienta según la necesidad y aplica dos chequeos: antes de darle información a la IA y antes de usar lo que produjo."

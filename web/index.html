@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>AI BOSS: Claude para abogados</title>
-<meta name="description" content="Juego de capacitación para abogados: uso empresarial de Claude, Claude Code, datos personales, propiedad intelectual, RAG, skills, agentes, MCP, conectores y la API de Anthropic.">
+<meta name="description" content="Juego de capacitación para abogados: uso empresarial de Claude, Claude Code, datos personales, propiedad intelectual, NetSuite con IA, RAG, skills, agentes, MCP, conectores, la API de Anthropic y la responsiva de uso de IA.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
-<link rel="stylesheet" href="css/estilos.css?v=202611050817">
+<link rel="stylesheet" href="css/estilos.css?v=202611061500">
 </head>
 <body>
 <svg class="defs" aria-hidden="true" focusable="false">
@@ -72,6 +72,7 @@
         <p><b>Dónde quedan:</b> en ningún servidor. El juego no guarda nada: tus datos solo están en la página mientras juegas y en los PDF que descargas. Al cerrar o recargar la página se borran.</p>
         <p><b>Para qué:</b> tú envías cada constancia a TI, que la usa solo para controlar el avance de la capacitación sobre el uso de inteligencia artificial en la firma.</p>
         <p><b>Tus derechos:</b> puedes conocer, actualizar y suprimir tus datos y revocar esta autorización (Ley 1581 de 2012), escribiendo a TI o al canal de protección de datos de la firma.</p>
+        <p><b>Responsiva de uso de IA:</b> si la firmas, el PDF incluye además tu documento de identidad, cargo, área, jefe inmediato, ciudad y tu firma. Tampoco se guardan en el juego: solo quedan en el PDF que envías a TI.</p>
         <p><b>Datos sensibles:</b> el juego no pide ni necesita datos sensibles. No escribas información de clientes en ningún campo.</p>
       </div>
     </details>
@@ -102,6 +103,8 @@
         <li>Siempre verás la explicación de la respuesta correcta: así aprendes aunque falles.</li>
         <li>Para ganarle a la AI debes responder bien <b>todas</b> las preguntas del módulo: las que falles vuelven al final de la fila. Así, ganarle a la AI significa 100 % aprendido.</li>
         <li>Con varios aciertos seguidos haces un <b>golpe crítico</b>: recuperas un punto de credibilidad.</li>
+        <li>Las lecciones alternan teoría y práctica: después de cada concepto viene un ejercicio para aplicarlo de inmediato.</li>
+        <li>La <b>responsiva de uso de IA</b> se firma una vez y se envía a TI: con ella aceptas que eres responsable de lo que le entregas a Claude o ChatGPT.</li>
         <li>Al final está la <b>lección de resumen general</b>: repasa todo el curso y te evalúa con una pregunta de cada tema.</li>
         <li>La <b>consulta al expediente</b> descarta dos opciones incorrectas.</li>
         <li>Lo que fallas aparece en la <b>AI de repaso</b> mientras dure la sesión.</li>
@@ -184,6 +187,83 @@
     </div>
   </main>
 
+  <!-- 6. Responsiva de uso de IA -->
+  <main id="pantalla-responsiva" class="pantalla" hidden>
+    <section class="concepto-cabecera">
+      <div class="sprite sprite-mini" id="responsiva-sprite"></div>
+      <div class="concepto-cabecera-texto">
+        <p class="etiqueta">Responsiva · Firma obligatoria · Sin batalla</p>
+        <h2 class="subtitulo" id="responsiva-titulo"></h2>
+        <p class="nota">Léela con calma, completa tus datos, fírmala y envíala a TI. Al firmar aceptas que eres responsable de lo que le entregas a la IA cuando ejecutas un prompt.</p>
+      </div>
+    </section>
+
+    <article class="bloque responsiva-texto" id="responsiva-texto" aria-label="Texto de la responsiva"></article>
+
+    <section class="bloque" aria-labelledby="titulo-firma">
+      <h3 id="titulo-firma" class="subtitulo subtitulo-chico">Tus datos y tu firma</h3>
+      <form id="form-responsiva" class="formulario formulario-ancho" novalidate method="post" action="#" onsubmit="return false">
+        <div class="campos-dos">
+          <div class="campo">
+            <label for="resp-nombre" class="etiqueta">Nombre completo</label>
+            <input id="resp-nombre" type="text" autocomplete="name" required maxlength="80">
+          </div>
+          <div class="campo">
+            <label for="resp-documento" class="etiqueta">Documento (tipo y número)</label>
+            <input id="resp-documento" type="text" required maxlength="40" placeholder="C.C. 1.234.567.890">
+          </div>
+          <div class="campo">
+            <label for="resp-cargo" class="etiqueta">Cargo</label>
+            <input id="resp-cargo" type="text" autocomplete="organization-title" required maxlength="80">
+          </div>
+          <div class="campo">
+            <label for="resp-area" class="etiqueta">Área</label>
+            <input id="resp-area" type="text" required maxlength="80">
+          </div>
+          <div class="campo">
+            <label for="resp-jefe" class="etiqueta">Jefe inmediato</label>
+            <input id="resp-jefe" type="text" required maxlength="80">
+          </div>
+          <div class="campo">
+            <label for="resp-ciudad" class="etiqueta">Ciudad</label>
+            <input id="resp-ciudad" type="text" required maxlength="60" value="Bogotá">
+          </div>
+        </div>
+        <div class="campo">
+          <span class="etiqueta" id="etiqueta-firma">Firma (dibújala con el mouse, el dedo o el lápiz)</span>
+          <canvas id="resp-firma" class="lienzo-firma" width="600" height="200" role="img" aria-labelledby="etiqueta-firma"></canvas>
+          <div class="fila-acciones">
+            <button type="button" class="boton boton-secundario boton-chico" id="resp-borrar-firma">Borrar firma</button>
+          </div>
+        </div>
+        <div class="campo campo-check">
+          <input id="resp-acepto" type="checkbox">
+          <label for="resp-acepto">Leí completa esta responsiva y acepto todas sus cláusulas.</label>
+        </div>
+        <div class="campo campo-check">
+          <input id="resp-responsable" type="checkbox">
+          <label for="resp-responsable">Entiendo que soy responsable de la pérdida, filtración, robo o incumplimiento legal que se derive de lo que le entregue a Claude, ChatGPT u otra IA cuando ejecuto un prompt, salvo en los usos que mi jefe haya autorizado por escrito.</label>
+        </div>
+        <button type="submit" class="boton" id="resp-firmar">Firmar y descargar PDF</button>
+        <p class="mensaje" id="resp-mensaje" role="status"></p>
+      </form>
+    </section>
+
+    <section class="bloque constancia" id="resp-envio" hidden>
+      <p class="etiqueta">Envía tu responsiva a TI</p>
+      <p id="resp-texto-envio"></p>
+      <ol class="pasos-constancia">
+        <li><button type="button" class="boton boton-chico" id="resp-pdf">Descargar de nuevo el PDF</button></li>
+        <li><button type="button" class="boton boton-chico" id="resp-enviar-ti">Preparar correo a TI (con el PDF adjunto)</button> <span class="nota" id="resp-nota-enviar"></span></li>
+      </ol>
+      <p class="nota">¿No se abre en Outlook? <button type="button" class="enlace" id="resp-correo-simple">Abre un correo sin adjunto</button> y adjunta el PDF a mano.</p>
+    </section>
+
+    <div class="acciones">
+      <button type="button" class="boton boton-secundario boton-chico" data-ir="mapa">Volver al mapa</button>
+    </div>
+  </main>
+
   <!-- Fin de módulo -->
   <div class="capa" id="capa-fin" hidden>
     <div class="ventana" role="dialog" aria-modal="true" aria-labelledby="titulo-fin">
@@ -239,15 +319,17 @@
   </footer>
 </div>
 
-<script src="config.js?v=202611050817"></script>
-<script src="vendor/jspdf.umd.min.js?v=202611050817"></script>
-<script src="js/contenido.js?v=202611050817"></script>
-<script src="js/conceptos.js?v=202611050817"></script>
-<script src="js/taller.js?v=202611050817"></script>
-<script src="js/ejemplos-perfiles.js?v=202611050817"></script>
-<script src="js/logica.js?v=202611050817"></script>
-<script src="js/dibujos.js?v=202611050817"></script>
-<script src="js/constancia.js?v=202611050817"></script>
-<script src="js/interfaz.js?v=202611050817"></script>
+<script src="config.js?v=202611061500"></script>
+<script src="vendor/jspdf.umd.min.js?v=202611061500"></script>
+<script src="js/contenido.js?v=202611061500"></script>
+<script src="js/conceptos.js?v=202611061500"></script>
+<script src="js/practicas.js?v=202611061500"></script>
+<script src="js/taller.js?v=202611061500"></script>
+<script src="js/ejemplos-perfiles.js?v=202611061500"></script>
+<script src="js/logica.js?v=202611061500"></script>
+<script src="js/dibujos.js?v=202611061500"></script>
+<script src="js/constancia.js?v=202611061500"></script>
+<script src="js/responsiva.js?v=202611061500"></script>
+<script src="js/interfaz.js?v=202611061500"></script>
 </body>
 </html>
