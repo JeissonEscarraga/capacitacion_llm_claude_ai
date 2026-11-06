@@ -149,7 +149,7 @@
 
   /* ---------------- PDF ---------------- */
 
-  // opciones: { firmante, firma (dataURL PNG), fecha (ISO), huella (hex), correoTI, limpiar }
+  // opciones: { firmante, firma (dataURL PNG), medio, fecha (ISO), huella (hex), correoTI, limpiar }
   function generar(opciones) {
     var jsPDF = global.jspdf && global.jspdf.jsPDF;
     if (!jsPDF) throw new Error("No se pudo cargar el generador de PDF.");
@@ -245,7 +245,7 @@
     if (opciones.firma) doc.addImage(opciones.firma, "PNG", M + 2, y + 2, wFirma - 4, hFirma - 4);
     var xD = M + wFirma + 8;
     var yD = y + 5;
-    [["Firmado por", f.nombre], ["Documento", f.documento], ["Fecha y hora", fechaBonita(fecha)], ["Medio", "Firma electrónica manuscrita en pantalla"]].forEach(function (d) {
+    [["Firmado por", f.nombre], ["Documento", f.documento], ["Fecha y hora", fechaBonita(fecha)], ["Medio", opciones.medio || "Firma electrónica manuscrita en pantalla"]].forEach(function (d) {
       fuente(7, "bold"); tinta(C.tenue); doc.text(limpiar(d[0]).toUpperCase(), xD, yD, { charSpace: 0.3 });
       escribir([lineas(d[1], 9.5, "normal", ANCHO - M - xD)[0]], xD, yD + 4.2, 9.5, "normal", C.texto);
       yD += 8.2;
@@ -270,6 +270,57 @@
     return { doc: doc, nombre: nombreArchivo(f, fecha) };
   }
 
+  /* ---------------- Firma cargada: quitar el fondo ---------------- */
+
+  // Recibe los píxeles RGBA de una imagen (se modifican en el sitio) y vuelve
+  // transparente el fondo: estima su color con los bordes de la imagen y borra
+  // lo que se le parezca, con un borde suave para que el trazo no quede dentado.
+  // Devuelve el recuadro donde quedó la tinta ({ x, y, w, h }) o null si no hay.
+  function quitarFondo(px, ancho, alto) {
+    var muestras = [];
+    function tomar(x, y) {
+      var i = (y * ancho + x) * 4;
+      if (px[i + 3] > 200) muestras.push([px[i], px[i + 1], px[i + 2]]);
+    }
+    var paso = Math.max(1, Math.floor(Math.min(ancho, alto) / 60));
+    for (var x = 0; x < ancho; x += paso) { tomar(x, 0); tomar(x, alto - 1); }
+    for (var y = 0; y < alto; y += paso) { tomar(0, y); tomar(ancho - 1, y); }
+    var fondo = null;
+    if (muestras.length) {
+      fondo = [0, 1, 2].map(function (c) {
+        var v = muestras.map(function (m) { return m[c]; }).sort(function (a, b) { return a - b; });
+        return v[Math.floor(v.length / 2)];
+      });
+    }
+    var luzFondo = fondo ? (fondo[0] + fondo[1] + fondo[2]) / 3 : 255;
+    var cerca = 40, lejos = 90; // distancia al color del fondo: transparente hasta 40, opaco desde 90
+    var minX = ancho, minY = alto, maxX = -1, maxY = -1;
+    for (var yy = 0; yy < alto; yy++) {
+      for (var xx = 0; xx < ancho; xx++) {
+        var i = (yy * ancho + xx) * 4;
+        var a = px[i + 3];
+        if (fondo && a > 0) {
+          var dr = px[i] - fondo[0], dg = px[i + 1] - fondo[1], db = px[i + 2] - fondo[2];
+          var d = Math.sqrt(dr * dr + dg * dg + db * db);
+          // La tinta debe ser más oscura que el fondo (papel claro); si el fondo es oscuro, basta la distancia.
+          var luz = (px[i] + px[i + 1] + px[i + 2]) / 3;
+          if (luzFondo > 128 && luz >= luzFondo - 10) d = Math.min(d, cerca);
+          var factor = d <= cerca ? 0 : (d >= lejos ? 1 : (d - cerca) / (lejos - cerca));
+          a = Math.round(a * factor);
+          px[i + 3] = a;
+        }
+        if (a > 24) {
+          if (xx < minX) minX = xx;
+          if (xx > maxX) maxX = xx;
+          if (yy < minY) minY = yy;
+          if (yy > maxY) maxY = yy;
+        }
+      }
+    }
+    if (maxX < 0) return null;
+    return { x: minX, y: minY, w: maxX - minX + 1, h: maxY - minY + 1 };
+  }
+
   var api = {
     VERSION: VERSION,
     TITULO: TITULO,
@@ -280,7 +331,8 @@
     nombreArchivo: nombreArchivo,
     asunto: asunto,
     cuerpo: cuerpo,
-    generar: generar
+    generar: generar,
+    quitarFondo: quitarFondo
   };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else global.Responsiva = api;

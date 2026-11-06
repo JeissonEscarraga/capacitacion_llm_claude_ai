@@ -314,3 +314,17 @@ test("la responsiva se puede firmar y enviar a TI", () => {
   const asunto = eml.match(/Subject: =\?UTF-8\?B\?(.+)\?=/)[1];
   assert.strictEqual(Buffer.from(asunto, "base64").toString("utf8"), "Responsiva de uso de IA firmada - María Prueba");
 });
+
+test("al cargar una firma se quita el fondo y se ubica el trazo", () => {
+  const R = require("../js/responsiva.js");
+  const w = 40, h = 20;
+  const px = new Uint8ClampedArray(w * h * 4);
+  for (let i = 0; i < w * h; i++) { px[i * 4] = 238; px[i * 4 + 1] = 232; px[i * 4 + 2] = 220; px[i * 4 + 3] = 255; } // papel crema
+  for (let x = 10; x < 30; x++) { const i = (8 * w + x) * 4; px[i] = 20; px[i + 1] = 30; px[i + 2] = 90; } // trazo azul oscuro
+  const caja = R.quitarFondo(px, w, h);
+  assert.deepStrictEqual(caja, { x: 10, y: 8, w: 20, h: 1 });
+  assert.strictEqual(px[3], 0, "el fondo queda transparente");
+  assert.strictEqual(px[(8 * w + 15) * 4 + 3], 255, "el trazo se conserva");
+  const vacia = new Uint8ClampedArray(4 * 4 * 4).fill(255);
+  assert.strictEqual(R.quitarFondo(vacia, 4, 4), null, "sin trazos no hay firma");
+});
