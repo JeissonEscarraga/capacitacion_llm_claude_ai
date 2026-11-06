@@ -76,6 +76,24 @@
 
   /* ---------------- Acceso ---------------- */
 
+  // «Empezar» solo se habilita con nombre, correo válido y la casilla de privacidad.
+  function actualizarBotonEntrar() {
+    var faltan = [];
+    if ($("acceso-nombre").value.trim().length < 2) faltan.push("tu nombre");
+    if (!correoValido($("acceso-correo").value.trim().toLowerCase())) faltan.push("un correo válido");
+    if (!$("acceso-consentimiento").checked) faltan.push("aceptar el aviso de privacidad");
+    $("boton-entrar").disabled = faltan.length > 0;
+    $("acceso-falta").textContent = faltan.length ? "Para empezar falta: " + faltan.join(", ") + "." : "";
+  }
+  ["acceso-nombre", "acceso-correo"].forEach(function (id) {
+    $(id).addEventListener("input", actualizarBotonEntrar);
+    $(id).addEventListener("change", actualizarBotonEntrar);
+  });
+  $("acceso-consentimiento").addEventListener("change", actualizarBotonEntrar);
+  actualizarBotonEntrar();
+  // El navegador puede autocompletar los campos después de cargar la página.
+  window.addEventListener("load", actualizarBotonEntrar);
+
   $("form-acceso").addEventListener("submit", function (ev) {
     ev.preventDefault();
     var msg = $("mensaje-acceso");
@@ -109,6 +127,7 @@
     if (lienzoListo) limpiarFirma();
     actualizarBotonFirmar();
     $("acceso-consentimiento").checked = false;
+    actualizarBotonEntrar();
     mostrar("acceso");
   });
 
