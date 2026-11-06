@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
-<link rel="stylesheet" href="css/estilos.css?v=202611061500">
+<link rel="stylesheet" href="css/estilos.css?v=202611061510">
 </head>
 <body>
 <svg class="defs" aria-hidden="true" focusable="false">
@@ -230,11 +230,14 @@
           </div>
         </div>
         <div class="campo">
-          <span class="etiqueta" id="etiqueta-firma">Firma (dibújala con el mouse, el dedo o el lápiz)</span>
+          <span class="etiqueta" id="etiqueta-firma">Firma (dibújala con el mouse, el dedo o el lápiz, o carga una imagen)</span>
           <canvas id="resp-firma" class="lienzo-firma" width="600" height="200" role="img" aria-labelledby="etiqueta-firma"></canvas>
           <div class="fila-acciones">
+            <button type="button" class="boton boton-secundario boton-chico" id="resp-cargar-firma">Cargar imagen de la firma</button>
             <button type="button" class="boton boton-secundario boton-chico" id="resp-borrar-firma">Borrar firma</button>
+            <input type="file" id="resp-firma-archivo" accept="image/png,image/jpeg,image/webp" hidden>
           </div>
+          <p class="nota" id="resp-firma-nota">Si cargas una foto o un escaneo, el fondo se quita solo. Usa una firma en tinta oscura sobre papel claro y recortada lo más posible.</p>
         </div>
         <div class="campo campo-check">
           <input id="resp-acepto" type="checkbox">
@@ -319,17 +322,17 @@
   </footer>
 </div>
 
-<script src="config.js?v=202611061500"></script>
-<script src="vendor/jspdf.umd.min.js?v=202611061500"></script>
-<script src="js/contenido.js?v=202611061500"></script>
-<script src="js/conceptos.js?v=202611061500"></script>
-<script src="js/practicas.js?v=202611061500"></script>
-<script src="js/taller.js?v=202611061500"></script>
-<script src="js/ejemplos-perfiles.js?v=202611061500"></script>
-<script src="js/logica.js?v=202611061500"></script>
-<script src="js/dibujos.js?v=202611061500"></script>
-<script src="js/constancia.js?v=202611061500"></script>
-<script src="js/responsiva.js?v=202611061500"></script>
-<script src="js/interfaz.js?v=202611061500"></script>
+<script src="config.js?v=202611061510"></script>
+<script src="vendor/jspdf.umd.min.js?v=202611061510"></script>
+<script src="js/contenido.js?v=202611061510"></script>
+<script src="js/conceptos.js?v=202611061510"></script>
+<script src="js/practicas.js?v=202611061510"></script>
+<script src="js/taller.js?v=202611061510"></script>
+<script src="js/ejemplos-perfiles.js?v=202611061510"></script>
+<script src="js/logica.js?v=202611061510"></script>
+<script src="js/dibujos.js?v=202611061510"></script>
+<script src="js/constancia.js?v=202611061510"></script>
+<script src="js/responsiva.js?v=202611061510"></script>
+<script src="js/interfaz.js?v=202611061510"></script>
 </body>
 </html>

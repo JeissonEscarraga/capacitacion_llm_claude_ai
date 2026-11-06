@@ -1018,6 +1018,7 @@
 
   var MODULO_RESPONSIVA = { id: "responsiva", jefe: "El Pergamino del Compromiso", forma: "pergamino", color: "azul" };
   var firmaVacia = true;
+  var firmaCargada = false; // true si la firma vino de una imagen
 
   function abrirResponsiva() {
     $("responsiva-sprite").innerHTML = D.jefe(MODULO_RESPONSIVA);
@@ -1098,8 +1099,49 @@
     ctx.lineTo(cv.width - 30, cv.height - 40);
     ctx.stroke();
     firmaVacia = true;
+    firmaCargada = false;
   }
   $("resp-borrar-firma").addEventListener("click", limpiarFirma);
+
+  // Firma cargada desde una imagen: se le quita el fondo y se centra en el recuadro.
+  $("resp-cargar-firma").addEventListener("click", function () { $("resp-firma-archivo").click(); });
+  $("resp-firma-archivo").addEventListener("change", function () {
+    var archivo = this.files && this.files[0];
+    this.value = "";
+    var nota = $("resp-firma-nota");
+    if (!archivo) return;
+    if (!/^image\/(png|jpeg|webp)$/.test(archivo.type)) { nota.textContent = "Carga una imagen PNG, JPG o WEBP."; return; }
+    if (archivo.size > 10 * 1024 * 1024) { nota.textContent = "La imagen pesa más de 10 MB. Usa una más liviana."; return; }
+    var url = URL.createObjectURL(archivo);
+    var img = new Image();
+    img.onload = function () {
+      URL.revokeObjectURL(url);
+      // Se trabaja a un tamaño moderado para que sea rápido.
+      var escala = Math.min(1, 1600 / Math.max(img.naturalWidth, img.naturalHeight));
+      var w = Math.max(1, Math.round(img.naturalWidth * escala));
+      var h = Math.max(1, Math.round(img.naturalHeight * escala));
+      var tmp = document.createElement("canvas");
+      tmp.width = w; tmp.height = h;
+      var tctx = tmp.getContext("2d");
+      tctx.drawImage(img, 0, 0, w, h);
+      var datos = tctx.getImageData(0, 0, w, h);
+      var caja = R.quitarFondo(datos.data, w, h);
+      if (!caja) { nota.textContent = "No encontré trazos en la imagen. Prueba con una foto más contrastada."; return; }
+      tctx.putImageData(datos, 0, 0);
+      prepararLienzo();
+      limpiarFirma();
+      var cv = $("resp-firma");
+      var margen = 16;
+      var e = Math.min((cv.width - 2 * margen) / caja.w, (cv.height - 2 * margen) / caja.h);
+      var dw = caja.w * e, dh = caja.h * e;
+      cv.getContext("2d").drawImage(tmp, caja.x, caja.y, caja.w, caja.h, (cv.width - dw) / 2, (cv.height - dh) / 2, dw, dh);
+      firmaVacia = false;
+      firmaCargada = true;
+      nota.textContent = "✔ Firma cargada y sin fondo. Revisa que se vea bien; si no, bórrala y prueba con otra imagen o dibújala.";
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); nota.textContent = "No se pudo leer la imagen."; };
+    img.src = url;
+  });
 
   function datosFirmante() {
     function v(id) { return $(id).value.trim().replace(/\s+/g, " "); }
@@ -1135,7 +1177,7 @@
     $("resp-firmar").disabled = true;
     huellaSHA256(R.textoCanonico(f, fecha)).then(function (huella) {
       try {
-        var r = R.generar({ firmante: f, firma: firma, fecha: fecha, huella: huella, correoTI: CORREO_TI, limpiar: K.limpiar });
+        var r = R.generar({ firmante: f, firma: firma, medio: firmaCargada ? "Imagen de firma manuscrita cargada por el firmante" : "Firma electrónica manuscrita en pantalla", fecha: fecha, huella: huella, correoTI: CORREO_TI, limpiar: K.limpiar });
         r.doc.save(r.nombre);
         ultimaResponsiva = { doc: r.doc, nombre: r.nombre, firmante: f };
         usuario.progreso.responsiva = fecha;
