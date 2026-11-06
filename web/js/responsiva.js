@@ -12,7 +12,7 @@
 (function (global) {
   "use strict";
 
-  var VERSION = "1.0 · noviembre de 2026";
+  var VERSION = "1.1 · noviembre de 2026";
 
   var TITULO = "Responsiva de uso de herramientas de inteligencia artificial generativa";
   var SUBTITULO = "Claude, ChatGPT y herramientas similares";
@@ -37,6 +37,13 @@
       titulo: "Herramientas y cuentas autorizadas",
       texto: [
         "Solo usaré las herramientas, cuentas corporativas, conectores y extensiones aprobados por TI. No usaré cuentas personales ni herramientas no aprobadas para trabajo de la firma, ni compartiré mis credenciales de acceso."
+      ]
+    },
+    {
+      titulo: "Cuentas gratuitas o personales de IA",
+      texto: [
+        "Entiendo que las cuentas gratuitas o personales de Claude, ChatGPT u otras herramientas de IA, incluidas las de pago personal (como Claude Pro o Max y ChatGPT Plus o Pro), se rigen por términos de consumidor y no por el contrato de la firma. En esas cuentas lo que escribo puede usarse para entrenar modelos según su configuración, conservarse por largos periodos o por orden de autoridad, ser revisado por personal del proveedor, y queda sin acuerdo de tratamiento de datos, sin compromiso de confidencialidad con la firma y fuera del control, la auditoría y el borrado de TI.",
+        "Por eso no usaré cuentas gratuitas o personales para ningún trabajo de la firma ni con información de clientes, ni siquiera en chats temporales o con el entrenamiento desactivado. Cerraré la sesión de mis cuentas personales de IA en los equipos de trabajo y, si llegara a usar una con información de la firma, lo reportaré a TI de inmediato. Asumo que ese uso es de mi exclusiva responsabilidad, pues entrega la información a un tercero sin las medidas que exigen el secreto profesional (Ley 1123 de 2007), la protección de datos personales (Ley 1581 de 2012) y la protección del secreto empresarial (Decisión 486 de la CAN)."
       ]
     },
     {

@@ -249,6 +249,44 @@ test("el taller final tiene recetas completas y no tiene batalla", () => {
   assert.strictEqual(T.pasos.filter((p) => p.tipo === "elige").length, 1);
 });
 
+test("el taller de ChatGPT tiene recetas completas, no tiene batalla y conserva su orden", () => {
+  const T = require("../js/taller-chatgpt.js");
+  const P = require("../js/practicas.js");
+  const m = C.TALLER_CHATGPT;
+  assert.ok(m && m.taller && m.preguntas.length === 0, "sin batalla");
+  assert.ok(C.TALLERES.includes(C.TALLER) && C.TALLERES.includes(m));
+  assert.ok(!C.TODOS.some((x) => x.id === m.id), "no entra en la evaluación");
+  const recetas = T.pasos.filter((p) => p.tipo === "receta");
+  assert.ok(recetas.length >= 10, "al menos 10 recetas");
+  recetas.forEach((r) => {
+    assert.ok(r.titulo && r.construyes && r.nivel && r.quien && r.tiempo && r.resultado && r.cuidado, r.titulo);
+    assert.ok(r.pasos.length >= 3, "pasos en " + r.titulo);
+    r.pasos.forEach((p) => {
+      if (p.bloque) assert.ok(["clic", "terminal", "archivo", "chat"].includes(p.bloque.tipo), r.titulo);
+    });
+  });
+  assert.ok(/Business o Enterprise/.test(T.intro) && /Plus/.test(recetas[0].cuidado), "advierte sobre planes personales");
+  assert.strictEqual(T.pasos.filter((p) => p.tipo === "elige").length, 1);
+  // Los talleres no se reordenan: el juego final queda al final.
+  [T, require("../js/taller.js")].forEach((t) => {
+    const orden = P.intercalar("x", t.pasos);
+    assert.deepStrictEqual(orden, t.pasos);
+  });
+});
+
+test("todos los módulos explican el riesgo de las cuentas gratuitas o personales", () => {
+  const CG = require("../js/cuentas-gratuitas.js");
+  const R = require("../js/responsiva.js");
+  C.TODOS.concat([C.EVALUACION]).concat(C.TALLERES).forEach((m) => {
+    assert.ok(CG.MODULOS[m.id] && CG.MODULOS[m.id].length > 60, "texto para " + m.id);
+  });
+  const todo = CG.GENERAL.puntos.join(" ");
+  ["entrenar", "Retención", "Revisión humana", "1581", "Pagar no", "TI"].forEach((x) => assert.ok(todo.includes(x), "explica " + x));
+  const cl = R.CLAUSULAS.find((c) => /gratuitas o personales/i.test(c.titulo));
+  assert.ok(cl && /Plus/.test(cl.texto.join(" ")) && /reportaré a TI/.test(cl.texto.join(" ")), "cláusula en la responsiva");
+  assert.ok(C.MODULOS.find((m) => m.id === "claude-trabajo").preguntas.some((q) => q.id === "tra-8"));
+});
+
 test("las lecciones alternan teoría y práctica en todos los módulos", () => {
   const K = require("../js/conceptos.js").CONCEPTOS;
   const P = require("../js/practicas.js");
