@@ -119,7 +119,7 @@
       color: "azul",
       frase: "Usa tu cuenta personal, nadie se enterará...",
       leccion: [
-        "Para información de la firma se usa la cuenta corporativa (planes Team o Enterprise) que administra la firma, no una cuenta personal gratuita.",
+        "Para información de la firma se usa la cuenta corporativa (planes Team o Enterprise) que administra la firma, nunca una cuenta gratuita o personal, aunque sea de pago (Claude Pro o Max, ChatGPT Plus o Pro): esas cuentas pueden entrenar con tus datos, conservarlos sin contrato con la firma y quedan fuera del control de TI.",
         "Los planes comerciales se rigen por los Términos Comerciales de Anthropic: por defecto no se usan tus datos para entrenar modelos, y hay administración centralizada, inicio de sesión corporativo y controles de retención.",
         "Política de la firma: los documentos de clientes y de la firma no se suben a los chats ni a los Proyectos; se leen en local con Claude Code.",
         "Un Proyecto agrupa chats con instrucciones y material de referencia comunes (sin documentos de clientes). Evita repetir lo mismo en cada mensaje.",
@@ -203,6 +203,17 @@
             "Lo copio completo y lo pego en el chat"
           ],
           e: "Los documentos no se suben a claude.ai. Claude Code los lee desde tu carpeta; el texto que lee se procesa bajo el contrato de la firma, por eso igual conviene trabajar con copias seudonimizadas cuando sea posible."
+        },
+        {
+          id: "tra-8", concepto: "Cuentas gratuitas o personales",
+          p: "Tienes ChatGPT Plus pagado con tu tarjeta y quieres usarlo para resumir el correo de un cliente. ¿Qué es lo correcto?",
+          ok: "No usarlo: un plan personal, aunque sea de pago, no tiene contrato con la firma, puede entrenar con tus datos y TI no lo controla; uso la cuenta corporativa",
+          no: [
+            "Usarlo, porque al ser de pago no entrena con mis datos",
+            "Usarlo en un chat temporal, porque así no queda nada guardado",
+            "Usarlo si desactivo la opción de mejorar el modelo"
+          ],
+          e: "Plus, Pro, Claude Pro o Max son planes de consumidor. El chat temporal se conserva hasta 30 días y desactivar el entrenamiento no crea un contrato, ni controles de TI, ni garantías para los datos personales. Para la firma, solo la cuenta corporativa."
         }
       ]
     },
@@ -1466,7 +1477,7 @@
   // La idea clave de cada lección, para el resumen general (pantalla y PDF).
   var CLAVES = {
     "fundamentos": "Claude genera texto probable, no consulta fuentes oficiales: puede inventar, así que toda cita, cifra y fecha se verifica, y responde quien firma.",
-    "claude-trabajo": "Cuenta corporativa siempre; los documentos no se suben a chats ni Proyectos: se leen en local con Claude Code. Los Proyectos guardan reglas e instrucciones.",
+    "claude-trabajo": "Cuenta corporativa siempre (las gratuitas o personales, aunque sean de pago, no sirven para la firma); los documentos no se suben a chats ni Proyectos: se leen en local con Claude Code. Los Proyectos guardan reglas e instrucciones.",
     "prompts": "Un buen pedido dice rol, tarea, contexto, formato y criterios; pide citas, permite el «no consta» y corrige con detalle en vez de empezar de cero.",
     "datos-personales": "Dato personal es lo que identifica a una persona natural; se necesita base legal y finalidad, los sensibles tienen candado doble y siempre se minimiza.",
     "propiedad-intelectual": "Lo que entra puede tener derechos (revisa licencias y términos); lo que sale es de la firma, pero la autoría exige aporte humano y la IA no revisa marcas.",
@@ -1523,7 +1534,29 @@
     preguntas: []
   };
 
-  var api = { MODULOS: MODULOS, FINAL: FINAL, TODOS: TODOS, EVALUACION: EVALUACION, CLAVES: CLAVES, TALLER: TALLER };
+  // Taller final para usuarios de ChatGPT: sin batalla (contenido en taller-chatgpt.js).
+  var TALLER_CHATGPT = {
+    id: "taller-chatgpt",
+    tema: "Taller: usa ChatGPT dentro de las reglas",
+    jefe: "La Burbuja Parlanchina",
+    forma: "burbuja",
+    color: "azul",
+    frase: "Hoy tampoco hay batalla: hoy usamos ChatGPT como se debe.",
+    taller: true,
+    leccion: [
+      "ChatGPT gratis, Go, Plus o Pro son planes personales: por defecto pueden entrenar con tus datos y no tienen contrato con la firma. Para trabajo, solo el espacio Business o Enterprise aprobado por TI.",
+      "Revisa en qué espacio estás antes de cada chat de trabajo y revisa los controles de datos, la memoria y los enlaces compartidos.",
+      "Nada de archivos ni datos de clientes en el chat, en Proyectos, en Canvas ni en GPTs: arma pedidos con información general y completa los datos reales fuera del chat.",
+      "Verifica cada fuente que cite ChatGPT en la fuente oficial; la búsqueda envía tu consulta a terceros.",
+      "GPTs, conectores y modo agente: compartidos solo dentro de la firma, con permisos mínimos, aprobados por TI y con tu confirmación en cada acción.",
+      "Si pegaste algo que no debías, no lo ocultes: borra, anota y repórtalo a TI y a tu jefe de inmediato."
+    ],
+    preguntas: []
+  };
+
+  var TALLERES = [TALLER, TALLER_CHATGPT];
+
+  var api = { MODULOS: MODULOS, FINAL: FINAL, TODOS: TODOS, EVALUACION: EVALUACION, CLAVES: CLAVES, TALLER: TALLER, TALLER_CHATGPT: TALLER_CHATGPT, TALLERES: TALLERES };
 
   if (typeof module !== "undefined" && module.exports) {
     module.exports = api;

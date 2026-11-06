@@ -58,7 +58,21 @@
 
     /* ------------------------------------------------------------------ */
     "claude-trabajo": {
-      "Cuenta de la firma vs. cuenta personal": 6,
+      "Cuenta de la firma vs. cuenta personal": 7,
+      "Cuentas gratuitas o personales: el riesgo en detalle": {
+        tipo: "clasifica",
+        titulo: "Practica: ¿cuenta de la firma o cuenta personal?",
+        instruccion: "Clasifica cada cuenta según si sirve o no para trabajar con información de la firma.",
+        categorias: ["Sirve para la firma", "No sirve para la firma"],
+        items: [
+          { t: "Claude Team o Enterprise de la firma, con tu correo corporativo", c: 0 },
+          { t: "ChatGPT Plus pagado con tu tarjeta personal", c: 1 },
+          { t: "Claude gratis en el navegador del celular", c: 1 },
+          { t: "Espacio ChatGPT Business o Enterprise aprobado por TI", c: 0 },
+          { t: "Claude Pro o Max con el correo de la firma, pero contratado por ti", c: 1 },
+          { t: "Un chat temporal en tu cuenta gratuita de ChatGPT", c: 1 }
+        ]
+      },
       "Política de la firma: los archivos no se suben": {
         tipo: "clasifica",
         titulo: "Practica: ¿se puede o no se puede?",
@@ -71,7 +85,7 @@
           { t: "Preguntar en el chat qué es una cláusula de indemnidad, sin datos del cliente", c: 0 }
         ]
       },
-      "Proyectos: reglas e instrucciones que se repiten": 7,
+      "Proyectos: reglas e instrucciones que se repiten": 8,
       "Artifacts: documentos que aparecen a un lado": {
         tipo: "elige",
         titulo: "Practica: la tabla que quieres ajustar",
@@ -622,6 +636,8 @@
 
   // Devuelve los pasos del módulo alternando teoría y práctica.
   function intercalar(moduloId, pasos, mapa) {
+    // Los talleres (recetas) ya tienen su propio orden: no se tocan.
+    if (pasos.some(function (p) { return p.tipo === "receta" || p.tipo === "constructor"; })) return pasos.slice();
     mapa = mapa || PRACTICAS[moduloId] || {};
     var usadas = {};
     Object.keys(mapa).forEach(function (t) { if (typeof mapa[t] === "number") usadas[mapa[t]] = true; });

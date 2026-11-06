@@ -145,6 +145,25 @@
         },
         {
           tipo: "concepto",
+          titulo: "Cuentas gratuitas o personales: el riesgo en detalle",
+          texto: [
+            "Las cuentas gratuitas o personales de Claude, ChatGPT, Gemini o Copilot se rigen por términos de consumidor. Pagar (Claude Pro o Max, ChatGPT Plus o Pro) no cambia eso: sigue siendo un contrato entre el proveedor y tú, no con la firma.",
+            "Qué implica: lo que escribes puede usarse para entrenar modelos según la configuración (en ChatGPT viene activado por defecto); las conversaciones pueden conservarse por años si lo autorizas y, en todo caso, días o semanas por seguridad o más si un juez lo ordena; personal del proveedor puede revisarlas; y no hay acuerdo de tratamiento de datos ni compromiso de confidencialidad con la firma.",
+            "Además, TI no ve, no audita y no puede borrar lo que pasa en tu cuenta personal, y si te vas de la firma la información se va contigo. Para la ley, entregaste información a un tercero sin las medidas debidas: secreto profesional (Ley 1123 de 2007), datos personales (Ley 1581 de 2012) y secreto empresarial (Decisión 486). Responde quien ejecuta el prompt."
+          ],
+          visual: { tipo: "tarjetas", items: [
+            { i: "🧠", t: "Entrenamiento", d: "Puede aprender de lo que escribes; no se puede «sacar» después." },
+            { i: "🗄️", t: "Retención", d: "Copias por días, meses o años; borrar el chat no lo borra de inmediato." },
+            { i: "👀", t: "Revisión humana", d: "El proveedor puede revisar conversaciones marcadas." },
+            { i: "📄", t: "Sin contrato", d: "Ni acuerdo de datos, ni confidencialidad, ni garantías para transferir datos." },
+            { i: "🚫", t: "Sin control de TI", d: "Sin inicio de sesión corporativo, registro ni borrado por la firma." },
+            { i: "💳", t: "Pagar no basta", d: "Pro, Max, Plus o Pro siguen siendo planes personales." }
+          ] },
+          simple: "Es como llevarte el expediente de un cliente a tu casa y guardarlo en un depósito alquilado a tu nombre: el depósito puede ser bueno, pero la firma no tiene la llave ni un contrato con él.",
+          ejemplo: "Aunque pagues ChatGPT Plus o Claude Pro con tu tarjeta, no lo usas con información de la firma. Si ya lo hiciste, se reporta a TI de inmediato: actuar rápido limita el daño."
+        },
+        {
+          tipo: "concepto",
           titulo: "Política de la firma: los archivos no se suben",
           texto: [
             "En la firma, los documentos de clientes y de la firma no se suben ni se adjuntan a los chats ni a los Proyectos de Claude. Cuando necesitas que Claude trabaje con un documento, usas Claude Code: el archivo se queda en tu carpeta del equipo o de la firma y Claude lo lee desde ahí.",

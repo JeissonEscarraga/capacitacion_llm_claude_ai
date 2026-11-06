@@ -251,25 +251,26 @@
     liEv.appendChild(bEv);
     mapa.appendChild(liEv);
 
-    // Taller final: construir paso a paso (sin batalla).
-    var tl = C.TALLER;
-    var hechoT = conceptoCompleto(tl);
-    var liT = el("li", "casilla casilla-final casilla-taller" + (hechoT ? " superado" : ""));
-    var bT = el("button", "casilla-boton");
-    bT.type = "button";
-    var sT = el("div", "sprite sprite-mapa");
-    sT.innerHTML = D.jefe(tl);
-    bT.appendChild(sT);
-    bT.appendChild(el("p", "etiqueta", "Taller final · Sin batalla"));
-    bT.appendChild(el("p", "casilla-tema", tl.tema));
-    bT.appendChild(el("p", "casilla-jefe", tl.jefe));
-    bT.appendChild(el("p", "casilla-estado", hechoT ? "Completado" : "Aprende a construir, paso a paso"));
-    var chipT = el("p", "casilla-pasos");
-    chipT.appendChild(el("span", "paso-chip" + (hechoT ? " hecho" : ""), "🛠️ Taller" + (hechoT ? " ✓" : "")));
-    bT.appendChild(chipT);
-    bT.addEventListener("click", function () { abrirLeccion(tl, false); });
-    liT.appendChild(bT);
-    mapa.appendChild(liT);
+    // Talleres finales: construir paso a paso (sin batalla).
+    (C.TALLERES || [C.TALLER]).forEach(function (tl) {
+      var hechoT = conceptoCompleto(tl);
+      var liT = el("li", "casilla casilla-final casilla-taller" + (hechoT ? " superado" : ""));
+      var bT = el("button", "casilla-boton");
+      bT.type = "button";
+      var sT = el("div", "sprite sprite-mapa");
+      sT.innerHTML = D.jefe(tl);
+      bT.appendChild(sT);
+      bT.appendChild(el("p", "etiqueta", "Taller final · Sin batalla"));
+      bT.appendChild(el("p", "casilla-tema", tl.tema));
+      bT.appendChild(el("p", "casilla-jefe", tl.jefe));
+      bT.appendChild(el("p", "casilla-estado", hechoT ? "Completado" : (tl.id === "taller-chatgpt" ? "Para quienes usan ChatGPT" : "Aprende a construir, paso a paso")));
+      var chipT = el("p", "casilla-pasos");
+      chipT.appendChild(el("span", "paso-chip" + (hechoT ? " hecho" : ""), "🛠️ Taller" + (hechoT ? " ✓" : "")));
+      bT.appendChild(chipT);
+      bT.addEventListener("click", function () { abrirLeccion(tl, false); });
+      liT.appendChild(bT);
+      mapa.appendChild(liT);
+    });
 
     // Responsiva de uso de IA: se firma una vez y se envía a TI (sin batalla).
     var firmada = !!usuario.progreso.responsiva;
@@ -412,6 +413,20 @@
     txt.appendChild(el("p", "nota", "Avanza con «Siguiente». En los pasos marcados como práctica tendrás que resolver un ejercicio para continuar. No se califican: son para aprender."));
     caja.appendChild(txt);
     art.appendChild(caja);
+    art.appendChild(cajaCuentasGratuitas(p.modulo.id));
+  }
+
+  // Aviso en todos los módulos: por qué no se usan cuentas gratuitas o personales.
+  function cajaCuentasGratuitas(moduloId) {
+    var CG = window.CuentasGratuitas;
+    var caja = el("details", "aviso-cuentas");
+    if (!CG) return caja;
+    caja.appendChild(el("summary", "aviso-cuentas-titulo", "⚠️ " + CG.GENERAL.titulo + " · " + CG.texto(moduloId)));
+    caja.appendChild(el("p", "aviso-cuentas-resumen", CG.GENERAL.resumen));
+    var ul = el("ul", "aviso-cuentas-lista");
+    CG.GENERAL.puntos.forEach(function (t) { ul.appendChild(el("li", null, t)); });
+    caja.appendChild(ul);
+    return caja;
   }
 
   function pintarVisual(v) {
@@ -443,8 +458,8 @@
       });
     } else if (v.tipo === "chat") {
       v.mensajes.forEach(function (m) {
-        var b = el("div", "burbuja burbuja-" + m.de);
-        b.appendChild(el("span", "burbuja-quien", m.de === "tu" ? "Tú" : (m.de === "claude" ? "Claude" : "Documento")));
+        var b = el("div", "burbuja burbuja-" + (m.de === "chatgpt" ? "claude" : m.de));
+        b.appendChild(el("span", "burbuja-quien", m.de === "tu" ? "Tú" : (m.de === "claude" ? "Claude" : (m.de === "chatgpt" ? "ChatGPT" : "Documento"))));
         b.appendChild(el("span", "burbuja-texto", m.t));
         cont.appendChild(b);
       });
@@ -748,6 +763,7 @@
     titulo(art, p.titulo, repasoActual ? "Repaso" : "Resumen");
     var ul = el("ul", "lista-leccion");
     p.puntos.forEach(function (t) { ul.appendChild(el("li", null, t)); });
+    if (window.CuentasGratuitas) ul.appendChild(el("li", "punto-cuentas", "⚠️ Cuentas gratuitas o personales: " + window.CuentasGratuitas.texto(moduloActual.id)));
     art.appendChild(ul);
     if (!repasoActual) {
       if (!conceptoCompleto(moduloActual)) {

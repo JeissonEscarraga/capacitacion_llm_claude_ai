@@ -29,8 +29,9 @@ La mecánica se inspira en la versión web de [Logic Boss Game](https://github.c
 | Cierre | El Gran Examinador | Resumen general del curso y evaluación: una pregunta al azar de cada tema; el PDF incluye el resultado por tema y la idea clave de cada lección |
 | Responsiva | El Pergamino del Compromiso | **Sin batalla. Firma obligatoria.** Responsiva de uso de Claude, ChatGPT y otras IA: la persona la lee, completa sus datos, firma en pantalla, descarga el PDF firmado (con huella SHA-256) y lo envía a TI con el mismo correo .eml con adjunto de las constancias. Aclara que quien ejecuta el prompt responde por la pérdida, filtración, robo o incumplimiento legal derivado de su mal uso, salvo los usos que su jefe autorice por escrito |
 | Taller | El Taller del Constructor | **Sin batalla.** 16 recetas visuales paso a paso para construir lo aprendido: entrar con la cuenta de la firma, armar un pedido (juego interactivo), chat, Proyecto, Artifact, Claude Code, leer documentos sin subirlos, CLAUDE.md, modo plan, Skill, subagente, conectores/MCP, mini RAG, hook, API y de la idea al aplicativo. Datos técnicos verificados en la documentación oficial (noviembre de 2026) |
+| Taller ChatGPT | La Burbuja Parlanchina | **Sin batalla.** Para quienes usan ChatGPT: 12 recetas para usarlo dentro de las reglas de la firma (espacio de trabajo Business o Enterprise, controles de datos, pedidos sin archivos, chat temporal y memoria, Proyectos, Canvas, búsqueda con verificación, enlaces compartidos, GPTs del equipo, conectores y modo agente con TI, y qué hacer si pegaste algo que no debías) |
 
-Son 106 preguntas, cada una con su concepto y su explicación. Cada módulo tiene dos partes:
+Son 107 preguntas, cada una con su concepto y su explicación. Cada módulo tiene dos partes:
 
 1. **Conceptualización** (para personas sin conocimientos previos): **alterna teoría y práctica**, una página teórica y enseguida un ejercicio para aplicarla, y así sucesivamente. Cada página teórica tiene explicación en lenguaje sencillo, un esquema visual, una analogía («En palabras simples») y un ejemplo de la firma; cada ejercicio hay que resolverlo para avanzar. La teoría está en `web/js/conceptos.js` y la práctica que sigue a cada concepto, en `web/js/practicas.js`.
 2. **Práctica:** la batalla contra la AI.
@@ -57,6 +58,10 @@ Al empezar, cada persona elige el personaje más cercano a su trabajo. La **intr
 Los documentos de clientes y de la firma **no se suben ni se adjuntan** a chats ni a Proyectos de Claude: se trabajan con **Claude Code**, que los lee desde la carpeta local o de la firma. El chat queda para preguntas generales, redacción sin datos de clientes y material público. El juego aclara que, aunque el archivo no se sube, el texto que Claude lee sí se procesa en el modelo bajo el contrato de la firma; por eso también enseña a trabajar con copias seudonimizadas.
 
 ## Responsiva de uso de IA
+
+### Cuentas gratuitas y personales
+
+Todos los módulos (incluidos los talleres y la evaluación) muestran en la introducción un aviso desplegable sobre por qué **no se usan cuentas gratuitas o personales de IA** (aunque sean de pago, como Claude Pro o Max y ChatGPT Plus o Pro) con información de la firma: términos de consumidor, posible entrenamiento con los datos, retención, revisión humana, falta de contrato y de acuerdo de tratamiento de datos, ausencia de control de TI y consecuencias legales (Ley 1123 de 2007, Ley 1581 de 2012, Decisión 486). Cada módulo agrega una explicación propia de su tema y la repite en el resumen. El texto está en `web/js/cuentas-gratuitas.js`; el módulo «Claude en el trabajo» tiene además un concepto, una práctica y una pregunta (tra-8) sobre el tema, y la responsiva una cláusula específica. Las condiciones de los proveedores cambian: conviene revisar este texto periódicamente.
 
 La responsiva (`web/js/responsiva.js`) es un **modelo**: antes de usarla como documento vinculante debe revisarla y aprobarla el área jurídica y de talento humano de la firma. Si se cambia el texto, hay que subir `VERSION` para que TI sepa qué versión firmó cada persona. La firma se dibuja en pantalla y el PDF incluye una huella SHA-256 del texto firmado y de los datos del firmante; como la constancia, se genera en el navegador y técnicamente se puede alterar, así que para un control a prueba de manipulación habría que usar un servicio de firma electrónica corporativo.
 
@@ -117,6 +122,8 @@ web/
   js/practicas.js     práctica que sigue a cada concepto (teoría y práctica intercaladas)  ← contenido
   js/responsiva.js    responsiva de uso de IA: cláusulas y PDF firmado  ← contenido
   js/taller.js        taller final: recetas paso a paso y constructor de pedidos  ← contenido
+  js/taller-chatgpt.js  taller final para usuarios de ChatGPT  ← contenido
+  js/cuentas-gratuitas.js  aviso sobre cuentas gratuitas o personales, por módulo  ← contenido
   js/ejemplos-perfiles.js  ejemplos e introducciones adaptados a cada personaje  ← contenido
   js/logica.js        batalla, progreso, niveles (sin interfaz)
   js/constancia.js    constancia en PDF y correo para TI

@@ -632,3 +632,16 @@ details.modulo-avance > summary::before { content: none; }
 .campos-dos { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
 .lienzo-firma { width: 100%; max-width: 600px; aspect-ratio: 3 / 1; height: auto; background: #ffffff; border: 2px solid var(--azul-rey); border-radius: 10px; touch-action: none; cursor: crosshair; }
 .fila-acciones { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* Aviso de cuentas gratuitas o personales (todos los módulos) */
+.aviso-cuentas {
+  margin-top: 16px;
+  border: 2px dashed var(--tiza-amarilla);
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: rgba(255, 214, 102, 0.06);
+}
+.aviso-cuentas-titulo { cursor: pointer; color: var(--tiza-amarilla); font-weight: 700; line-height: 1.4; }
+.aviso-cuentas-resumen { margin: 10px 0 6px; }
+.aviso-cuentas-lista { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.punto-cuentas { color: var(--tiza-amarilla); }

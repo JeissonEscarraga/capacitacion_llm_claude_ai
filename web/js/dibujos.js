@@ -130,6 +130,15 @@
         g("c-azul sin-relleno grueso", p("M30 30l-12-20")) + g("c-amarilla", p("M28 26l6 10l-4 2l-6-10z")) +
         g("c-amarilla sin-relleno fino brillo", p("M8 50l6 2M106 50l-6 2"));
     },
+    burbuja: function (k) {
+      // Burbuja de diálogo con ojos y un candado: conversa, pero con reglas.
+      return g(k, p("M14 22h92v58H56l-20 18v-18H14z")) +
+        ojos(46, 74, 44, 6) +
+        g("c-blanca sin-relleno", p("M48 60q12 8 24 0")) +
+        g("c-amarilla", p("M90 86h20v16H90z")) +
+        g("c-amarilla sin-relleno", p("M94 86v-6q6-8 12 0v6")) +
+        g("c-amarilla sin-relleno fino brillo", p("M8 14l6 4M112 14l-6 4"));
+    },
     balanza: function (k) {
       // Balanza con ojos: el juez que pesa lo que se filtró.
       return g(k, p("M58 22h4v66h-4z")) +

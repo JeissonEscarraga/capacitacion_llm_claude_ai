@@ -21,6 +21,7 @@
       "intro": "Tú respondes ante el cliente por la confidencialidad de su información. Decidir con qué cuenta y con qué herramienta trabaja tu equipo es una decisión de riesgo que te toca a ti.",
       "ejemplos": {
         "Cuenta de la firma vs. cuenta personal": "Al aprobar el uso de Claude en tu equipo, dejas claro que todo lo que tenga información de clientes o de la firma va solo en la cuenta corporativa, nunca en cuentas personales.",
+        "Cuentas gratuitas o personales: el riesgo en detalle": "Al aprobar herramientas para tu equipo, prohíbes expresamente las cuentas gratuitas o personales, aunque sean de pago: si un asociado usa su ChatGPT Plus con el contrato del cliente, la firma incumple el secreto profesional que tú garantizas.",
         "Política de la firma: los archivos no se suben": "Antes de firmar la revisión del contrato del Cliente A, pides que el asociado lo trabaje con Claude Code en la carpeta del caso y con una copia seudonimizada. Si alguien te propone adjuntarlo a un chat, no lo apruebas.",
         "Proyectos: reglas e instrucciones que se repiten": "Apruebas un Proyecto «Conceptos de la firma» con el formato y el tono que tú exiges al firmar, sin documentos de clientes. Así todo el equipo entrega con la misma estructura.",
         "Artifacts: documentos que aparecen a un lado": "Pides a tu equipo que te entregue en un Artifact el cuadro comparativo de opciones para decidir la estrategia, para que puedas leerlo con calma y pedir ajustes antes de presentarlo al cliente.",
@@ -195,6 +196,7 @@
       "intro": "Trabajas con documentos de clientes todo el día y con plazos cortos: saber qué va en el chat y qué va con Claude Code te evita un error que ningún plazo justifica.",
       "ejemplos": {
         "Cuenta de la firma vs. cuenta personal": "Todo lo que hagas para un caso de la firma va en la cuenta corporativa, nunca en tu cuenta personal, aunque te parezca más rápido abrirla en el celular.",
+        "Cuentas gratuitas o personales: el riesgo en detalle": "Aunque tengas Claude Pro o ChatGPT Plus en tu celular y sea más rápido, el borrador para el Cliente A se hace solo en la cuenta de la firma: en tu cuenta personal podría entrenar modelos o conservarse sin contrato con la firma.",
         "Política de la firma: los archivos no se suben": "Para contestar un requerimiento del INVIMA abres Claude Code en la carpeta del caso: «Lee Requerimiento/oficio.pdf y propón un esquema de respuesta punto por punto». No adjuntas ni pegas nada en el chat.",
         "Proyectos: reglas e instrucciones que se repiten": "Creas un Proyecto «Memoriales» con la estructura de la firma y la instrucción «Usa hechos, fundamentos y peticiones; nunca inventes citas». Los documentos del caso no van ahí: los trabajas con Claude Code.",
         "Artifacts: documentos que aparecen a un lado": "Pides en el chat una lista de verificación genérica para oposiciones, sin datos de clientes, y aparece en el Artifact; la ajustas con «agrega una casilla para el plazo» y la descargas.",
@@ -369,6 +371,7 @@
       "intro": "Manejas poderes, certificados y formularios de clientes todos los días. Saber qué cuenta usar y dónde va cada documento también es parte de tu lista de chequeo.",
       "ejemplos": {
         "Cuenta de la firma vs. cuenta personal": "Los formularios, poderes y cuadros de vencimientos de clientes se trabajan solo con la cuenta corporativa de la firma, nunca con una cuenta personal.",
+        "Cuentas gratuitas o personales: el riesgo en detalle": "Para transcribir un poder o armar el cuadro de vencimientos no usas la versión gratuita de ChatGPT del navegador: los nombres, cédulas y fechas del cliente quedarían bajo términos de consumidor.",
         "Política de la firma: los archivos no se suben": "Para verificar un poder abres Claude Code en la carpeta del trámite y pides: «Revisa Poderes/poder_clienteA.pdf y dime si tiene firma, fecha y facultad para radicar». No adjuntas nada al chat.",
         "Proyectos: reglas e instrucciones que se repiten": "Proyecto «Listas de chequeo» con tu plantilla de radicación y la instrucción «Marca cada requisito como cumple, no cumple o no consta». Sin documentos de clientes: esos van con Claude Code.",
         "Artifacts: documentos que aparecen a un lado": "Pide en el chat una plantilla en blanco de cuadro de renovaciones y anualidades; aparece como Artifact y la ajustas o descargas. Los datos reales de clientes no se llenan ahí.",
@@ -543,6 +546,7 @@
       "intro": "Tus análisis tocan bases internas y prospección comercial; usar la cuenta y las funciones correctas evita que esos datos terminen donde no deben.",
       "ejemplos": {
         "Cuenta de la firma vs. cuenta personal": "Trabajas con la cuenta corporativa de la firma: así los datos de tus análisis no se usan por defecto para entrenar modelos y la firma controla quién entra y cuánto se guarda.",
+        "Cuentas gratuitas o personales: el riesgo en detalle": "No pegas la base de clientes ni los resultados de un análisis en tu cuenta personal para «probar una fórmula»: además del riesgo de entrenamiento, es una transferencia de datos personales sin garantías (Ley 1581).",
         "Política de la firma: los archivos no se suben": "Nunca adjuntas al chat el Excel de clientes ni el export de facturación. Abres Claude Code en la carpeta de la firma y le pides: «Lee ventas_2025.xlsx y resume el total por área».",
         "Proyectos: reglas e instrucciones que se repiten": "Creas un Proyecto con tu guía de estilo de reportes y la definición de tus indicadores, sin datos de clientes, para que cada chat respete el mismo formato de tablas y gráficos.",
         "Artifacts: documentos que aparecen a un lado": "Pides en el chat una plantilla de reporte mensual sin datos reales; Claude la muestra en un Artifact y la ajustas ahí antes de llenarla localmente con Claude Code.",
@@ -717,6 +721,7 @@
       "intro": "TI administra las cuentas corporativas de Claude: quién entra, qué funciones se habilitan y cuánto tiempo se guarda la información. Lo que configures aquí protege a toda la firma.",
       "ejemplos": {
         "Cuenta de la firma vs. cuenta personal": "TI da acceso a cada empleado en el plan empresarial con su cuenta de la firma y define qué funciones se usan y cuánto se guarda la información. Si alguien trabaja con una cuenta personal, se le pasa a la corporativa.",
+        "Cuentas gratuitas o personales: el riesgo en detalle": "Bloqueas o monitoreas el acceso a cuentas personales de IA desde los equipos de la firma, ofreces la alternativa corporativa y, cuando detectas un uso indebido, lo tratas como incidente: qué se pegó, en qué cuenta y cuándo.",
         "Política de la firma: los archivos no se suben": "Para revisar una exportación de usuarios, abres Claude Code en la carpeta de TI y pides: «Lee Exportes/usuarios_activos.csv y lista las cuentas sin uso reciente». No adjuntas nada al chat; si no necesita nombres, usa una copia seudonimizada.",
         "Proyectos: reglas e instrucciones que se repiten": "Proyecto «Guías de TI» con la plantilla de procedimientos y la instrucción «Escribe pasos numerados, en lenguaje sencillo, con una sección de qué hacer si falla». Ahí no van inventarios ni configuraciones reales.",
         "Artifacts: documentos que aparecen a un lado": "Pides una lista de chequeo genérica para revisar permisos de SharePoint cada trimestre; aparece como Artifact al lado y desde ahí la ajustas, la copias o la descargas.",
@@ -891,6 +896,7 @@
       "intro": "Por tus manos pasa información de toda la firma: correspondencia de clientes, datos de empleados y contratos con proveedores. Aquí verás con qué cuenta trabajar, cómo mantener ordenado tu trabajo con Claude y cómo compartir sin riesgos.",
       "ejemplos": {
         "Cuenta de la firma vs. cuenta personal": "La correspondencia de clientes, las hojas de vida o las cotizaciones de proveedores se trabajan solo con la cuenta corporativa. Así todo queda bajo el control de la firma, nunca en una cuenta personal o gratuita.",
+        "Cuentas gratuitas o personales: el riesgo en detalle": "Las hojas de vida de candidatos o las cotizaciones de proveedores no se resumen en tu cuenta gratuita: son datos personales e información de la firma que quedarían fuera de su control.",
         "Política de la firma: los archivos no se suben": "Para ordenar la correspondencia del día, abres Claude Code en la carpeta y le pides: «Revisa Correspondencia/2026-11/ y lista cada documento con remitente, asunto y fecha de vencimiento». No adjuntas nada.",
         "Proyectos: reglas e instrucciones que se repiten": "Proyecto «Comunicaciones internas» con la guía de estilo de la firma y la instrucción «Tono cordial, máximo 150 palabras, cierra con el área responsable». Lo que tenga datos de personas se trabaja aparte, con Claude Code.",
         "Artifacts: documentos que aparecen a un lado": "Una plantilla de circular, un cuadro comparativo de cotizaciones, una lista de chequeo de ingreso de personal o el calendario de vencimientos del mes, listos para revisar y guardar en su carpeta.",
@@ -1065,6 +1071,7 @@
       "intro": "Ahora veamos cómo se usa Claude en el día a día de la validación de patentes: con qué cuenta, cómo organizar el trabajo y cómo proteger las solicitudes no publicadas, que son confidenciales.",
       "ejemplos": {
         "Cuenta de la firma vs. cuenta personal": "Todo lo que tenga que ver con una solicitud no publicada, un informe de búsqueda o un examen de fondo de un cliente va solo en la cuenta corporativa, nunca en tu cuenta personal.",
+        "Cuentas gratuitas o personales: el riesgo en detalle": "Una solicitud de patente no publicada nunca entra a una cuenta gratuita o personal: si se usa para entrenar o se filtra, puede afectar la novedad y el secreto empresarial del cliente.",
         "Política de la firma: los archivos no se suben": "Abres Claude Code en la carpeta del caso, con aprobación del área si la invención no está radicada, y pides: «Compara solicitud_A/reivindicaciones.docx con Anterioridades/D1.pdf y dime qué elementos de la reivindicación 1 aparecen en D1». No adjuntas nada al chat.",
         "Proyectos: reglas e instrucciones que se repiten": "Proyecto «Explicaciones técnicas» con la instrucción «Explica para un abogado sin formación técnica y señala lo que debo verificar». Las solicitudes y anterioridades de clientes se trabajan aparte, con Claude Code.",
         "Artifacts: documentos que aparecen a un lado": "Una tabla de elementos de reivindicación frente a documentos D1, D2 y D3, un glosario técnico bilingüe o un esquema de cómo funciona una invención ya publicada.",
@@ -1239,6 +1246,7 @@
       "intro": "Finanzas maneja facturas, pagos, cartera y nómina. Aquí verás con qué cuenta trabajar, cómo organizarte y cómo compartir sin exponer esa información.",
       "ejemplos": {
         "Cuenta de la firma vs. cuenta personal": "Todo lo que tenga datos de clientes, corresponsales, bancos o nómina va solo en la cuenta corporativa, nunca en una cuenta personal.",
+        "Cuentas gratuitas o personales: el riesgo en detalle": "Los estados de cuenta de clientes, la nómina o los datos bancarios no se analizan en tu ChatGPT o Claude personal, aunque sea de pago: no hay contrato ni control de la firma sobre esos datos.",
         "Política de la firma: los archivos no se suben": "Para revisar la cartera, abres Claude Code en la carpeta de Finanzas y le pides: «Revisa Cartera/vencida_2026-10.xlsx y agrupa los saldos por rango de días de mora». No adjuntas nada.",
         "Proyectos: reglas e instrucciones que se repiten": "Proyecto «Informes para gerencia» con la plantilla de la firma y la instrucción «Presenta siempre las cifras en pesos, con fuente y fecha de corte». Los archivos con datos se trabajan aparte, con Claude Code.",
         "Artifacts: documentos que aparecen a un lado": "Una plantilla de flujo de caja, un cuadro comparativo de presupuesto vs. ejecución o una lista de verificación para el cierre de mes.",
