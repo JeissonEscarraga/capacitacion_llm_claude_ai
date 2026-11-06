@@ -107,6 +107,7 @@
     $("resp-acepto").checked = false;
     $("resp-responsable").checked = false;
     if (lienzoListo) limpiarFirma();
+    actualizarBotonFirmar();
     $("acceso-consentimiento").checked = false;
     mostrar("acceso");
   });
@@ -1035,6 +1036,26 @@
   var MODULO_RESPONSIVA = { id: "responsiva", jefe: "El Pergamino del Compromiso", forma: "pergamino", color: "azul" };
   var firmaVacia = true;
   var firmaCargada = false; // true si la firma vino de una imagen
+  var generandoResponsiva = false;
+
+  // El botón «Firmar y descargar PDF» solo se habilita cuando están los datos,
+  // la firma y las dos casillas; debajo se dice qué falta.
+  var CAMPOS_RESPONSIVA = [["resp-nombre", "tu nombre"], ["resp-documento", "tu documento"], ["resp-cargo", "tu cargo"],
+    ["resp-area", "tu área"], ["resp-jefe", "tu jefe inmediato"], ["resp-ciudad", "la ciudad"]];
+  function faltantesResponsiva() {
+    var faltan = CAMPOS_RESPONSIVA.filter(function (c) { return $(c[0]).value.trim().length < 2; }).map(function (c) { return c[1]; });
+    if (firmaVacia) faltan.push("tu firma");
+    if (!$("resp-acepto").checked) faltan.push("aceptar las cláusulas");
+    if (!$("resp-responsable").checked) faltan.push("marcar la casilla de responsabilidad");
+    return faltan;
+  }
+  function actualizarBotonFirmar() {
+    var faltan = faltantesResponsiva();
+    $("resp-firmar").disabled = generandoResponsiva || faltan.length > 0;
+    $("resp-falta").textContent = faltan.length ? "Para firmar falta: " + faltan.join(", ") + "." : "";
+  }
+  CAMPOS_RESPONSIVA.forEach(function (c) { $(c[0]).addEventListener("input", actualizarBotonFirmar); });
+  ["resp-acepto", "resp-responsable"].forEach(function (id) { $(id).addEventListener("change", actualizarBotonFirmar); });
 
   function abrirResponsiva() {
     $("responsiva-sprite").innerHTML = D.jefe(MODULO_RESPONSIVA);
@@ -1059,6 +1080,7 @@
     if (ultimaResponsiva) pintarEnvioResponsiva();
     mostrar("responsiva");
     prepararLienzo();
+    actualizarBotonFirmar();
   }
 
   // Lienzo de firma: mouse, dedo o lápiz (Pointer Events).
@@ -1091,6 +1113,7 @@
       ctx.lineTo(q.x + 0.1, q.y + 0.1);
       ctx.stroke();
       firmaVacia = false;
+      actualizarBotonFirmar();
     });
     cv.addEventListener("pointermove", function (ev) {
       if (!dibujando) return;
@@ -1116,6 +1139,7 @@
     ctx.stroke();
     firmaVacia = true;
     firmaCargada = false;
+    actualizarBotonFirmar();
   }
   $("resp-borrar-firma").addEventListener("click", limpiarFirma);
 
@@ -1153,6 +1177,7 @@
       cv.getContext("2d").drawImage(tmp, caja.x, caja.y, caja.w, caja.h, (cv.width - dw) / 2, (cv.height - dh) / 2, dw, dh);
       firmaVacia = false;
       firmaCargada = true;
+      actualizarBotonFirmar();
       nota.textContent = "✔ Firma cargada y sin fondo. Revisa que se vea bien; si no, bórrala y prueba con otra imagen o dibújala.";
     };
     img.onerror = function () { URL.revokeObjectURL(url); nota.textContent = "No se pudo leer la imagen."; };
@@ -1190,7 +1215,8 @@
     }
     var fecha = new Date().toISOString();
     var firma = $("resp-firma").toDataURL("image/png");
-    $("resp-firmar").disabled = true;
+    generandoResponsiva = true;
+    actualizarBotonFirmar();
     huellaSHA256(R.textoCanonico(f, fecha)).then(function (huella) {
       try {
         var r = R.generar({ firmante: f, firma: firma, medio: firmaCargada ? "Imagen de firma manuscrita cargada por el firmante" : "Firma electrónica manuscrita en pantalla", fecha: fecha, huella: huella, correoTI: CORREO_TI, limpiar: K.limpiar });
@@ -1206,7 +1232,8 @@
       } catch (e) {
         msg.textContent = "No se pudo generar el PDF: " + e.message + " Recarga la página e inténtalo de nuevo.";
       }
-      $("resp-firmar").disabled = false;
+      generandoResponsiva = false;
+      actualizarBotonFirmar();
     });
   });
 
