@@ -11,7 +11,7 @@ function rndFijo(semilla) {
 
 test("el contenido está completo y bien formado", () => {
   const ids = new Set();
-  assert.strictEqual(C.MODULOS.length, 14, "deben ser 14 jefes antes del final");
+  assert.strictEqual(C.MODULOS.length, 15, "deben ser 15 jefes antes del final");
   C.TODOS.forEach((m) => {
     assert.ok(m.id && m.tema && m.jefe && m.forma && m.frase, m.id);
     assert.ok(m.leccion.length >= 3, "lección corta en " + m.id);
@@ -247,4 +247,70 @@ test("el taller final tiene recetas completas y no tiene batalla", () => {
   const c = T.pasos.find((p) => p.tipo === "constructor");
   assert.ok(c && c.piezas.every((pz) => c.plantilla.includes("{" + pz.campo + "}") && pz.opciones.length >= 2));
   assert.strictEqual(T.pasos.filter((p) => p.tipo === "elige").length, 1);
+});
+
+test("las lecciones alternan teoría y práctica en todos los módulos", () => {
+  const K = require("../js/conceptos.js").CONCEPTOS;
+  const P = require("../js/practicas.js");
+  const VISUALES = ["flujo", "tarjetas", "comparar", "chat"];
+  C.TODOS.concat([C.EVALUACION]).forEach((m) => {
+    const original = K[m.id].pasos;
+    const mapa = P.PRACTICAS[m.id] || {};
+    Object.keys(mapa).forEach((t) => {
+      assert.ok(original.some((p) => p.tipo === "concepto" && p.titulo === t), m.id + ": no existe el concepto «" + t + "»");
+      const v = mapa[t];
+      if (typeof v === "number") {
+        assert.ok(["elige", "clasifica"].includes(original[v] && original[v].tipo), m.id + ": índice " + v + " no es práctica");
+      } else if (v.tipo === "elige") {
+        assert.ok(v.titulo && v.situacion, m.id + " / " + t);
+        assert.strictEqual(v.opciones.filter((o) => o.ok).length, 1, "una sola correcta en " + m.id + " / " + t);
+        assert.ok(v.opciones.every((o) => o.t && o.r), "retroalimentación en " + m.id + " / " + t);
+      } else if (v.tipo === "clasifica") {
+        assert.strictEqual(v.categorias.length, 2, m.id + " / " + t);
+        assert.ok(v.items.length >= 4 && v.items.every((it) => it.c === 0 || it.c === 1), m.id + " / " + t);
+        assert.ok(v.items.some((it) => it.c === 0) && v.items.some((it) => it.c === 1), "ambas categorías en " + m.id + " / " + t);
+      } else {
+        assert.fail("práctica inválida en " + m.id + " / " + t);
+      }
+    });
+    const pasos = P.intercalar(m.id, original);
+    const tipos = pasos.map((p) => (p.tipo === "concepto" ? "T" : "P")).join("");
+    assert.match(tipos, /^(TP)+$/, m.id + " debe alternar teoría y práctica: " + tipos);
+    // Ninguna práctica original se pierde ni se repite.
+    original.filter((p) => p.tipo !== "concepto").forEach((p) => {
+      assert.strictEqual(pasos.filter((x) => x === p).length, 1, m.id + ": «" + p.titulo + "» debe aparecer una vez");
+    });
+    pasos.filter((p) => p.tipo === "concepto").forEach((p) => assert.ok(VISUALES.includes(p.visual.tipo)));
+  });
+});
+
+test("el módulo de NetSuite enseña las reglas de manejo de información", () => {
+  const m = C.MODULOS.find((x) => x.id === "netsuite");
+  assert.ok(m, "existe el módulo de NetSuite");
+  const texto = JSON.stringify(m) + JSON.stringify(require("../js/conceptos.js").CONCEPTOS.netsuite);
+  ["no se suben archivos", "forma directa", "autorización", "jefe", "quien ejecuta el prompt", "otras firmas", "ChatGPT"].forEach((frase) => {
+    assert.ok(texto.toLowerCase().includes(frase.toLowerCase()), "NetSuite debe mencionar: " + frase);
+  });
+  assert.ok(m.preguntas.length >= 8);
+});
+
+test("la responsiva se puede firmar y enviar a TI", () => {
+  const R = require("../js/responsiva.js");
+  const K = require("../js/constancia.js");
+  assert.ok(R.CLAUSULAS.length >= 10);
+  const clave = R.CLAUSULAS.find((c) => c.clave);
+  assert.ok(clave && /ejecuta el prompt/.test(clave.texto.join(" ")), "cláusula de responsabilidad de quien ejecuta el prompt");
+  ["Ley 1581", "Ley 1123", "Ley 1273", "Ley 527"].forEach((ley) => {
+    assert.ok(R.CLAUSULAS.some((c) => c.texto.join(" ").includes(ley)), "menciona " + ley);
+  });
+  const f = { nombre: "María Prueba", documento: "C.C. 123", cargo: "Asociada", area: "Litigios", jefe: "Juan Jefe", ciudad: "Bogotá", correo: "maria@ejemplo.test" };
+  const fecha = "2026-11-06T15:00:00.000Z";
+  assert.ok(R.declaracion(f).includes("María Prueba") && R.declaracion(f).includes("C.C. 123"));
+  assert.ok(R.textoCanonico(f, fecha).includes(R.VERSION));
+  assert.ok(/^AIBoss_responsiva_IA_maria_\d{8}-\d{4}\.pdf$/.test(R.nombreArchivo(f, fecha)));
+  const pdf = Buffer.from("%PDF-1.3 prueba").toString("base64");
+  const eml = K.armarEml({ para: "ti@ejemplo.test", asunto: R.asunto(f), cuerpo: R.cuerpo(f, "x.pdf", true), archivo: "x.pdf", pdfBase64: pdf });
+  assert.ok(eml.startsWith("To: ti@ejemplo.test\r\n") && eml.includes("X-Unsent: 1") && eml.includes(pdf));
+  const asunto = eml.match(/Subject: =\?UTF-8\?B\?(.+)\?=/)[1];
+  assert.strictEqual(Buffer.from(asunto, "base64").toString("utf8"), "Responsiva de uso de IA firmada - María Prueba");
 });

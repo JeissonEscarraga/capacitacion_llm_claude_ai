@@ -18,19 +18,21 @@ La mecánica se inspira en la versión web de [Logic Boss Game](https://github.c
 | 6 | El Dragón del Copyright | Propiedad intelectual: obras de terceros, outputs, términos de fuentes, secreto empresarial, marcas |
 | 7 | La Sombra de la Fuga | Secreto profesional, prompt injection, manejo de claves, IA no aprobada, incidentes |
 | 8 | El Juez de lo Filtrado | Implicaciones legales de subir correos, documentos de patentes o marcas no radicadas, secretos de innovación y contratos con datos: privacidad, secreto profesional, confidencialidad, novedad, prioridad y consecuencias |
-| 9 | El Bibliotecario Perdido | RAG: embeddings, chunking, permisos, cuándo basta Claude Code en la carpeta |
-| 10 | El Alquimista de las Recetas | Skills: SKILL.md, divulgación progresiva, seguridad |
-| 11 | La Medusa de los Mil Cables | MCP y conectores prediseñados, mínimo privilegio, confirmación humana |
-| 12 | El Gólem Autónomo | Agentes, flujos fijos, subagentes, Agent SDK, trazabilidad |
-| 13 | El Titán de la Terminal | Claude Code: CLAUDE.md, permisos, modo plan, hooks, git |
-| 14 | El Leviatán de los Tokens | API de Anthropic: claves, costos, caché de prompts, lotes, tool use, workspaces |
+| 9 | El Contador Indiscreto | Claude y ChatGPT con NetSuite de Oracle: no se suben archivos al chat, no se da información de forma directa, todo se crea y se obtiene desde NetSuite con autorización escrita del jefe; sin autorización responde quien ejecuta el prompt y con autorización, el jefe que la dio |
+| 10 | El Bibliotecario Perdido | RAG: embeddings, chunking, permisos, cuándo basta Claude Code en la carpeta |
+| 11 | El Alquimista de las Recetas | Skills: SKILL.md, divulgación progresiva, seguridad |
+| 12 | La Medusa de los Mil Cables | MCP y conectores prediseñados, mínimo privilegio, confirmación humana |
+| 13 | El Gólem Autónomo | Agentes, flujos fijos, subagentes, Agent SDK, trazabilidad |
+| 14 | El Titán de la Terminal | Claude Code: CLAUDE.md, permisos, modo plan, hooks, git |
+| 15 | El Leviatán de los Tokens | API de Anthropic: claves, costos, caché de prompts, lotes, tool use, workspaces |
 | Final | El Comité de Riesgo Supremo | Casos integrales |
 | Cierre | El Gran Examinador | Resumen general del curso y evaluación: una pregunta al azar de cada tema; el PDF incluye el resultado por tema y la idea clave de cada lección |
+| Responsiva | El Pergamino del Compromiso | **Sin batalla. Firma obligatoria.** Responsiva de uso de Claude, ChatGPT y otras IA: la persona la lee, completa sus datos, firma en pantalla, descarga el PDF firmado (con huella SHA-256) y lo envía a TI con el mismo correo .eml con adjunto de las constancias. Aclara que quien ejecuta el prompt responde por la pérdida, filtración, robo o incumplimiento legal derivado de su mal uso, salvo los usos que su jefe autorice por escrito |
 | Taller | El Taller del Constructor | **Sin batalla.** 16 recetas visuales paso a paso para construir lo aprendido: entrar con la cuenta de la firma, armar un pedido (juego interactivo), chat, Proyecto, Artifact, Claude Code, leer documentos sin subirlos, CLAUDE.md, modo plan, Skill, subagente, conectores/MCP, mini RAG, hook, API y de la idea al aplicativo. Datos técnicos verificados en la documentación oficial (noviembre de 2026) |
 
-Son 98 preguntas, cada una con su concepto y su explicación. Cada módulo tiene dos partes:
+Son 106 preguntas, cada una con su concepto y su explicación. Cada módulo tiene dos partes:
 
-1. **Conceptualización** (para personas sin conocimientos previos): pasos con explicación en lenguaje sencillo, un esquema visual, una analogía («En palabras simples»), un ejemplo de la firma y ejercicios prácticos que hay que resolver para avanzar. El contenido está en `web/js/conceptos.js`.
+1. **Conceptualización** (para personas sin conocimientos previos): **alterna teoría y práctica**, una página teórica y enseguida un ejercicio para aplicarla, y así sucesivamente. Cada página teórica tiene explicación en lenguaje sencillo, un esquema visual, una analogía («En palabras simples») y un ejemplo de la firma; cada ejercicio hay que resolverlo para avanzar. La teoría está en `web/js/conceptos.js` y la práctica que sigue a cada concepto, en `web/js/practicas.js`.
 2. **Práctica:** la batalla contra la AI.
 
 Lo que se falla aparece luego en una **AI de repaso**. Al completar la conceptualización y terminar la práctica se descarga la constancia en PDF.
@@ -53,6 +55,10 @@ Al empezar, cada persona elige el personaje más cercano a su trabajo. La **intr
 ## Política de documentos que enseña el juego
 
 Los documentos de clientes y de la firma **no se suben ni se adjuntan** a chats ni a Proyectos de Claude: se trabajan con **Claude Code**, que los lee desde la carpeta local o de la firma. El chat queda para preguntas generales, redacción sin datos de clientes y material público. El juego aclara que, aunque el archivo no se sube, el texto que Claude lee sí se procesa en el modelo bajo el contrato de la firma; por eso también enseña a trabajar con copias seudonimizadas.
+
+## Responsiva de uso de IA
+
+La responsiva (`web/js/responsiva.js`) es un **modelo**: antes de usarla como documento vinculante debe revisarla y aprobarla el área jurídica y de talento humano de la firma. Si se cambia el texto, hay que subir `VERSION` para que TI sepa qué versión firmó cada persona. La firma se dibuja en pantalla y el PDF incluye una huella SHA-256 del texto firmado y de los datos del firmante; como la constancia, se genera en el navegador y técnicamente se puede alterar, así que para un control a prueba de manipulación habría que usar un servicio de firma electrónica corporativo.
 
 ## Cómo funciona
 
@@ -105,9 +111,11 @@ y abrir http://localhost:8080.
 web/
   index.html          pantallas del juego
   config.js           configuración (buzón de TI; sin secretos)
-  css/estilos.css     estilo de pizarra
+  css/estilos.css     estilo de pizarra (gris ratón y azul rey)
   js/contenido.js     temas, resúmenes y preguntas de la batalla  ← contenido
   js/conceptos.js     conceptualización de cada módulo (pasos, visuales, prácticas)  ← contenido
+  js/practicas.js     práctica que sigue a cada concepto (teoría y práctica intercaladas)  ← contenido
+  js/responsiva.js    responsiva de uso de IA: cláusulas y PDF firmado  ← contenido
   js/taller.js        taller final: recetas paso a paso y constructor de pedidos  ← contenido
   js/ejemplos-perfiles.js  ejemplos e introducciones adaptados a cada personaje  ← contenido
   js/logica.js        batalla, progreso, niveles (sin interfaz)

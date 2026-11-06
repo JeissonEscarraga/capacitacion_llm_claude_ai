@@ -22,9 +22,9 @@
   var FACTOR = 0.43;          // alto de línea en mm por punto de fuente
 
   var C = {
-    pizarra: [29, 42, 37],
-    marco: [122, 84, 52],
-    amarillo: [244, 212, 124],
+    pizarra: [39, 72, 201],     // azul rey
+    marco: [74, 77, 82],        // gris ratón
+    amarillo: [200, 212, 255],
     texto: [33, 37, 41],
     tenue: [108, 117, 125],
     linea: [222, 226, 230],
@@ -145,9 +145,9 @@
     function tituloSeccion(texto, sub) {
       var hSub = sub ? alto(lineas(sub, 9, "normal", W).length, 9) + 1 : 0;
       asegurar(12 + hSub + 20);
-      fuente(13, "bold"); tinta(C.marco);
+      fuente(13, "bold"); tinta(C.pizarra);
       doc.text(limpiar(texto), M, y);
-      trazo(C.marco); doc.setLineWidth(0.5); doc.line(M, y + 2, ANCHO - M, y + 2);
+      trazo(C.pizarra); doc.setLineWidth(0.5); doc.line(M, y + 2, ANCHO - M, y + 2);
       y += 7;
       if (sub) y = escribir(lineas(sub, 9, "normal", W), M, y, 9, "normal", C.tenue) + 2;
     }
@@ -167,7 +167,7 @@
     doc.text("AI BOSS · CLAUDE E IA PARA ABOGADOS", M, 12, { charSpace: 0.5 });
     fuente(22, "bold"); tinta(C.blanco);
     doc.text("Constancia de módulo", M, 24);
-    fuente(9.5, "normal"); tinta([205, 214, 208]);
+    fuente(9.5, "normal"); tinta([220, 228, 255]);
     doc.text(limpiar("Generada el " + fechaBonita(generada)), M, 31.5);
     y = 48;
 
@@ -227,9 +227,9 @@
     var lsPasos = [];
     pasos.forEach(function (t) { lsPasos = lsPasos.concat(lineas(t, 9.5, "normal", W - 14)); });
     var hPaso = 12 + alto(lsPasos.length, 9.5) + 3;
-    relleno(C.ambarClaro); doc.roundedRect(M, y, W, hPaso, 3, 3, "F");
-    relleno(C.marco); doc.rect(M, y, 1.6, hPaso, "F");
-    escribir(["Siguiente paso: envía esta constancia a TI para su control"], M + 7, y + 7, 10.5, "bold", C.marco);
+    relleno([232, 237, 252]); doc.roundedRect(M, y, W, hPaso, 3, 3, "F");
+    relleno(C.pizarra); doc.rect(M, y, 1.6, hPaso, "F");
+    escribir(["Siguiente paso: envía esta constancia a TI para su control"], M + 7, y + 7, 10.5, "bold", C.pizarra);
     escribir(lsPasos, M + 7, y + 13, 9.5, "normal", C.texto);
     y += hPaso + 9;
 
@@ -264,7 +264,7 @@
         var lsT = lineas((i + 1) + ". " + m.tema, 10, "bold", W - 4);
         var lsC = lineas(clave, 9.2, "normal", W - 8);
         asegurar(alto(lsT.length, 10) + alto(lsC.length, 9.2) + 4);
-        var yy = escribir(lsT, M, y, 10, "bold", C.marco);
+        var yy = escribir(lsT, M, y, 10, "bold", C.pizarra);
         y = escribir(lsC, M + 4, yy + 0.5, 9.2, "normal", C.texto) + 3.5;
       });
       y += 4;
@@ -389,11 +389,21 @@
   // «X-Unsent: 1» hace que Outlook lo abra como borrador con el botón Enviar.
   // Una página web no puede enviar correos sola: la persona lo abre y lo envía.
   function correoEml(opciones, archivo, pdfBase64) {
+    return armarEml({
+      para: opciones.correoTI || "",
+      asunto: asuntoCorreo(opciones.modulo, opciones.participante.nombre),
+      cuerpo: cuerpoCorreo(opciones, archivo, true),
+      archivo: archivo,
+      pdfBase64: pdfBase64
+    });
+  }
+
+  // Correo genérico (.eml) con un PDF adjunto: { para, asunto, cuerpo, archivo, pdfBase64 }.
+  function armarEml(o) {
     var limite = "AIBOSS_" + Date.now().toString(36);
-    var asunto = asuntoCorreo(opciones.modulo, opciones.participante.nombre);
     var lineas = [
-      "To: " + (opciones.correoTI || ""),
-      "Subject: =?UTF-8?B?" + base64Utf8(asunto) + "?=",
+      "To: " + o.para,
+      "Subject: =?UTF-8?B?" + base64Utf8(o.asunto) + "?=",
       "X-Unsent: 1",
       "MIME-Version: 1.0",
       "Content-Type: multipart/mixed; boundary=\"" + limite + "\"",
@@ -402,14 +412,14 @@
       "Content-Type: text/plain; charset=\"utf-8\"",
       "Content-Transfer-Encoding: base64",
       "",
-      enLineas(base64Utf8(cuerpoCorreo(opciones, archivo, true))),
+      enLineas(base64Utf8(o.cuerpo)),
       "",
       "--" + limite,
-      "Content-Type: application/pdf; name=\"" + archivo + "\"",
-      "Content-Disposition: attachment; filename=\"" + archivo + "\"",
+      "Content-Type: application/pdf; name=\"" + o.archivo + "\"",
+      "Content-Disposition: attachment; filename=\"" + o.archivo + "\"",
       "Content-Transfer-Encoding: base64",
       "",
-      enLineas(pdfBase64),
+      enLineas(o.pdfBase64),
       "",
       "--" + limite + "--",
       ""
@@ -417,7 +427,7 @@
     return lineas.join("\r\n");
   }
 
-  var api = { generar: generar, enlaceCorreo: enlaceCorreo, correoEml: correoEml, limpiar: limpiar, resumen: resumen };
+  var api = { generar: generar, enlaceCorreo: enlaceCorreo, correoEml: correoEml, armarEml: armarEml, limpiar: limpiar, resumen: resumen };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else global.Constancia = api;
 })(typeof window !== "undefined" ? window : globalThis);

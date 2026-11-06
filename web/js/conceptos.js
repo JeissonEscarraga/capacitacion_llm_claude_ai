@@ -968,6 +968,198 @@
     },
 
     /* ------------------------------------------------------------------ */
+    netsuite: {
+      intro: "NetSuite es el sistema de Oracle donde la firma lleva clientes, facturación, cartera, proveedores y contabilidad. Claude y ChatGPT pueden ayudarte a sacarle más provecho, pero con reglas estrictas: veamos cuáles son y quién responde si no se cumplen.",
+      pasos: [
+        {
+          tipo: "concepto",
+          titulo: "NetSuite: el corazón financiero de la firma",
+          texto: [
+            "NetSuite es un ERP (sistema de planificación de recursos empresariales) de Oracle que funciona en la nube. En él vive la información de clientes y proveedores, las facturas, los honorarios, la cartera, los pagos, la contabilidad y, muchas veces, datos personales y bancarios.",
+            "Esa información es confidencial y valiosa: le interesa a la competencia, a las contrapartes y a delincuentes. Por eso su uso con herramientas de IA tiene reglas propias, más estrictas que las de otros temas."
+          ],
+          visual: { tipo: "tarjetas", items: [
+            { i: "👥", t: "Clientes y proveedores", d: "Nombres, NIT, contactos, condiciones comerciales." },
+            { i: "🧾", t: "Facturas y honorarios", d: "Tarifas, montos, descuentos y acuerdos con cada cliente." },
+            { i: "💳", t: "Cartera y pagos", d: "Quién debe, cuánto y desde cuándo; cuentas bancarias." },
+            { i: "📒", t: "Contabilidad", d: "Estados financieros y movimientos de la firma." }
+          ] },
+          simple: "NetSuite es como la caja fuerte y el libro de cuentas de la firma juntos: no se lleva a la calle ni se le muestra a un extraño.",
+          ejemplo: "Un reporte de cartera por cliente revela a quién atiende la firma, cuánto cobra y quién está en dificultades: para otra firma, eso vale oro."
+        },
+        {
+          tipo: "elige",
+          titulo: "Practica: ¿qué tan delicado es?",
+          situacion: "Un compañero dice: «Lo de NetSuite son solo números, no es información de clientes». ¿Qué le respondes?",
+          opciones: [
+            { t: "Tiene razón: los números no son confidenciales.", ok: false, r: "Los números dicen a quién atiende la firma, cuánto cobra y quién debe: son información confidencial." },
+            { t: "Que NetSuite guarda información confidencial de clientes, honorarios, cartera y datos personales, y por eso tiene reglas estrictas con la IA.", ok: true, r: "Exacto: es de la información más sensible de la firma." },
+            { t: "Que solo es delicado lo que tiene cédulas.", ok: false, r: "Además de los datos personales, están los secretos comerciales de la firma y de sus clientes." }
+          ]
+        },
+        {
+          tipo: "concepto",
+          titulo: "Regla 1: no se suben archivos al chat",
+          texto: [
+            "Ningún archivo que salga de NetSuite se sube o se adjunta a Claude, ChatGPT ni a ninguna otra herramienta de IA: ni exportaciones a Excel o CSV, ni reportes en PDF, ni facturas, ni estados de cuenta, ni capturas de pantalla.",
+            "La regla aplica con cuenta corporativa o personal, en el computador de la firma o en el celular, y aunque después borres el chat. Subir es entregar: el archivo sale de los sistemas de la firma."
+          ],
+          visual: { tipo: "comparar",
+            izq: { titulo: "🚫 Nunca al chat", items: ["Exportaciones a Excel o CSV", "Reportes y búsquedas guardadas en PDF", "Facturas y estados de cuenta", "Capturas de pantalla de NetSuite"] },
+            der: { titulo: "✅ Sí puedes pedir", items: ["Cómo armar una búsqueda guardada", "Una fórmula con campos genéricos", "Explicar un error de un script", "Pasos para configurar un reporte"] }
+          },
+          simple: "A la IA le pides la receta, no le entregas la despensa: los ingredientes se quedan en NetSuite.",
+          ejemplo: "Necesitas saber qué clientes tienen facturas de más de 90 días. No exportas y subes el reporte: le pides a la IA cómo construir la búsqueda guardada y la ejecutas tú en NetSuite."
+        },
+        {
+          tipo: "clasifica",
+          titulo: "Practica: ¿se puede subir?",
+          instruccion: "Clasifica cada acción con Claude o ChatGPT.",
+          categorias: ["Permitido", "Prohibido"],
+          items: [
+            { t: "Adjuntar la exportación de cartera de NetSuite en Excel", c: 1 },
+            { t: "Preguntar cómo se crea una búsqueda guardada con un filtro por fecha", c: 0 },
+            { t: "Enviar una captura de pantalla de la ficha de un cliente", c: 1, r: "Una captura también es un archivo con información de NetSuite." },
+            { t: "Pedir que explique qué hace la función NVL en una fórmula", c: 0 },
+            { t: "Subir una factura en PDF «solo para que revise el formato»", c: 1 }
+          ]
+        },
+        {
+          tipo: "concepto",
+          titulo: "Regla 2: no se da información de forma directa",
+          texto: [
+            "Tampoco se escribe ni se pega en el prompt información de NetSuite: nombres de clientes o proveedores, NIT, montos, tarifas, números de factura, cuentas bancarias, identificadores internos ni filas copiadas de un reporte.",
+            "Si necesitas un ejemplo, usa datos ficticios («Cliente A», «$1.000») o solo los nombres de los campos («fecha de vencimiento», «saldo»). La IA no necesita los datos reales para ayudarte a construir la solución."
+          ],
+          visual: { tipo: "chat", mensajes: [
+            { de: "tu", t: "Tengo una búsqueda guardada de facturas con los campos fecha de vencimiento y saldo. ¿Qué fórmula uso para calcular los días de mora de cada factura? Usa datos ficticios en el ejemplo." },
+            { de: "claude", t: "Puedes agregar una columna de fórmula (numérica): {today} - {duedate}. Ejemplo ficticio: una factura que venció hace 45 días mostraría 45. Para ver solo las vencidas, filtra que el resultado sea mayor que 0." }
+          ] },
+          simple: "Le describes la forma del problema, nunca el contenido: como pedirle a un experto que te explique cómo se llena un formulario sin mostrarle el formulario lleno.",
+          ejemplo: "En vez de «Estas son las facturas del Cliente A por $85 millones…», escribes «¿Cómo agrupo una búsqueda guardada de facturas por cliente y sumo el saldo?»."
+        },
+        {
+          tipo: "elige",
+          titulo: "Practica: reescribe el pedido",
+          situacion: "Un compañero quiere escribir: «Te pego el listado de proveedores con sus cuentas bancarias para que detectes duplicados». ¿Cuál es la versión correcta?",
+          opciones: [
+            { t: "Pegar el listado, pero sin los nombres de los proveedores.", ok: false, r: "Las cuentas bancarias y los montos siguen siendo información de NetSuite: tampoco se pegan." },
+            { t: "«¿Cómo armo en NetSuite una búsqueda guardada que muestre proveedores con la misma cuenta bancaria? Explícalo con datos ficticios».", ok: true, r: "Correcto: pides el método y la búsqueda la ejecutas tú en NetSuite, con autorización." },
+            { t: "Pegar el listado en ChatGPT en vez de Claude.", ok: false, r: "La regla aplica a cualquier herramienta de IA." }
+          ]
+        },
+        {
+          tipo: "concepto",
+          titulo: "Todo se crea y se obtiene desde NetSuite",
+          texto: [
+            "El camino correcto es: la IA te ayuda a diseñar la solución (una búsqueda guardada, una fórmula, una consulta SuiteQL, un reporte o un script) usando datos ficticios; tú la construyes y la ejecutas dentro de NetSuite, con tu propio usuario y rol; y el resultado se queda en NetSuite o en las carpetas de la firma.",
+            "Así la información nunca sale del sistema, queda registro de quién la consultó y solo ves lo que tu rol te permite ver."
+          ],
+          visual: { tipo: "flujo", pasos: [
+            { i: "✅", t: "Autorización escrita de tu jefe" },
+            { i: "💬", t: "La IA diseña con datos ficticios" },
+            { i: "⚙️", t: "Tú lo construyes y ejecutas en NetSuite" },
+            { i: "🔒", t: "El resultado se queda en la firma" }
+          ] },
+          simple: "La IA es el arquitecto que dibuja el plano; la obra se hace dentro de NetSuite y con permiso del dueño.",
+          ejemplo: "Para un informe de honorarios por área, pides a la IA la estructura de la búsqueda guardada y los filtros, la creas en NetSuite con tu rol y guardas el resultado en la carpeta del área."
+        },
+        {
+          tipo: "elige",
+          titulo: "Practica: el reporte para el comité",
+          situacion: "Tu jefe te pidió por correo un reporte de cartera por área para el comité. ¿Cómo usas la IA?",
+          opciones: [
+            { t: "Exporto la cartera, la pego en Claude y le pido el reporte listo.", ok: false, r: "Rompe las dos reglas: ni archivos ni datos al chat." },
+            { t: "Le pido a la IA cómo armar la búsqueda guardada agrupada por área y la ejecuto yo en NetSuite.", ok: true, r: "Exacto: tienes autorización, la IA diseña con datos ficticios y la información nunca sale de NetSuite." },
+            { t: "Le pido a un amigo de otra firma que lo haga con su IA.", ok: false, r: "Entregarías información de la firma a un tercero: es justo el riesgo que se quiere evitar." }
+          ]
+        },
+        {
+          tipo: "concepto",
+          titulo: "La autorización de tu jefe",
+          texto: [
+            "Antes de crear u obtener información de NetSuite con ayuda de una IA (una búsqueda nueva, un reporte, un script o una integración), necesitas la autorización previa y por escrito de tu jefe inmediato: un correo o un ticket que diga qué información, para qué y por cuánto tiempo.",
+            "Tener acceso técnico a NetSuite no es lo mismo que estar autorizado. La autorización deja trazabilidad y define los límites: lo que no está autorizado, no se hace."
+          ],
+          visual: { tipo: "tarjetas", items: [
+            { i: "📧", t: "Por escrito", d: "Correo o ticket, nunca solo verbal." },
+            { i: "🎯", t: "Qué y para qué", d: "Qué información y con qué finalidad." },
+            { i: "⏳", t: "Por cuánto tiempo", d: "Una vez, un proyecto o un periodo definido." },
+            { i: "🧭", t: "Dentro de tu rol", d: "Solo lo que tus permisos de NetSuite ya permiten." }
+          ] },
+          simple: "Es como pedir las llaves de la oficina: tenerlas a la mano no te da permiso de entrar cuando quieras.",
+          ejemplo: "«Autorizo a Ana a usar Claude para diseñar la búsqueda guardada de cartera por área, con datos ficticios, para el comité de noviembre», firmado por su jefe en un correo."
+        },
+        {
+          tipo: "clasifica",
+          titulo: "Practica: ¿hay autorización válida?",
+          instruccion: "Clasifica cada situación.",
+          categorias: ["Autorización válida", "No es autorización"],
+          items: [
+            { t: "Un correo del jefe inmediato que dice qué información, para qué y hasta cuándo", c: 0 },
+            { t: "«Tengo usuario de NetSuite, así que puedo»", c: 1 },
+            { t: "Un compañero de otra área dijo que no había problema", c: 1 },
+            { t: "Un ticket aprobado por el jefe con el alcance del reporte", c: 0 },
+            { t: "La IA respondió que era seguro hacerlo", c: 1 }
+          ]
+        },
+        {
+          tipo: "concepto",
+          titulo: "¿Quién responde si algo sale mal?",
+          texto: [
+            "Si la información de NetSuite que se suministra a un LLM se pierde, es robada o termina en manos de otras firmas o de clientes, alguien responde. La regla de la firma es clara:",
+            "Sin autorización, la responsabilidad es de la persona que ejecuta el prompt. Con autorización escrita del jefe, la responsabilidad es del jefe que la dio, siempre que la persona haya actuado dentro de lo autorizado y respetando las reglas 1 y 2. Si se sale de lo autorizado, la responsabilidad vuelve a ser de quien ejecutó el prompt."
+          ],
+          visual: { tipo: "comparar",
+            izq: { titulo: "❌ Sin autorización", items: ["Responde quien ejecuta el prompt", "Consecuencias disciplinarias, laborales y legales", "Posible obligación de reparar el daño"] },
+            der: { titulo: "✅ Con autorización escrita", items: ["Responde el jefe que autorizó", "Solo por lo que autorizó", "Si te sales de lo autorizado, respondes tú"] }
+          },
+          simple: "El que firma la orden responde por la orden; el que actúa sin orden responde por lo que hizo.",
+          ejemplo: "Si un analista pega la cartera en un chat por su cuenta y se filtra, responde él. Si su jefa autorizó por escrito un reporte con datos ficticios y aun así hubo un problema dentro de ese uso, responde la jefa."
+        },
+        {
+          tipo: "elige",
+          titulo: "Practica: la filtración",
+          situacion: "Sin pedir permiso, un auxiliar pegó en ChatGPT el listado de honorarios de varios clientes. Semanas después, otra firma conoce esas tarifas. ¿Quién responde?",
+          opciones: [
+            { t: "El auxiliar, porque ejecutó el prompt sin autorización.", ok: true, r: "Correcto: sin autorización, la responsabilidad es de quien ejecuta el prompt." },
+            { t: "Su jefe, aunque no sabía nada.", ok: false, r: "El jefe responde cuando autoriza. Aquí no hubo autorización." },
+            { t: "Nadie: es culpa de la herramienta.", ok: false, r: "La herramienta no decide qué se le entrega: decide la persona." }
+          ]
+        },
+        {
+          tipo: "concepto",
+          titulo: "Scripts, integraciones y conectores",
+          texto: [
+            "La IA es muy útil para escribir o corregir SuiteScript, consultas SuiteQL y flujos de trabajo. Pero un script puede leer, modificar o exponer miles de registros: se revisa, se prueba en el sandbox (entorno de pruebas, sin datos reales) y lo despliega TI en producción.",
+            "Las credenciales de NetSuite (usuario, contraseña, tokens, claves de integración) nunca se escriben en un chat ni en el código. Y cualquier conexión directa entre una IA y NetSuite (conectores, MCP o integraciones) solo se usa si TI la aprobó, el jefe la autorizó y tiene los permisos mínimos necesarios."
+          ],
+          visual: { tipo: "flujo", pasos: [
+            { i: "💬", t: "La IA propone el script" },
+            { i: "🔍", t: "Tú lo revisas" },
+            { i: "🧪", t: "Pruebas en sandbox" },
+            { i: "🛡️", t: "TI lo despliega" }
+          ] },
+          simple: "Un script es como una llave maestra: antes de usarla en la puerta real, se prueba en una puerta de ensayo y la entrega quien administra el edificio.",
+          ejemplo: "Claude te ayudó a corregir un SuiteScript que recalcula descuentos. Lo pruebas en el sandbox con datos ficticios y pides a TI que lo publique, con la autorización de tu jefe en el ticket."
+        },
+        {
+          tipo: "clasifica",
+          titulo: "Practica: ¿adelante o no?",
+          instruccion: "Clasifica cada acción.",
+          categorias: ["Adelante", "No"],
+          items: [
+            { t: "Pedirle a Claude que explique un error de un SuiteScript, sin datos reales", c: 0 },
+            { t: "Pegar el token de integración de NetSuite para que la IA «pruebe la conexión»", c: 1 },
+            { t: "Probar en el sandbox el script que propuso la IA", c: 0 },
+            { t: "Instalar un conector gratuito que une ChatGPT con NetSuite", c: 1 },
+            { t: "Publicar en producción un script sin revisión de TI", c: 1 }
+          ]
+        }
+      ]
+    },
+
+    /* ------------------------------------------------------------------ */
     rag: {
       intro: "Claude no conoce los documentos de la firma. RAG es la técnica para que responda con base en ellos y cite de dónde sacó cada cosa.",
       pasos: [
@@ -1651,12 +1843,12 @@
           tipo: "concepto",
           titulo: "El mapa del curso",
           texto: [
-            "Recorriste 15 temas. Juntos responden tres preguntas: ¿cómo funciona Claude?, ¿cómo se usa en la firma? y ¿cómo se protege la información?"
+            "Recorriste 16 temas. Juntos responden tres preguntas: ¿cómo funciona Claude?, ¿cómo se usa en la firma? y ¿cómo se protege la información?"
           ],
           visual: { tipo: "tarjetas", items: [
             { i: "🧠", t: "Cómo funciona", d: "Fundamentos: predice texto, puede inventar, tokens y modelos." },
             { i: "🏢", t: "Cómo se usa", d: "Cuenta corporativa, Proyectos para reglas, Claude Code para documentos, aplicativos corporativos vs. personales, buenos pedidos." },
-            { i: "🛡️", t: "Cómo se protege", d: "Datos personales, propiedad intelectual, confidencialidad, implicaciones legales de subir información y seguridad." },
+            { i: "🛡️", t: "Cómo se protege", d: "Datos personales, propiedad intelectual, confidencialidad, implicaciones legales de subir información, NetSuite con IA y seguridad." },
             { i: "🧰", t: "Herramientas avanzadas", d: "RAG, Skills, MCP y conectores, agentes, Claude Code y API." }
           ] },
           simple: "Es como aprender a conducir: entender el carro, saber manejarlo y conocer las normas de tránsito.",

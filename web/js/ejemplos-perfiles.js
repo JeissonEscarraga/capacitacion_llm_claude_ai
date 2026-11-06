@@ -93,6 +93,18 @@
         "Qué hacer en su lugar": "No prohíbes la IA: apruebas el camino correcto. Patentes y marcas no radicadas, estrategias y contratos con datos, solo con Claude Code, cuenta corporativa y lo mínimo necesario. Si algo se subió por error, se reporta ya."
       }
     },
+    "netsuite": {
+      "intro": "Como socio(a), autorizas lo que tu equipo hace con NetSuite y respondes por lo que autorizas. Las reglas de este módulo te dicen qué puedes aprobar y qué no.",
+      "ejemplos": {
+        "NetSuite: el corazón financiero de la firma": "Los honorarios, la cartera y las condiciones de tus clientes viven en NetSuite. Si llegaran a otra firma, perderías clientes y confianza: por eso lo tratas como información estratégica.",
+        "Regla 1: no se suben archivos al chat": "Si un asociado te propone «subir rápido el Excel de cartera a Claude» antes del comité, no lo apruebas: le pides que use la IA solo para diseñar la búsqueda guardada.",
+        "Regla 2: no se da información de forma directa": "Al revisar un análisis de rentabilidad, preguntas si alguien pegó montos o nombres de clientes en un chat. La respuesta correcta es: «No, se usaron datos ficticios y se ejecutó en NetSuite».",
+        "Todo se crea y se obtiene desde NetSuite": "Para tu informe trimestral, pides al equipo que la IA proponga la estructura del reporte y que lo generen dentro de NetSuite, con su rol. El resultado queda en la carpeta del área.",
+        "La autorización de tu jefe": "Cuando autorizas, lo haces por correo: qué información, para qué y hasta cuándo. «Autorizo diseñar con Claude la búsqueda de honorarios por área, con datos ficticios, para el comité de diciembre».",
+        "¿Quién responde si algo sale mal?": "Si autorizas por escrito, respondes tú por ese uso. Por eso autorizas con alcance claro y recuerdas al equipo que salirse de lo autorizado lo deja a cargo de quien ejecutó el prompt.",
+        "Scripts, integraciones y conectores": "Si el equipo de TI propone conectar una IA directamente con NetSuite, exiges aprobación de seguridad, permisos mínimos y un responsable antes de autorizarlo."
+      }
+    },
     "rag": {
       "intro": "Si la firma quiere que Claude responda con su conocimiento acumulado, tú decides si vale la inversión y quién puede ver qué. RAG toca directamente la confidencialidad entre clientes.",
       "ejemplos": {
@@ -253,6 +265,18 @@
         "Contratos con nombres y datos": "Para revisar las cláusulas de un contrato de licencia, preparas una copia sin nombres, cédulas ni datos bancarios y le pides a Claude Code que lea esa copia desde la carpeta.",
         "Las consecuencias": "Por ganar unos minutos, pegar una invención no radicada en un chat puede costar a la vez un incumplimiento contractual, un riesgo para la patente y una queja disciplinaria.",
         "Qué hacer en su lugar": "Con el plazo encima, el camino es el mismo: Claude Code, cuenta corporativa, lo mínimo necesario y aprobación del área. Y si algo ya se subió por error, lo reportas de inmediato."
+      }
+    },
+    "netsuite": {
+      "intro": "Como asociado(a), vas rápido y a veces te toca preparar cifras de clientes. Con NetSuite, la velocidad nunca justifica sacar información del sistema.",
+      "ejemplos": {
+        "NetSuite: el corazón financiero de la firma": "Para preparar la cuenta de cobro de un caso, consultas en NetSuite las horas y tarifas del Cliente A. Sabes que esa información es confidencial y no sale del sistema.",
+        "Regla 1: no se suben archivos al chat": "Te piden con urgencia un resumen de la facturación del caso. No exportas y subes el reporte: le preguntas a Claude cómo filtrar la búsqueda guardada por caso y lo haces en NetSuite.",
+        "Regla 2: no se da información de forma directa": "En vez de «El Cliente A nos debe $40 millones, redacta el cobro», pides: «Redacta un correo cordial de recordatorio de pago, con espacios para el valor y la fecha». Completas tú los datos.",
+        "Todo se crea y se obtiene desde NetSuite": "Para saber cuántas horas lleva el equipo en un caso, pides a la IA la fórmula de la búsqueda guardada y la ejecutas con tu usuario de NetSuite.",
+        "La autorización de tu jefe": "Antes de crear una búsqueda nueva de honorarios con ayuda de la IA, le escribes a tu jefe: «¿Me autorizas a diseñar con Claude la búsqueda de horas por caso, con datos ficticios?».",
+        "¿Quién responde si algo sale mal?": "Si por afán pegas datos de facturación en un chat sin permiso y se filtran, respondes tú. Con la autorización escrita de tu jefe y siguiendo las reglas, responde quien autorizó.",
+        "Scripts, integraciones y conectores": "Si la IA te propone un script para automatizar las cuentas de cobro, no lo ejecutas tú en producción: lo envías a TI para revisión y pruebas en sandbox."
       }
     },
     "rag": {
@@ -417,6 +441,18 @@
         "Qué hacer en su lugar": "Solicitudes no radicadas, poderes y contratos con datos: solo con Claude Code, cuenta corporativa y lo mínimo necesario. Si algo se subió por error, lo reportas de inmediato."
       }
     },
+    "netsuite": {
+      "intro": "Como paralegal, verificas y ordenas información; muchas veces consultas NetSuite para radicaciones, gastos o cuentas de cobro. Tu cuidado evita filtraciones.",
+      "ejemplos": {
+        "NetSuite: el corazón financiero de la firma": "Al revisar los gastos de un proceso en NetSuite, ves datos del cliente, valores y proveedores. Todo eso es confidencial, aunque parezca un dato administrativo.",
+        "Regla 1: no se suben archivos al chat": "Necesitas cuadrar los gastos de un expediente. No subes la exportación a Claude: le preguntas cómo armar la búsqueda que agrupe los gastos por proceso.",
+        "Regla 2: no se da información de forma directa": "Cuando pides ayuda con una fórmula, describes los campos («fecha del gasto», «valor») y usas ejemplos como «Proceso 1, $100.000», nunca los reales.",
+        "Todo se crea y se obtiene desde NetSuite": "Para verificar que todas las facturas de un caso estén registradas, pides a la IA el criterio de búsqueda y lo ejecutas tú en NetSuite. El cuadro final queda en la carpeta del caso.",
+        "La autorización de tu jefe": "Antes de usar la IA para crear un reporte nuevo de gastos, verificas que tu jefe lo haya autorizado por correo y guardas ese correo con el reporte.",
+        "¿Quién responde si algo sale mal?": "Si pegaras una lista de gastos con nombres de clientes en un chat sin permiso y se filtrara, la responsabilidad sería tuya. Por eso pides la autorización y sigues las dos reglas.",
+        "Scripts, integraciones y conectores": "Si encuentras una extensión que «lee NetSuite y resume con IA», no la instalas: la reportas a TI para que la evalúe."
+      }
+    },
     "rag": {
       "intro": "Tus listas de chequeo y los expedientes de la firma no están en la memoria de Claude. RAG es la forma de que responda con esos documentos y te diga de dónde sacó cada dato.",
       "ejemplos": {
@@ -577,6 +613,18 @@
         "Contratos con nombres y datos": "Para analizar honorarios no usas contratos con nombres y cédulas; trabajas sobre una tabla seudonimizada solo con montos y fechas.",
         "Las consecuencias": "Subir una base de clientes a un chat personal puede sumar sanciones administrativas, disciplinarias, penales, civiles y comerciales; cada caso se revisa con el área jurídica.",
         "Qué hacer en su lugar": "En vez de pegar la base, abres Claude Code en la carpeta de la firma con la cuenta corporativa. Si ya la subiste por error, lo reportas de inmediato."
+      }
+    },
+    "netsuite": {
+      "intro": "Como analista de datos, sacas reportes y cruces de NetSuite. Eres quien más tentación tiene de pegar datos en la IA: este módulo te dice cómo aprovecharla sin sacarlos del sistema.",
+      "ejemplos": {
+        "NetSuite: el corazón financiero de la firma": "Los reportes que construyes cruzan clientes, facturación y cartera. Un solo archivo tuyo puede revelar la estrategia comercial completa de la firma.",
+        "Regla 1: no se suben archivos al chat": "Para detectar facturas duplicadas no subes el CSV a la IA: le pides la lógica de la búsqueda guardada o de la consulta SuiteQL y la corres en NetSuite.",
+        "Regla 2: no se da información de forma directa": "Le escribes a Claude: «Tengo una tabla de facturas con los campos cliente, número y valor. ¿Qué consulta SuiteQL detecta números repetidos? Usa datos ficticios». Nada real sale del sistema.",
+        "Todo se crea y se obtiene desde NetSuite": "Diseñas con la IA la consulta, la pruebas con tu rol en NetSuite y guardas el resultado en la carpeta del área. Si necesitas un gráfico, pides el método, no le das los datos.",
+        "La autorización de tu jefe": "Antes de construir un tablero nuevo de cartera, tienes un ticket aprobado por tu jefe que dice qué datos, para qué y hasta cuándo.",
+        "¿Quién responde si algo sale mal?": "Si cruzas datos de NetSuite en un chat sin autorización y se filtran a otra firma, respondes tú. Con autorización escrita de tu jefe y cumpliendo las reglas, responde quien autorizó.",
+        "Scripts, integraciones y conectores": "Si la IA te escribe una consulta o un script que modifica registros, lo pruebas en el sandbox y lo despliega TI. Las credenciales de NetSuite nunca van en el código ni en el chat."
       }
     },
     "rag": {
@@ -741,6 +789,18 @@
         "Qué hacer en su lugar": "TI deja listo el camino correcto: Claude Code con la cuenta corporativa para leer en local, conectores aprobados y un canal claro para reportar. Si algo se subió por error, se avisa a TI de inmediato."
       }
     },
+    "netsuite": {
+      "intro": "Como IT, administras NetSuite, sus roles y sus integraciones. Eres quien hace cumplir estas reglas y quien evalúa cualquier conexión entre una IA y el ERP.",
+      "ejemplos": {
+        "NetSuite: el corazón financiero de la firma": "Sabes que NetSuite concentra la información financiera de la firma y de sus clientes. Por eso aplicas mínimo privilegio en los roles y revisas quién exporta qué.",
+        "Regla 1: no se suben archivos al chat": "Configuras alertas y políticas para que no se suban exportaciones de NetSuite a herramientas de IA, y recuerdas a los usuarios que la regla incluye capturas de pantalla.",
+        "Regla 2: no se da información de forma directa": "Cuando un usuario te pide ayuda para usar la IA con NetSuite, le enseñas a describir campos y usar datos ficticios en vez de pegar registros.",
+        "Todo se crea y se obtiene desde NetSuite": "Promueves el flujo correcto: la IA diseña, el usuario ejecuta en NetSuite con su rol y el resultado se guarda en la infraestructura de la firma, con registro de auditoría.",
+        "La autorización de tu jefe": "Antes de crear un rol nuevo o un acceso para un reporte asistido por IA, exiges la autorización escrita del jefe del área y la guardas en el ticket.",
+        "¿Quién responde si algo sale mal?": "En la investigación de un incidente, revisas si había autorización escrita: sin ella, responde quien ejecutó el prompt; con ella, el jefe que autorizó. Tu registro es la evidencia.",
+        "Scripts, integraciones y conectores": "Evalúas cualquier conector o integración entre una IA y NetSuite: tokens con permisos mínimos, guardados en un gestor de secretos, pruebas en sandbox y despliegue controlado."
+      }
+    },
     "rag": {
       "intro": "Si la firma construye un RAG propio, lo construye y lo protege TI: dónde viven los documentos, quién ve qué y cómo se respetan los permisos.",
       "ejemplos": {
@@ -901,6 +961,18 @@
         "Contratos con nombres y datos": "Un contrato laboral en el archivo de talento humano trae cédula, salario y quizá datos de salud. Para revisar sus cláusulas basta una copia sin nombres ni cédulas, leída con Claude Code desde la carpeta.",
         "Las consecuencias": "Un solo chat con el expediente de un empleado puede traer a la vez un problema de datos personales, una queja y un incumplimiento de confidencialidad. Cada caso se analiza con el área jurídica.",
         "Qué hacer en su lugar": "Correspondencia, contratos y expedientes: solo con Claude Code, cuenta corporativa y lo mínimo necesario. Si algo se subió por error, repórtalo de inmediato al responsable de seguridad o de protección de datos."
+      }
+    },
+    "netsuite": {
+      "intro": "Como administrativo(a), registras facturas, pagos y proveedores en NetSuite. Ese trabajo diario toca información muy sensible.",
+      "ejemplos": {
+        "NetSuite: el corazón financiero de la firma": "Cuando registras el pago de un proveedor, ves su cuenta bancaria y el valor. Es información confidencial que no se comparte fuera de NetSuite.",
+        "Regla 1: no se suben archivos al chat": "Si quieres que la IA te ayude a organizar las facturas del mes, no subes el reporte: le preguntas cómo crear una búsqueda guardada que las ordene por fecha de vencimiento.",
+        "Regla 2: no se da información de forma directa": "Para redactar un correo de cobro, pides a la IA una plantilla con espacios en blanco y llenas tú el nombre del cliente y el valor directamente en el correo de la firma.",
+        "Todo se crea y se obtiene desde NetSuite": "Para tu control semanal de pagos, la IA te explica cómo armar el filtro y tú lo ejecutas en NetSuite. El listado se queda en NetSuite.",
+        "La autorización de tu jefe": "Antes de pedirle a la IA que te ayude a crear un reporte nuevo de proveedores, le pides a tu jefe que lo autorice por correo.",
+        "¿Quién responde si algo sale mal?": "Si copias datos de proveedores en un chat sin permiso y se filtran, la responsabilidad es tuya. Con autorización escrita y siguiendo las reglas, responde tu jefe.",
+        "Scripts, integraciones y conectores": "Si ves una aplicación que «automatiza NetSuite con ChatGPT», no la instalas: avisas a TI."
       }
     },
     "rag": {
@@ -1065,6 +1137,18 @@
         "Qué hacer en su lugar": "Invenciones no radicadas, informes técnicos y resultados de pruebas: solo con Claude Code, cuenta corporativa, lo mínimo necesario y aprobación del área. Si algo se pegó en un chat por error, repórtalo de inmediato."
       }
     },
+    "netsuite": {
+      "intro": "Como experto(a) multidisciplinar, cruzas información técnica, jurídica y financiera de proyectos de patentes. NetSuite guarda la parte económica de esos proyectos.",
+      "ejemplos": {
+        "NetSuite: el corazón financiero de la firma": "En NetSuite están los presupuestos y honorarios de los proyectos de patentes de los clientes: revelan qué invenciones están en curso. Es doblemente sensible.",
+        "Regla 1: no se suben archivos al chat": "Para estimar costos de un portafolio de patentes, no subes la exportación de NetSuite a la IA: le pides la lógica del cálculo y la aplicas dentro del sistema.",
+        "Regla 2: no se da información de forma directa": "Describes el problema con datos ficticios: «Proyecto X, 3 países, tasas en cada etapa». Nunca escribes el nombre del cliente ni el de la invención.",
+        "Todo se crea y se obtiene desde NetSuite": "Diseñas con la IA la búsqueda guardada que suma costos por proyecto y la ejecutas en NetSuite con tu rol. El análisis queda en la carpeta del proyecto.",
+        "La autorización de tu jefe": "Antes de usar la IA para armar un reporte de costos de patentes, tienes la autorización escrita de tu jefe con el alcance y la finalidad.",
+        "¿Quién responde si algo sale mal?": "Si pegas en un chat costos de un proyecto no radicado sin autorización y se filtran, respondes tú, y además puedes afectar la novedad o la estrategia del cliente.",
+        "Scripts, integraciones y conectores": "Si necesitas automatizar cálculos, la IA propone el script, tú lo revisas técnicamente y TI lo prueba en sandbox y lo despliega."
+      }
+    },
     "rag": {
       "intro": "Claude no conoce las solicitudes, búsquedas ni respuestas a exámenes de fondo que ya hizo la firma. RAG es la técnica para que responda con base en ellas y cite de dónde sacó cada cosa.",
       "ejemplos": {
@@ -1225,6 +1309,18 @@
         "Contratos con nombres y datos": "Un contrato laboral con cédula, salario y cuenta bancaria, o un soporte de nómina con incapacidades médicas, compromete a la vez la Ley 1581, la confidencialidad y el secreto profesional. Nunca se pega en un chat.",
         "Las consecuencias": "Si se filtra el archivo de pagos a corresponsales con sus cuentas bancarias, pueden sumarse consecuencias administrativas, disciplinarias, civiles y comerciales, como reclamos y pérdida de confianza. Cada caso lo analiza el área jurídica.",
         "Qué hacer en su lugar": "Para conciliar, abre Claude Code en la carpeta de Tesorería con la cuenta corporativa y trabaja sobre una copia sin números de cuenta completos. Si ya pegaste un extracto en un chat, repórtalo hoy mismo."
+      }
+    },
+    "netsuite": {
+      "intro": "Como analista de finanzas, NetSuite es tu herramienta principal: contabilidad, cartera, flujo de caja y estados financieros. Eres quien más provecho le puede sacar a la IA, siempre dentro de las reglas.",
+      "ejemplos": {
+        "NetSuite: el corazón financiero de la firma": "Los estados financieros, la cartera y la rentabilidad por cliente que consultas en NetSuite son de la información más valiosa de la firma. No salen del sistema.",
+        "Regla 1: no se suben archivos al chat": "Para el análisis de cartera por edades, no subes el reporte a Claude: le pides la fórmula de los rangos (0-30, 31-60, 61-90, más de 90 días) y la aplicas en la búsqueda guardada.",
+        "Regla 2: no se da información de forma directa": "Le escribes: «¿Cómo calculo en una búsqueda guardada el porcentaje de cartera vencida sobre el total? Usa datos ficticios». No pegas ni un valor real.",
+        "Todo se crea y se obtiene desde NetSuite": "Diseñas con la IA el reporte de flujo de caja, lo construyes en NetSuite con tu rol y guardas el resultado en la carpeta de finanzas.",
+        "La autorización de tu jefe": "Para cada análisis nuevo asistido por IA tienes la autorización escrita de tu jefe: qué información, para qué y hasta cuándo. La guardas con el análisis.",
+        "¿Quién responde si algo sale mal?": "Si pegas cifras de NetSuite en un chat sin autorización y otra firma conoce la rentabilidad de un cliente, respondes tú. Con autorización escrita y cumpliendo las reglas, responde quien autorizó.",
+        "Scripts, integraciones y conectores": "Si la IA te ayuda con un script de conciliación, lo pruebas en el sandbox y lo despliega TI. Los tokens de integración nunca se escriben en un chat."
       }
     },
     "rag": {

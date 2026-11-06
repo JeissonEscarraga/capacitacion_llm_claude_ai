@@ -153,6 +153,28 @@
         g("c-blanca sin-relleno fino", p("M80 98l20-4M80 104l12-2M88 96v12")) +
         g("c-roja sin-relleno", p("M14 106l10-12M18 94l6 6"));
     },
+    libroMayor: function (k) {
+      // Libro de cuentas con ojos que espía de reojo y una nube que se lleva los datos.
+      return g(k, p("M18 30h74v74H18z")) +
+        g(k + " sin-relleno", p("M92 30l10-8v74l-10 8M18 30l10-8h74")) +
+        g("c-blanca sin-relleno fino", p("M26 70h58M26 80h58M26 90h58M50 70v28M68 70v28")) +
+        g("c-blanca", c(42, 48, 9) + c(68, 48, 9)) +
+        g("c-pizarra lleno", c(46, 49, 3.6) + c(72, 49, 3.6)) +
+        g("c-blanca sin-relleno fino", p("M32 36l12 4M78 36l-12 4")) +
+        g("c-azul", p("M84 12q2-8 10-6q4-6 12-2q8 0 6 8q4 6-4 8H88q-8-2-4-8z")) +
+        g("c-amarilla sin-relleno fino brillo", p("M90 22l-8 8M98 22v10M104 22l4 8"));
+    },
+    pergamino: function (k) {
+      // Documento enrollado con sello y pluma: la responsiva que se firma.
+      return g(k, p("M26 18h60q10 0 10 10v66q0 10-10 10H34q-10 0-10-10V28q0-10 2-10z")) +
+        g(k + " sin-relleno", p("M26 18q-10 0-10 10t10 10h8M86 104q10 0 10-10")) +
+        g("c-blanca sin-relleno fino", p("M38 36h44M38 46h44M38 56h36M38 66h40")) +
+        g("c-blanca sin-relleno", p("M38 86q6-8 10 0t10 0t8-4")) +
+        g("c-roja", c(80, 88, 8)) +
+        g("c-blanca sin-relleno fino", p("M76 88l3 3l5-6")) +
+        g("c-azul sin-relleno grueso", p("M100 20L70 70")) +
+        g("c-azul", p("M100 20q8-10 12-6q-2 10-12 6z"));
+    },
     libro: function (k) {
       // Gran libro abierto con ojos y birrete: el examinador.
       return g(k, p("M14 96V44q24-8 46 4q22-12 46-4v52q-24-8-46 4q-22-12-46-4z")) +

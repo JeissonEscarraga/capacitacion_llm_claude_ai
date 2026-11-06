@@ -12,6 +12,7 @@
   var L = window.AIBoss;
   var D = window.Dibujos;
   var K = window.Constancia;
+  var R = window.Responsiva;
   var CONFIG = window.AIBOSS_CONFIG || {};
   var CORREO_TI = String(CONFIG.correoTI || "").trim();
   var $ = function (id) { return document.getElementById(id); };
@@ -22,12 +23,13 @@
   var repasoActual = false;
   var esperandoSiguiente = false;
   var ultimaConstancia = null;
+  var ultimaResponsiva = null; // { doc, nombre, firmante }
   var abriendoCorreo = false;
 
   /* ---------------- Utilidades ---------------- */
 
   function mostrar(nombre) {
-    ["acceso", "perfil", "mapa", "leccion", "batalla"].forEach(function (p) {
+    ["acceso", "perfil", "mapa", "leccion", "batalla", "responsiva"].forEach(function (p) {
       $("pantalla-" + p).hidden = p !== nombre;
     });
     $("barra-usuario").hidden = !usuario || nombre === "acceso";
@@ -100,6 +102,11 @@
     usuario = null;
     batalla = null;
     ultimaConstancia = null;
+    ultimaResponsiva = null;
+    ["resp-nombre", "resp-documento", "resp-cargo", "resp-area", "resp-jefe"].forEach(function (id) { $(id).value = ""; });
+    $("resp-acepto").checked = false;
+    $("resp-responsable").checked = false;
+    if (lienzoListo) limpiarFirma();
     $("acceso-consentimiento").checked = false;
     mostrar("acceso");
   });
@@ -264,6 +271,26 @@
     liT.appendChild(bT);
     mapa.appendChild(liT);
 
+    // Responsiva de uso de IA: se firma una vez y se envía a TI (sin batalla).
+    var firmada = !!usuario.progreso.responsiva;
+    var liR = el("li", "casilla casilla-responsiva" + (firmada ? " superado" : ""));
+    var bR = el("button", "casilla-boton");
+    bR.type = "button";
+    var sR = el("div", "sprite sprite-mapa");
+    sR.innerHTML = D.jefe(MODULO_RESPONSIVA);
+    bR.appendChild(sR);
+    bR.appendChild(el("p", "etiqueta", "Responsiva · Firma obligatoria"));
+    bR.appendChild(el("p", "casilla-tema", "Responsiva de uso de Claude y ChatGPT"));
+    bR.appendChild(el("p", "casilla-jefe", MODULO_RESPONSIVA.jefe));
+    bR.appendChild(el("p", "casilla-estado", firmada ? "Firmada · recuerda enviarla a TI" : "Pendiente: léela, fírmala y envíala a TI"));
+    var chipR = el("p", "casilla-pasos");
+    chipR.appendChild(el("span", "paso-chip" + (firmada ? " hecho" : ""), "✍️ Firma" + (firmada ? " ✓" : "")));
+    chipR.appendChild(el("span", "paso-chip" + (usuario.progreso.responsivaEnviada ? " hecho" : ""), "📧 TI" + (usuario.progreso.responsivaEnviada ? " ✓" : "")));
+    bR.appendChild(chipR);
+    bR.addEventListener("click", abrirResponsiva);
+    liR.appendChild(bR);
+    mapa.insertBefore(liR, mapa.firstChild);
+
     var rep = moduloRepaso();
     if (rep.preguntas.length) {
       var li = el("li", "casilla casilla-repaso");
@@ -298,7 +325,8 @@
     var resumen = { tipo: "resumen", titulo: "Lo que te llevas", puntos: modulo.leccion };
     if (repaso) return [resumen];
     var c = window.Conceptos.CONCEPTOS[modulo.id];
-    var lista = c ? c.pasos.slice() : [];
+    // Teoría y práctica intercaladas: un concepto y enseguida su ejercicio.
+    var lista = c ? (window.Practicas ? window.Practicas.intercalar(modulo.id, c.pasos) : c.pasos.slice()) : [];
     var ad = adaptado(modulo.id);
     var intro = (ad && ad.intro) || (c && c.intro);
     if (intro) lista.unshift({ tipo: "intro", titulo: "Antes de empezar", texto: intro, modulo: modulo });
@@ -984,6 +1012,186 @@
     }
     batalla = null;
     abrirLeccion(moduloActual, repasoActual);
+  });
+
+  /* ---------------- Responsiva de uso de IA ---------------- */
+
+  var MODULO_RESPONSIVA = { id: "responsiva", jefe: "El Pergamino del Compromiso", forma: "pergamino", color: "azul" };
+  var firmaVacia = true;
+
+  function abrirResponsiva() {
+    $("responsiva-sprite").innerHTML = D.jefe(MODULO_RESPONSIVA);
+    $("responsiva-titulo").textContent = R.TITULO;
+    var art = $("responsiva-texto");
+    art.innerHTML = "";
+    art.appendChild(el("p", "etiqueta", R.SUBTITULO + " · Versión " + R.VERSION));
+    art.appendChild(el("p", "responsiva-declaracion", R.declaracion({
+      nombre: "[tu nombre]", documento: "[tu documento]", cargo: "[tu cargo]", area: "[tu área]"
+    })));
+    var ol = el("ol", "responsiva-clausulas");
+    R.CLAUSULAS.forEach(function (c) {
+      var li = el("li", c.clave ? "clausula clausula-clave" : "clausula");
+      li.appendChild(el("p", "clausula-titulo", c.titulo));
+      c.texto.forEach(function (t) { li.appendChild(el("p", null, t)); });
+      ol.appendChild(li);
+    });
+    art.appendChild(ol);
+    if (!$("resp-nombre").value) $("resp-nombre").value = usuario.nombre;
+    $("resp-mensaje").textContent = "";
+    $("resp-envio").hidden = !ultimaResponsiva;
+    if (ultimaResponsiva) pintarEnvioResponsiva();
+    mostrar("responsiva");
+    prepararLienzo();
+  }
+
+  // Lienzo de firma: mouse, dedo o lápiz (Pointer Events).
+  var lienzoListo = false;
+  function prepararLienzo() {
+    var cv = $("resp-firma");
+    var ctx = cv.getContext("2d");
+    function estilo() {
+      ctx.lineWidth = 2.6;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.strokeStyle = "#0b1f6b";
+    }
+    if (lienzoListo) { estilo(); return; }
+    lienzoListo = true;
+    limpiarFirma();
+    var dibujando = false;
+    function punto(ev) {
+      var r = cv.getBoundingClientRect();
+      return { x: (ev.clientX - r.left) * cv.width / r.width, y: (ev.clientY - r.top) * cv.height / r.height };
+    }
+    cv.addEventListener("pointerdown", function (ev) {
+      ev.preventDefault();
+      dibujando = true;
+      cv.setPointerCapture(ev.pointerId);
+      estilo();
+      var q = punto(ev);
+      ctx.beginPath();
+      ctx.moveTo(q.x, q.y);
+      ctx.lineTo(q.x + 0.1, q.y + 0.1);
+      ctx.stroke();
+      firmaVacia = false;
+    });
+    cv.addEventListener("pointermove", function (ev) {
+      if (!dibujando) return;
+      var q = punto(ev);
+      ctx.lineTo(q.x, q.y);
+      ctx.stroke();
+    });
+    ["pointerup", "pointercancel", "pointerleave"].forEach(function (t) {
+      cv.addEventListener(t, function () { dibujando = false; });
+    });
+  }
+
+  function limpiarFirma() {
+    var cv = $("resp-firma");
+    var ctx = cv.getContext("2d");
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, cv.width, cv.height);
+    ctx.strokeStyle = "#c9ced6";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(30, cv.height - 40);
+    ctx.lineTo(cv.width - 30, cv.height - 40);
+    ctx.stroke();
+    firmaVacia = true;
+  }
+  $("resp-borrar-firma").addEventListener("click", limpiarFirma);
+
+  function datosFirmante() {
+    function v(id) { return $(id).value.trim().replace(/\s+/g, " "); }
+    return {
+      nombre: v("resp-nombre"), documento: v("resp-documento"), cargo: v("resp-cargo"),
+      area: v("resp-area"), jefe: v("resp-jefe"), ciudad: v("resp-ciudad"), correo: usuario.correo
+    };
+  }
+
+  function huellaSHA256(texto) {
+    if (!(window.crypto && window.crypto.subtle && window.TextEncoder)) return Promise.resolve("");
+    return window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(texto)).then(function (buf) {
+      return Array.prototype.map.call(new Uint8Array(buf), function (b) { return (b < 16 ? "0" : "") + b.toString(16); }).join("");
+    }).catch(function () { return ""; });
+  }
+
+  $("form-responsiva").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var msg = $("resp-mensaje");
+    msg.className = "mensaje error";
+    var f = datosFirmante();
+    var faltan = [["nombre", "tu nombre completo"], ["documento", "tu documento de identidad"], ["cargo", "tu cargo"],
+      ["area", "tu área"], ["jefe", "el nombre de tu jefe inmediato"], ["ciudad", "la ciudad"]]
+      .filter(function (x) { return f[x[0]].length < 2; });
+    if (faltan.length) { msg.textContent = "Completa " + faltan[0][1] + "."; return; }
+    if (firmaVacia) { msg.textContent = "Dibuja tu firma en el recuadro."; return; }
+    if (!$("resp-acepto").checked || !$("resp-responsable").checked) {
+      msg.textContent = "Para firmar debes marcar las dos casillas de aceptación.";
+      return;
+    }
+    var fecha = new Date().toISOString();
+    var firma = $("resp-firma").toDataURL("image/png");
+    $("resp-firmar").disabled = true;
+    huellaSHA256(R.textoCanonico(f, fecha)).then(function (huella) {
+      try {
+        var r = R.generar({ firmante: f, firma: firma, fecha: fecha, huella: huella, correoTI: CORREO_TI, limpiar: K.limpiar });
+        r.doc.save(r.nombre);
+        ultimaResponsiva = { doc: r.doc, nombre: r.nombre, firmante: f };
+        usuario.progreso.responsiva = fecha;
+        msg.className = "mensaje ok";
+        msg.textContent = "✔ Responsiva firmada. Se descargó «" + r.nombre + "». Ahora envíala a TI.";
+        pintarEnvioResponsiva();
+        $("resp-envio").hidden = false;
+        $("resp-envio").scrollIntoView({ block: "nearest", behavior: "smooth" });
+        avisar("Responsiva firmada y descargada.");
+      } catch (e) {
+        msg.textContent = "No se pudo generar el PDF: " + e.message + " Recarga la página e inténtalo de nuevo.";
+      }
+      $("resp-firmar").disabled = false;
+    });
+  });
+
+  function pintarEnvioResponsiva() {
+    $("resp-texto-envio").textContent = "Tu PDF firmado es «" + ultimaResponsiva.nombre + "». Envíalo a " + (CORREO_TI || "TI") + " desde tu correo de la firma.";
+    $("resp-nota-enviar").textContent = "Se descarga un correo para " + (CORREO_TI || "TI") +
+      " que ya trae el PDF adjunto. Ábrelo con doble clic: Outlook lo muestra como borrador. Revisa y pulsa «Enviar».";
+  }
+
+  $("resp-pdf").addEventListener("click", function () {
+    if (ultimaResponsiva) ultimaResponsiva.doc.save(ultimaResponsiva.nombre);
+  });
+
+  $("resp-enviar-ti").addEventListener("click", function () {
+    if (!ultimaResponsiva) return;
+    var u = ultimaResponsiva;
+    var eml = K.armarEml({
+      para: CORREO_TI,
+      asunto: R.asunto(u.firmante),
+      cuerpo: R.cuerpo(u.firmante, u.nombre, true),
+      archivo: u.nombre,
+      pdfBase64: u.doc.output("datauristring").split(",")[1]
+    });
+    var nombreEml = u.nombre.replace(/\.pdf$/, "") + "_correo_TI.eml";
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([eml], { type: "message/rfc822" }));
+    a.download = nombreEml;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    usuario.progreso.responsivaEnviada = new Date().toISOString();
+    $("resp-texto-envio").textContent = "Se descargó «" + nombreEml + "» con tu responsiva adjunta. Ábrelo con doble clic, revisa y pulsa «Enviar».";
+    avisar("Correo para TI listo, con la responsiva adjunta.");
+  });
+
+  $("resp-correo-simple").addEventListener("click", function () {
+    if (!ultimaResponsiva) return;
+    var u = ultimaResponsiva;
+    abriendoCorreo = true;
+    setTimeout(function () { abriendoCorreo = false; }, 1500);
+    window.location.href = "mailto:" + encodeURIComponent(CORREO_TI).replace(/%40/g, "@") +
+      "?subject=" + encodeURIComponent(R.asunto(u.firmante)) +
+      "&body=" + encodeURIComponent(R.cuerpo(u.firmante, u.nombre, false));
   });
 
   /* ---------------- Ventanas y teclado ---------------- */
